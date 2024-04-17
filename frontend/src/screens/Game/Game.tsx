@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Game () {
+export default function Game() {
   return (
     <View>
       <Text>This is the Game screen</Text>
     </View>
   );
-
 }
