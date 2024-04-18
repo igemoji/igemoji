@@ -1,18 +1,18 @@
 // In App.js in a new project
 
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
-import SignIn from './src/screens/Auth/SignIn';
-import SignUp from './src/screens/Auth/SignUp';
-import Game from './src/screens/Game/Game';
-import Main from './src/screens/Main/Main';
-import RoomList from './src/screens/Main/RoomList';
-import Rank from './src/screens/Rank/Rank';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import SignIn from "./src/screens/Auth/SignIn";
+import SignUp from "./src/screens/Auth/SignUp";
+import Game from "./src/screens/Game/Game";
+import Main from "./src/screens/Main/Main";
+import RoomList from "./src/screens/Main/RoomList";
+import Rank from "./src/screens/Rank/Rank";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 const Stack = createNativeStackNavigator();
 

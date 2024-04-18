@@ -1,3 +1,13 @@
 module.exports = {
-  extends: ["@react-native-community", "eslint-config-prettier"],
+  root: true,
+  extends: ["universe/native", "prettier"],
+  rules: {
+    "react-hooks/exhaustive-deps": "warn",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
+  },
 };
