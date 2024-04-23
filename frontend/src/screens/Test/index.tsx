@@ -1,17 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import Button from "@/components/Button";
 import MusicToggleButton from "@/components/MusicToggleButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 
-export default function RoomList() {
+export default function Test() {
   return (
     <View>
       <ThemeToggleButton />
       <MusicToggleButton />
       <Button name="check" />
-      <Text>This is the SignIn screen</Text>
+      <Button name="start" />
+      <Button name="exit" />
+      <Button name="mainStart" />
     </View>
   );
 }

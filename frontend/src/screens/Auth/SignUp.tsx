@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text } from "react-native";
+import SignUpComponent from "@/components/Auth/SignUp";
+import { NavigationProps } from "@/types/types";
 
-export default function SignUp() {
+export default function SignUp({ navigation }: NavigationProps) {
   return (
-    <View>
-      <Text>This is the SignUp screen</Text>
-    </View>
+    <>
+      <SignUpComponent navigation={navigation} />
+    </>
   );
 }
