@@ -22,10 +22,6 @@
         "backgroundColor": "#ffffff",
         "package": "com.yourcompany.yourappname"
       }
-<<<<<<< HEAD
-=======
-      // "softwareKeyboardLayoutMode": "pan"
->>>>>>> c0601b32f54267f9fb89e65232d4c24d93f64750
     },
     "web": {
       "favicon": "./assets/favicon.png"

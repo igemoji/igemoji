@@ -6,7 +6,6 @@ import Content from "./Content";
 import Header from "./Header";
 
 import { gameSocket } from "@/sockets";
-import { View } from "react-native";
 
 const { connect, subscribe, send, disconnect } = gameSocket;
 
