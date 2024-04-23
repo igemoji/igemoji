@@ -15,14 +15,14 @@ interface MainModalProps {
 }
 
 const modalTitle = {
-  hostWaiting: "방장의 게임 시작을 기다리고 있습니다.",
-  playerWaiting: "방 설정",
+  playerWaiting: "방장의 게임 시작을 기다리고 있습니다.",
+  hostWaiting: "방 설정",
   signin: "SNS 로그인",
   signup: "닉네임 설정",
 } as const;
 
 const modalHeight = {
-  hostWaiting: 400,
+  hostWaiting: 300,
   playerWaiting: 150,
   signin: 200,
   signup: 200,
@@ -57,13 +57,13 @@ export default function ModalBox({ title, children, onPress }: MainModalProps) {
 }
 
 function ModalButton({ title, onPress }: { title: keyof typeof modalTitle; onPress: () => void }) {
-  if (title === "hostWaiting") {
+  if (title === "playerWaiting") {
     return (
       <View style={{ width: SCREENWIDTH * 0.4 }}>
         <Button name="exit" onPress={onPress} />
       </View>
     );
-  } else if (title === "playerWaiting") {
+  } else if (title === "hostWaiting") {
     return (
       <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
         <View style={{ width: SCREENWIDTH * 0.3 }}>
@@ -99,16 +99,15 @@ function ModalButton({ title, onPress }: { title: keyof typeof modalTitle; onPre
 
 const styles = StyleSheet.create({
   modalContent: {
-    width: SCREENWIDTH * 0.8,
+    width: "100%",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "space-between",
     padding: 20,
   },
   modalBackContent: {
-    width: SCREENWIDTH * 0.8,
+    width: "100%",
     borderRadius: 10,
-    padding: 20,
     position: "absolute",
     top: 4,
     zIndex: -1,
