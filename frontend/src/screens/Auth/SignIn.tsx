@@ -1,17 +1,10 @@
-import React from "react";
-import { View, Text } from "react-native";
+import SignInComponent from "@/components/Auth/SignIn";
+import { NavigationProps } from "@/types/types";
 
-import Button from "@/components/Button";
-import MusicToggleButton from "@/components/MusicToggleButton";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
-
-export default function SignIn() {
+export default function SignIn({ navigation }: NavigationProps) {
   return (
-    <View>
-      <ThemeToggleButton />
-      <MusicToggleButton />
-      <Button name="check">안녕</Button>
-      <Text>This is the SignIn screen</Text>
-    </View>
+    <>
+      <SignInComponent navigation={navigation} />
+    </>
   );
 }
