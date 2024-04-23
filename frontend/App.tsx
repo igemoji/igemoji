@@ -30,7 +30,11 @@ function App() {
       <SafeAreaView style={styles.screen} />
       {/* <StatusBar hidden /> */}
       <NavigationContainer>
+<<<<<<< HEAD
         <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
+=======
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Game">
+>>>>>>> c0601b32f54267f9fb89e65232d4c24d93f64750
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Game" component={Game} />

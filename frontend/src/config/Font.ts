@@ -8,6 +8,12 @@ const Font = StyleSheet.create({
   modalContent: {
     fontSize: 16,
   },
+<<<<<<< HEAD
+=======
+  messages: {
+    fontSize: 14,
+  },
+>>>>>>> c0601b32f54267f9fb89e65232d4c24d93f64750
 });
 
 export default Font;

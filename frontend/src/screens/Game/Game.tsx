@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 
@@ -33,3 +34,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+=======
+import React from "react";
+
+import GameComponent from "@/components/Game";
+
+export default function Game() {
+  return <GameComponent />;
+}
+>>>>>>> c0601b32f54267f9fb89e65232d4c24d93f64750

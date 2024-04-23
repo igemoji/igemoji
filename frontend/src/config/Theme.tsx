@@ -33,7 +33,11 @@ export const themes = {
     kungyaRedDark: "#FF95A1",
     kungyaGreenAccent2: "#47A437",
     background: "rgba(0, 0, 0, 0.5)",
+<<<<<<< HEAD
     gameBackground: "rgba(0,0,0,0.5)",
+=======
+    gameBackground: "rgba(0, 0, 0, 0.5)",
+>>>>>>> c0601b32f54267f9fb89e65232d4c24d93f64750
   },
 };
 
