@@ -8,6 +8,15 @@ const Font = StyleSheet.create({
   modalContent: {
     fontSize: 16,
   },
+  mainLarge: {
+    fontSize: 20,
+  },
+  mainMiddle: {
+    fontSize: 18,
+  },
+  mainSmall: {
+    fontSize: 12,
+  },
   messages: {
     fontSize: 14,
   },

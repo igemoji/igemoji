@@ -10,4 +10,9 @@ interface NavigationProps {
   };
 }
 
-export type { ThemeIconName, MusicIconName, ButtonName, NavigationProps };
+interface MainModalProps {
+  visible: boolean;
+  close: () => void;
+}
+
+export type { ThemeIconName, MusicIconName, ButtonName, NavigationProps, MainModalProps };

@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text } from "react-native";
+import MainComponent from "@/components/Main/Main";
+import { NavigationProps } from "@/types/types";
 
-export default function Main() {
+export default function Main({ navigation }: NavigationProps) {
   return (
-    <View>
-      <Text>This is the Main screen</Text>
-    </View>
+    <>
+      <MainComponent navigation={navigation} />
+    </>
   );
 }
