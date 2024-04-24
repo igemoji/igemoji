@@ -10,12 +10,13 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 interface MainModalProps {
   title: keyof typeof modalTitle;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onPress: () => void;
+  onPress2?: () => void;
 }
 
 const modalTitle = {
-  playerWaiting: "방장의 게임 시작을 기다리고 있습니다.",
+  playerWaiting: "게임 시작을 기다리고 있습니다.",
   hostWaiting: "방 설정",
   signin: "SNS 로그인",
   signup: "닉네임 설정",
@@ -28,12 +29,13 @@ const modalHeight = {
   signup: 200,
 } as const;
 
-export default function ModalBox({ title, children, onPress }: MainModalProps) {
+export default function ModalBox({ title, children, onPress, onPress2 }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
   return (
     <View
       style={{
         height: modalHeight[title],
+        width: "100%",
       }}>
       <View
         style={{
@@ -43,7 +45,7 @@ export default function ModalBox({ title, children, onPress }: MainModalProps) {
         }}>
         <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
         {children}
-        <ModalButton title={title} onPress={onPress} />
+        <ModalButton title={title} onPress={onPress} onPress2={onPress2} />
       </View>
       <View
         style={{
@@ -56,7 +58,17 @@ export default function ModalBox({ title, children, onPress }: MainModalProps) {
   );
 }
 
-function ModalButton({ title, onPress }: { title: keyof typeof modalTitle; onPress: () => void }) {
+function ModalButton({
+  title,
+  onPress,
+  onPress2,
+}: {
+  title: keyof typeof modalTitle;
+  onPress: () => void;
+  onPress2?: () => void;
+}) {
+  const handlePress2 = onPress2 ? onPress2 : () => {};
+
   if (title === "playerWaiting") {
     return (
       <View style={{ width: SCREENWIDTH * 0.4 }}>
@@ -65,12 +77,12 @@ function ModalButton({ title, onPress }: { title: keyof typeof modalTitle; onPre
     );
   } else if (title === "hostWaiting") {
     return (
-      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-        <View style={{ width: SCREENWIDTH * 0.3 }}>
+      <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
+        <View style={{ width: SCREENWIDTH * 0.4 }}>
           <Button name="start" onPress={onPress} />
         </View>
-        <View style={{ width: SCREENWIDTH * 0.3 }}>
-          <Button name="exit" onPress={onPress} />
+        <View style={{ width: SCREENWIDTH * 0.4 }}>
+          <Button name="exit" onPress={handlePress2} />
         </View>
       </View>
     );
