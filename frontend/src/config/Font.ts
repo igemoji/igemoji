@@ -8,6 +8,22 @@ const Font = StyleSheet.create({
   modalContent: {
     fontSize: 16,
   },
+  header: {
+    fontSize: 18,
+  },
+  quizCount: {
+    fontSize: 15,
+  },
+  timeCount: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  emoji: {
+    fontSize: 30,
+  },
+  hint: {
+    fontSize: 14,
+  },
   mainLarge: {
     fontSize: 20,
   },
