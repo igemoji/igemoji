@@ -1,9 +1,10 @@
+import { AntDesign } from "@expo/vector-icons";
 import React, { useContext } from "react";
 import { Modal, View, StyleSheet, Dimensions, TouchableOpacity, Text } from "react-native";
+
 import Button from "@/components/Button";
-import { ThemeContext } from "@/config/Theme";
-import { AntDesign } from "@expo/vector-icons";
 import Font from "@/config/Font";
+import { ThemeContext } from "@/config/Theme";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -18,10 +19,10 @@ interface MainModalProps {
 
 const modalTitle = {
   setting: "설정",
-  makeRoom: "방 만들기",
+  createRoom: "방 만들기",
   info: "안내",
   password: "비밀번호 입력",
-  roomNumber: "방 번호 입력",
+  searchRoom: "방 번호 입력",
 } as const;
 
 const modalHeight = {
@@ -41,9 +42,10 @@ export default function MainModal({
   const { theme } = useContext(ThemeContext);
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.modalContainer}>
-        <View
+    <Modal visible={visible} transparent>
+      <TouchableOpacity style={styles.modalContainer} activeOpacity={1} onPress={close}>
+        <TouchableOpacity
+          activeOpacity={1}
           style={{
             height: modalHeight[size],
           }}>
@@ -73,8 +75,8 @@ export default function MainModal({
               height: modalHeight[size],
             }}
           />
-        </View>
-      </View>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 }
@@ -96,7 +98,6 @@ const styles = StyleSheet.create({
   modalBackContent: {
     width: SCREENWIDTH * 0.8,
     borderRadius: 10,
-    padding: 20,
     position: "absolute",
     top: 4,
     zIndex: -1,

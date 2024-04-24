@@ -1,17 +1,10 @@
-import React from "react";
-import { View, Text } from "react-native";
+import RoomListComponent from "@/components/Main/RoomList";
+import { NavigationProps } from "@/types/types";
 
-import Button from "@/components/Button";
-import MusicToggleButton from "@/components/MusicToggleButton";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
-
-export default function RoomList() {
+export default function RoomList({ navigation }: NavigationProps) {
   return (
-    <View>
-      <ThemeToggleButton />
-      <MusicToggleButton />
-      <Button name="check" />
-      <Text>This is the SignIn screen</Text>
-    </View>
+    <>
+      <RoomListComponent navigation={navigation} />
+    </>
   );
 }

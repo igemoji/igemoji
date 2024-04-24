@@ -69,8 +69,9 @@ export default function SignUp({ navigation }: NavigationProps) {
                 <TextInput
                   style={{
                     ...styles.textInput,
+                    ...Font.modalContent,
                     backgroundColor: theme.white,
-                    borderColor: isDuplicate || isInvalidLength ? "red" : "transparent",
+                    borderColor: isDuplicate || isInvalidLength ? "red" : theme.grey,
                   }}
                   placeholder="사용할 닉네임을 입력하세요"
                   onChangeText={handleTextChange}

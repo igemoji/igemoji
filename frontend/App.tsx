@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Constants from "expo-constants";
 import * as React from "react";
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 import SignIn from "./src/screens/Auth/SignIn";
 import SignUp from "./src/screens/Auth/SignUp";
