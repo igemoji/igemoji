@@ -18,6 +18,7 @@ export default function Chat() {
       <TextInput
         style={{ ...styles.input, borderColor: theme.grey, color: theme.text }}
         placeholder="메시지를 입력하세요"
+        placeholderTextColor={theme.text}
         value={message}
         onChangeText={setMessage}
       />

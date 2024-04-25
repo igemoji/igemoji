@@ -32,6 +32,7 @@ export default function SearchModal({ visible, close }: MainModalProps) {
             ...Font.modalContent,
             backgroundColor: theme.white,
             borderColor: theme.grey,
+            color: theme.black,
           }}
           keyboardType="numeric"
         />

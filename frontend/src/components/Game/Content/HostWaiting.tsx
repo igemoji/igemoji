@@ -38,7 +38,7 @@ export default function HostWaiting() {
         <ModalBox title="hostWaiting" onPress={handleGameStart} onPress2={handleGameExit}>
           <View style={styles.modalBox}>
             <View style={styles.lineContainer}>
-              <Text style={Font.modalContent}>장르 : </Text>
+              <Text style={{ ...Font.modalContent, color: theme.text }}>장르 : </Text>
               <View style={styles.buttonContainer}>
                 {quizType.map((type) => (
                   <TouchableOpacity
@@ -62,7 +62,7 @@ export default function HostWaiting() {
               </View>
             </View>
             <View style={styles.lineContainer}>
-              <Text style={Font.modalContent}>개수 : </Text>
+              <Text style={{ ...Font.modalContent, color: theme.text }}>개수 : </Text>
               <View style={styles.buttonContainer}>
                 {quizCount.map((count) => (
                   <TouchableOpacity

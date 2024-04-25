@@ -13,8 +13,6 @@ export default function Prompt() {
     setContainerHeight(height);
     setContainerWidth(width);
   };
-  const fontSize = Math.max(containerHeight * 0.2, 14);
-
   return (
     <View style={styles.outerContainer}>
       <View
@@ -27,7 +25,7 @@ export default function Prompt() {
         }}
       />
       <View style={{ ...styles.container }} onLayout={handleLayout}>
-        <Text style={{ fontSize, color: theme.white }}>진쪽이1234 님께서 정답을 맞추셨습니다.</Text>
+        <Text style={{ color: theme.white }}>진쪽이1234 님께서 정답을 맞추셨습니다.</Text>
       </View>
     </View>
   );
@@ -47,6 +45,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     justifyContent: "center",
     alignItems: "center",
-    height: "10%",
+    height: 40,
   },
 });
