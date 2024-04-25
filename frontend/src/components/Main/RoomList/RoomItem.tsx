@@ -1,16 +1,16 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from "react-native";
 
 import CreateRoomModal from "./CreateRoomModal";
 import NotFoundModal from "./NotFoundModal";
+import PasswordRoomModal from "./PasswordRoomModal";
 import SearchModal from "./SearchModal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
-import PasswordRoomModal from "./PasswordRoomModal";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface RoomItemProps {
   roomNumber: number;
@@ -68,18 +68,18 @@ export default function RoomItem({
     <TouchableOpacity style={{ ...styles.container }} onPress={handlePress}>
       <View style={{ marginLeft: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainSmall, color: theme.text }}>{states[state]}</Text>
-          <Text style={{ ...Font.mainSmall, color: theme.text }}> - </Text>
-          <Text style={{ ...Font.mainSmall, color: theme.text }}>{genres[genre]}</Text>
+          <Text style={{ ...Font.mainSmall, color: theme.black }}>{states[state]}</Text>
+          <Text style={{ ...Font.mainSmall, color: theme.black }}> - </Text>
+          <Text style={{ ...Font.mainSmall, color: theme.black }}>{genres[genre]}</Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainLarge, color: theme.text }}>{roomNumber} </Text>
-          <Text style={{ ...Font.mainLarge, color: theme.text }}>{title}</Text>
+          <Text style={{ ...Font.mainLarge, color: theme.black }}>{roomNumber} </Text>
+          <Text style={{ ...Font.mainLarge, color: theme.black }}>{title}</Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
         {!isPublic && <Text style={{ fontSize: 25 }}>🔐 </Text>}
-        <Text style={{ ...Font.mainMiddle, color: theme.text }}>{playerNumber}/6</Text>
+        <Text style={{ ...Font.mainMiddle, color: theme.black }}>{playerNumber}/6</Text>
       </View>
       <View
         style={{

@@ -1,12 +1,13 @@
+import React, { useContext, useState } from "react";
 import { View, Text, Dimensions, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 
 import MainModal from "./Modal";
-import { ThemeContext } from "@/config/Theme";
-import React, { useContext, useState } from "react";
-import Font from "@/config/Font";
+
 import Button from "@/components/Button";
 import MusicToggleButton from "@/components/MusicToggleButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
+import Font from "@/config/Font";
+import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 

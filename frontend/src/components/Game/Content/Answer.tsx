@@ -23,7 +23,7 @@ export default function Answer() {
           uri,
         }}
       />
-      <Text style={{ fontSize }}>명량</Text>
+      <Text style={{ fontSize, color: theme.text }}>명량</Text>
     </View>
   );
 }
