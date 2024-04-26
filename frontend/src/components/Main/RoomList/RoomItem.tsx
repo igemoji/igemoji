@@ -68,18 +68,18 @@ export default function RoomItem({
     <TouchableOpacity style={{ ...styles.container }} onPress={handlePress}>
       <View style={{ marginLeft: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainSmall, color: theme.black }}>{states[state]}</Text>
-          <Text style={{ ...Font.mainSmall, color: theme.black }}> - </Text>
-          <Text style={{ ...Font.mainSmall, color: theme.black }}>{genres[genre]}</Text>
+          <Text style={{ ...Font.mainSmall, color: "#000000" }}>{states[state]}</Text>
+          <Text style={{ ...Font.mainSmall, color: "#000000" }}> - </Text>
+          <Text style={{ ...Font.mainSmall, color: "#000000" }}>{genres[genre]}</Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainLarge, color: theme.black }}>{roomNumber} </Text>
-          <Text style={{ ...Font.mainLarge, color: theme.black }}>{title}</Text>
+          <Text style={{ ...Font.mainLarge, color: "#000000" }}>{roomNumber} </Text>
+          <Text style={{ ...Font.mainLarge, color: "#000000" }}>{title}</Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
         {!isPublic && <Text style={{ fontSize: 25 }}>🔐 </Text>}
-        <Text style={{ ...Font.mainMiddle, color: theme.black }}>{playerNumber}/6</Text>
+        <Text style={{ ...Font.mainMiddle, color: "#000000" }}>{playerNumber}/6</Text>
       </View>
       <View
         style={{
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute",
     borderRadius: 10,
-    opacity: 0.8,
+    opacity: 0.9,
     zIndex: -1,
   },
 });

@@ -4,33 +4,79 @@ import { View, StyleSheet, Button } from "react-native";
 import Answer from "./Answer";
 import Count from "./Count";
 import Emoji from "./Emoji";
+import EndScore from "./EndScore";
 import HostWaiting from "./HostWaiting";
 import Messages from "./Messages";
 import PlayerWaiting from "./PlayerWaiting";
 import Prompt from "./Prompt";
 import Similar from "./Similar";
 import Timer from "./Timer";
+import WaitingScore from "./WaitingScore";
 
 import { ThemeContext } from "@/config/Theme";
 
 export default function Content() {
   const { theme } = useContext(ThemeContext);
-  const [timeCount, setTimeCount] = useState(60);
+  // TODO: 백엔드에서 전달받은 데이터로 교체
+  const [timeCount, setTimeCount] = useState(600);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+
   const [quizCount, setQuizCount] = useState([1, 30]);
+  const [genre, setGenre] = useState("영화");
+  const [nowContent, setNowContent] = useState("hostwaiting");
+
+  const handleNewScreen = (newScreen: string) => {
+    setNowContent(newScreen);
+  };
+
+  const handleTimerStart = () => {
+    if (intervalId === null) {
+      const newIntervalId = setInterval(() => {
+        setTimeCount((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 100);
+      setIntervalId(newIntervalId);
+    }
+  };
+
+  const handleTimerReset = () => {
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+    setTimeCount(600);
+  };
 
   return (
     <View style={styles.container}>
-      <Timer totalStep={60} nowStep={timeCount} />
-      <Count quiz={quizCount} time={timeCount} />
-      {/* <Button onPress={() => setTimeCount((prev) => ++prev)} title="1초 증가" />
-      <Button onPress={() => setTimeCount((prev) => --prev)} title="1초 감소" /> */}
+      <Timer totalStep={600} nowStep={timeCount} />
+      <View
+        style={{
+          flexDirection: "row",
+          top: 15,
+          right: "10%",
+          gap: 5,
+          position: "absolute",
+        }}>
+        <Button onPress={handleTimerStart} title="시작" />
+        <Button onPress={handleTimerReset} title="초기화" />
+      </View>
+      <Count quiz={quizCount} time={Math.ceil(timeCount / 10)} genre={genre} />
 
-      <HostWaiting />
-      {/* <PlayerWaiting /> */}
-      {/* <Emoji /> */}
-      {/* <Similar /> */}
-      {/* <Answer /> */}
-      {/* <Prompt /> */}
+      {nowContent === "hostwaiting" && <HostWaiting handleNewScreen={handleNewScreen} />}
+      {nowContent === "playerWaiting" && <PlayerWaiting />}
+
+      {(nowContent === "quiz" || nowContent === "answer") && <Emoji />}
+      {nowContent === "quiz" && <Similar />}
+      {nowContent === "answer" && (
+        <>
+          <Answer />
+          <Prompt />
+        </>
+      )}
+
+      {nowContent === "waitingScore" && <WaitingScore />}
+      {nowContent === "endScore" && <EndScore />}
+
       <Messages />
     </View>
   );
@@ -39,6 +85,5 @@ export default function Content() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // borderWidth: 1,
   },
 });

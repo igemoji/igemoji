@@ -1,17 +1,19 @@
-import MainModal from "./Modal";
+import { Fontisto } from "@expo/vector-icons";
+import React, { useContext, useState } from "react";
 import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+
+import MainModal from "./Modal";
+
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
-import React, { useContext, useState } from "react";
 import { MainModalProps } from "@/types/types";
-import { Fontisto } from "@expo/vector-icons";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function CreateRoomModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
-  const [isPublic, setIsPublic] = useState(true); // 상태 추가 및 초기값 설정
-  const [showPasswordInput, setShowPasswordInput] = useState(false); // 비밀번호 입력 상태 추가 및 초기값 설정
+  const [isPublic, setIsPublic] = useState(true);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
 
   // 클릭 핸들러 함수들
   const handleCreateRoomAxios = () => {
@@ -19,13 +21,13 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
   };
 
   const handlePublicClick = () => {
-    setIsPublic(true); // 공개 버튼 클릭 시 상태 변경
-    setShowPasswordInput(false); // 공개 버튼 클릭 시 비밀번호 입력 상태를 숨김
+    setIsPublic(true);
+    setShowPasswordInput(false);
   };
 
   const handlePrivateClick = () => {
-    setIsPublic(false); // 비공개 버튼 클릭 시 상태 변경
-    setShowPasswordInput(true); // 비공개 버튼 클릭 시 비밀번호 입력 상태를 보임
+    setIsPublic(false);
+    setShowPasswordInput(true);
   };
 
   return (
@@ -38,22 +40,24 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       <View
         style={{ flexDirection: "row", width: SCREENWIDTH * 0.7, justifyContent: "space-between" }}>
         <TouchableOpacity
-          onPress={handlePublicClick} // 공개 버튼 클릭 시 핸들러 호출
+          onPress={handlePublicClick}
           style={{
             ...styles.box,
-            backgroundColor: isPublic ? theme.kungyaGreenAccent : theme.grey, // 상태에 따라 색상 변경
+            backgroundColor: isPublic ? theme.kungyaYello : theme.white,
+            borderColor: isPublic ? theme.grey : theme.grey,
           }}>
           <Fontisto name="unlocked" size={24} color={theme.black} />
-          <Text style={{ ...Font.modalContent, marginLeft: 10 }}>공개</Text>
+          <Text style={{ ...Font.modalContent, marginLeft: 10, color: theme.text }}>공개</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handlePrivateClick} // 비공개 버튼 클릭 시 핸들러 호출
+          onPress={handlePrivateClick}
           style={{
             ...styles.box,
-            backgroundColor: isPublic ? theme.grey : theme.kungyaGreenAccent, // 상태에 따라 색상 변경
+            backgroundColor: isPublic ? theme.white : theme.kungyaYello,
+            borderColor: isPublic ? theme.grey : theme.grey,
           }}>
           <Fontisto name="locked" size={24} color={theme.black} />
-          <Text style={{ ...Font.modalContent, marginLeft: 10 }}>비공개</Text>
+          <Text style={{ ...Font.modalContent, marginLeft: 10, color: theme.text }}>비공개</Text>
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: "row", width: SCREENWIDTH * 0.7 }}>
@@ -64,6 +68,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
             ...Font.modalContent,
             backgroundColor: theme.white,
             borderColor: theme.grey,
+            color: theme.text,
           }}
         />
       </View>
@@ -74,8 +79,9 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
           style={{
             ...styles.textInput,
             ...Font.modalContent,
-            backgroundColor: showPasswordInput ? theme.white : theme.grey,
-            borderColor: showPasswordInput ? theme.grey : theme.black,
+            backgroundColor: showPasswordInput ? theme.white : theme.kungyaYello,
+            borderColor: theme.grey,
+            color: theme.text,
           }}
         />
       </View>
@@ -95,6 +101,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: SCREENWIDTH * 0.3,
     borderRadius: 10,
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",

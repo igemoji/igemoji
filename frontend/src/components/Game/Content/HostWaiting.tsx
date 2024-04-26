@@ -7,7 +7,11 @@ import ModalBox from "@/components/ModalBox";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 
-export default function HostWaiting() {
+interface HostWaitingProps {
+  handleNewScreen: (newScreen: string) => void;
+}
+
+export default function HostWaiting({ handleNewScreen }: HostWaitingProps) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
   const quizType = ["영화"];
@@ -15,20 +19,21 @@ export default function HostWaiting() {
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
   const [selectedQuizCount, setSelectedQuizCount] = useState(10);
 
-  const handleQuizCountPress = (count: number) => {
-    setSelectedQuizCount(count);
-  };
-
   const handleQuizTypePress = (type: string) => {
+    // TODO: 변경하는 소켓 메세지 전송
     setSelectedQuizType(type);
   };
 
+  const handleQuizCountPress = (count: number) => {
+    // TODO: 변경하는 소켓 메세지 전송
+    setSelectedQuizCount(count);
+  };
+
   const handleGameStart = () => {
-    console.log("게임 시작");
+    handleNewScreen("quiz");
   };
 
   const handleGameExit = () => {
-    console.log("나가기");
     navigation.navigate("RoomList");
   };
 
@@ -97,6 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: "20%",
   },
   hostWaiting: {
     width: "100%",

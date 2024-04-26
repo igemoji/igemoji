@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  Alert, // Alert import 추가
+  Alert,
 } from "react-native";
 
 import Background from "../../Background";
@@ -72,8 +72,10 @@ export default function SignUp({ navigation }: NavigationProps) {
                     ...Font.modalContent,
                     backgroundColor: theme.white,
                     borderColor: isDuplicate || isInvalidLength ? "red" : theme.grey,
+                    color: theme.text,
                   }}
                   placeholder="사용할 닉네임을 입력하세요"
+                  placeholderTextColor={theme.text}
                   onChangeText={handleTextChange}
                   value={inputValue}
                   onBlur={handleBlur}

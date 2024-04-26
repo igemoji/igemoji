@@ -23,6 +23,8 @@ const modalTitle = {
 } as const;
 
 const modalHeight = {
+  // hostWaiting: SCREENHEIGHT * 0.3,
+  // playerWaiting: SCREENHEIGHT * 0.15,
   hostWaiting: 300,
   playerWaiting: 150,
   signin: 200,

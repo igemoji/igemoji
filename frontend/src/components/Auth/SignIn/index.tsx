@@ -21,7 +21,7 @@ export default function SignIn({ navigation }: NavigationProps) {
       <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.1 }}>
         <ModalBox title="signin" onPress={handleSignInAxios}>
           <Text style={{ ...Font.modalContent, color: theme.text }}>
-            카카오 로그인으로 간편하게 시작하기
+            SNS 로그인으로 간편하게 시작하세요.
           </Text>
         </ModalBox>
       </View>
