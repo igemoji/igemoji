@@ -7,7 +7,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
+<<<<<<< HEAD
+  Alert, // Alert import 추가
+  Platform,
+=======
   Alert,
+>>>>>>> 0600323eb413c5694aee646c59397edb11d823f7
 } from "react-native";
 
 import Background from "../../Background";
@@ -28,13 +33,16 @@ export default function SignUp({ navigation }: NavigationProps) {
 
   const handleTextChange = (text: string) => {
     // 입력값 길이 확인
-    setInputValue(text);
-    if (text.length === 0) {
-      setIsInvalidLength(false);
-    } else if (text.length >= 2 && text.length <= 8) {
-      setIsInvalidLength(false);
-    } else {
-      setIsInvalidLength(true);
+    const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
+    if (isValidTitle) {
+      setInputValue(text);
+      if (text.length === 0) {
+        setIsInvalidLength(false);
+      } else if (text.length >= 2 && text.length <= 8) {
+        setIsInvalidLength(false);
+      } else {
+        setIsInvalidLength(true);
+      }
     }
   };
 
@@ -44,49 +52,46 @@ export default function SignUp({ navigation }: NavigationProps) {
     setIsDuplicate(isDuplicateValue);
   };
 
-  const handleLoginAxios = () => {
+  const handleNicknameAxios = () => {
     if (!inputValue || isInvalidLength || isDuplicate) {
-      // validation이 맞지 않으면 알람창 띄우기
-      Alert.alert("경고", "올바른 닉네임을 입력하세요.");
+      if (Platform.OS === "web") {
+        window.alert("올바른 닉네임을 입력하세요.");
+      } else {
+        Alert.alert("경고", "올바른 닉네임을 입력하세요.");
+      }
     } else {
-      // validation이 맞으면 다음 단계로 이동
       navigation.navigate("Main");
     }
   };
 
-  const handleBlur = () => {
-    Keyboard.dismiss(); // 키보드 닫기
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={handleBlur}>
-      <View style={{ flex: 1 }}>
-        <Background>
-          <Logo />
-          <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.1 }}>
-            <ModalBox title="signup" onPress={handleLoginAxios}>
-              <View>
-                <TextInput
-                  style={{
-                    ...styles.textInput,
-                    ...Font.modalContent,
-                    backgroundColor: theme.white,
-                    borderColor: isDuplicate || isInvalidLength ? "red" : theme.grey,
-                    color: theme.text,
-                  }}
-                  placeholder="사용할 닉네임을 입력하세요"
-                  placeholderTextColor={theme.text}
-                  onChangeText={handleTextChange}
-                  value={inputValue}
-                  onBlur={handleBlur}
-                />
+    <View style={{ flex: 1 }}>
+      <Background>
+        <Logo />
+        <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.1 }}>
+          <ModalBox title="signup" onPress={handleNicknameAxios}>
+            <View>
+              <TextInput
+                style={{
+                  ...styles.textInput,
+                  ...Font.modalContent,
+                  backgroundColor: theme.white,
+                  borderColor: isDuplicate || isInvalidLength ? "red" : theme.grey,
+                  color: theme.text,
+                }}
+                placeholder="사용할 닉네임을 입력하세요."
+                onChangeText={handleTextChange}
+                value={inputValue}
+                placeholderTextColor={theme.text}
+              />
+              <View style={{ position: "absolute", top: 25 }}>
                 <Validation isInvalidLength={isInvalidLength} isDuplicate={isDuplicate} />
               </View>
-            </ModalBox>
-          </View>
-        </Background>
-      </View>
-    </TouchableWithoutFeedback>
+            </View>
+          </ModalBox>
+        </View>
+      </Background>
+    </View>
   );
 }
 
@@ -100,9 +105,7 @@ const Validation = ({ isInvalidLength, isDuplicate }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
-        <Text style={{ color: "red", fontSize: 12 }}>
-          닉네임은 2글자 이상, 8글자 이하이어야 합니다.
-        </Text>
+        <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자의 문자입니다.</Text>
       )}
       {isDuplicate && (
         <Text style={{ color: "red", fontSize: 12 }}>이미 사용 중인 닉네임입니다.</Text>
@@ -113,7 +116,7 @@ const Validation = ({ isInvalidLength, isDuplicate }: ValidationProps) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    width: SCREENWIDTH * 0.7,
+    width: 300,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,

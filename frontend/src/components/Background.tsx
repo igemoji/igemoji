@@ -13,7 +13,9 @@ export default function Background({ children }: BackgroundProps) {
   return (
     <ImageBackground
       style={styles.backgroundImage}
-      source={require("~/background/mainBackground.png")}>
+      source={require("~/background/mainBackground.png")}
+      // resizeMode="cover"
+    >
       <View style={{ ...styles.container, backgroundColor: theme.background }}>{children}</View>
     </ImageBackground>
   );
@@ -29,5 +31,6 @@ const styles = StyleSheet.create({
     // position: "absolute",
     height: SCREENHEIGHT,
     // width: SCREENWIDTH,
+    width: "100%",
   },
 });

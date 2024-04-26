@@ -1,6 +1,5 @@
-import { Fontisto } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions, Platform } from "react-native";
 
 import MainModal from "./Modal";
 
@@ -12,9 +11,17 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SearchModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
+  const [roomNumber, setRoomNumber] = useState("");
 
   const handleSearchRoomAxios = () => {
     console.log("searchRoom");
+  };
+
+  const handleRoomNumberChange = (text: string) => {
+    const regex = /^[0-9]*$/;
+    if (regex.test(text) || text === "") {
+      setRoomNumber(text);
+    }
   };
 
   return (
@@ -24,7 +31,8 @@ export default function SearchModal({ visible, close }: MainModalProps) {
       title="searchRoom"
       close={close}
       onPress={handleSearchRoomAxios}>
-      <View style={{ flexDirection: "row", width: SCREENWIDTH * 0.7 }}>
+      <View
+        style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
         <Text style={{ ...Font.modalContent, color: theme.text }}>방 번호:</Text>
         <TextInput
           style={{
@@ -35,6 +43,8 @@ export default function SearchModal({ visible, close }: MainModalProps) {
             color: theme.black,
           }}
           keyboardType="numeric"
+          onChangeText={handleRoomNumberChange}
+          value={roomNumber}
         />
       </View>
     </MainModal>
@@ -48,13 +58,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginLeft: 10,
     borderWidth: 1,
-  },
-  box: {
-    height: 50,
-    width: SCREENWIDTH * 0.3,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
   },
 });

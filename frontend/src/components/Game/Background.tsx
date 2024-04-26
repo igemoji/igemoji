@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     height: SCREENHEIGHT,
+    width: "100%",
   },
   content: {
     flex: 1,

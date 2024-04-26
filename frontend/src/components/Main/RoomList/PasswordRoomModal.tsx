@@ -1,6 +1,5 @@
-import { Fontisto } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions, Platform } from "react-native";
 
 import MainModal from "./Modal";
 
@@ -12,9 +11,19 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function PasswordRoomModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
+  const [password, setPassword] = useState("");
 
   const handlePasswordRoomAxios = () => {
     console.log("password");
+  };
+
+  const handlePasswordChange = (text: string) => {
+    const regex = /^[0-9]*$/;
+    if (regex.test(text) || text === "") {
+      if (text.length <= 4) {
+        setPassword(text);
+      }
+    }
   };
 
   return (
@@ -24,7 +33,8 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
       title="searchRoom"
       close={close}
       onPress={handlePasswordRoomAxios}>
-      <View style={{ flexDirection: "row", width: SCREENWIDTH * 0.7 }}>
+      <View
+        style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
         <Text style={{ ...Font.modalContent, color: theme.text }}>비밀번호:</Text>
         <TextInput
           style={{
@@ -34,8 +44,13 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
             borderColor: theme.grey,
           }}
           keyboardType="numeric"
+          onChangeText={handlePasswordChange}
+          value={password}
         />
       </View>
+      {password.length > 4 && (
+        <Text style={{ ...Font.mainSmall, color: "red" }}>비밀번호는 4자리의 숫자입니다.</Text>
+      )}
     </MainModal>
   );
 }
@@ -47,13 +62,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginLeft: 10,
     borderWidth: 1,
-  },
-  box: {
-    height: 50,
-    width: SCREENWIDTH * 0.3,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
   },
 });
