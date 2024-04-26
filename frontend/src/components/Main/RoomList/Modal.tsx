@@ -1,6 +1,14 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { useContext } from "react";
-import { Modal, View, StyleSheet, Dimensions, TouchableOpacity, Text } from "react-native";
+import {
+  Modal,
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  Platform,
+} from "react-native";
 
 import Button from "@/components/Button";
 import Font from "@/config/Font";
@@ -54,6 +62,7 @@ export default function MainModal({
               ...styles.modalContent,
               backgroundColor: theme.kungya,
               height: modalHeight[size],
+              width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
             }}>
             <TouchableOpacity
               style={{ top: 10, right: 10, position: "absolute" }}
@@ -64,7 +73,7 @@ export default function MainModal({
             </TouchableOpacity>
             <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
             {children}
-            <View style={{ width: SCREENWIDTH * 0.7 }}>
+            <View style={{ width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
               <Button name="check" onPress={onPress} />
             </View>
           </View>
@@ -73,6 +82,7 @@ export default function MainModal({
               ...styles.modalBackContent,
               backgroundColor: theme.kungyaYelloDark,
               height: modalHeight[size],
+              width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
             }}
           />
         </TouchableOpacity>
@@ -89,14 +99,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: SCREENWIDTH * 0.8,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "space-between",
     padding: 20,
   },
   modalBackContent: {
-    width: SCREENWIDTH * 0.8,
     borderRadius: 10,
     position: "absolute",
     top: 4,

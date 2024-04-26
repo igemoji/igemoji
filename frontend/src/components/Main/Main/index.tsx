@@ -17,7 +17,7 @@ export default function Main({ navigation }: NavigationProps) {
   return (
     <Background>
       <Logo />
-      <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.2, width: SCREENWIDTH * 0.8 }}>
+      <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.2, width: 300 }}>
         <Button name="mainStart" onPress={handleStart} />
       </View>
     </Background>

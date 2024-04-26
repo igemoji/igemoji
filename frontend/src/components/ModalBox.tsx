@@ -90,14 +90,14 @@ function ModalButton({
     );
   } else if (title === "signup") {
     return (
-      <View style={{ width: SCREENWIDTH * 0.7 }}>
+      <View style={{ width: 300 }}>
         <Button name="check" onPress={onPress} />
       </View>
     );
   } else {
     return (
       <AwesomeButton
-        width={SCREENWIDTH * (7 / 10)}
+        width={300}
         height={45}
         backgroundColor="#FEE500"
         backgroundDarker="#8B8000"

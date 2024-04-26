@@ -1,13 +1,9 @@
-import { FontAwesome } from "@expo/vector-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import CreateRoomModal from "./CreateRoomModal";
-import NotFoundModal from "./NotFoundModal";
 import PasswordRoomModal from "./PasswordRoomModal";
-import SearchModal from "./SearchModal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
