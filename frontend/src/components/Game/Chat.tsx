@@ -8,7 +8,7 @@ export default function Chat() {
   const [message, setMessage] = useState("");
 
   const sendMessage = () => {
-    // 메시지 전송 로직
+    // TODO: 메세지 전송하는 소켓 구현
     console.log("Send message:", message);
     setMessage("");
   };

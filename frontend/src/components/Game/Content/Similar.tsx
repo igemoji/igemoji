@@ -5,6 +5,7 @@ import { ThemeContext } from "@/config/Theme";
 
 export default function Similar() {
   const { theme } = useContext(ThemeContext);
+  // TODO: 유사도 분포 보고 상대 or 절대 분포로 구현
 
   return (
     <View style={styles.container}>

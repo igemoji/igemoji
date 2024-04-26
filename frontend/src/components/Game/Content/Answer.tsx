@@ -6,8 +6,10 @@ import { ThemeContext } from "@/config/Theme";
 export default function Answer() {
   const { theme } = useContext(ThemeContext);
   const [containerHeight, setContainerHeight] = useState(0);
+  // TODO: 백엔드에서 전달받은 데이터로 교체
   const uri =
     "https://i.namu.wiki/i/l2UhHZ_N6Vx4903uuQl92fntuc3jlIG__3cwdduPueuqzON1fcX1lLZB99znfOmIW4p_K1sx6VPGNZf1GgxiThI4ndjc95ohHg6Pq5Vks8UU36R529LAJ8ABnyN3YbMH5lV5m4vMMxzGTHG31o88Ng.webp";
+  const answer = "명량";
 
   const handleLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
     const { height } = event.nativeEvent.layout;
@@ -23,7 +25,7 @@ export default function Answer() {
           uri,
         }}
       />
-      <Text style={{ fontSize, color: theme.text }}>명량</Text>
+      <Text style={{ fontSize, color: theme.text, fontFamily: "PretendardMedium" }}>{answer}</Text>
     </View>
   );
 }
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: "contain",
-    height: "90%",
+    height: "75%",
     width: "100%",
   },
 });

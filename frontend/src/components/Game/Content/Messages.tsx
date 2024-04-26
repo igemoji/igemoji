@@ -7,6 +7,8 @@ import { ThemeContext } from "@/config/Theme";
 export default function Messages() {
   const { theme } = useContext(ThemeContext);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  // TODO: 백엔드에서 전달받은 데이터로 교체
   const [messages, setMessages] = useState([
     "대원 : 이거 타이타닉 아님?",
     "대원 : 이거 타이타닉 아님?",
