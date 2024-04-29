@@ -4,7 +4,7 @@ import { Text, View, Dimensions, StyleSheet } from "react-native";
 import Body from "./Body";
 import Header from "./Header";
 import Background from "../../Background";
-import Footer from "../Footer";
+import Footer from "../../Footer";
 
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";

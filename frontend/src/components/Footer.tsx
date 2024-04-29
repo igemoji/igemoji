@@ -4,8 +4,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 
-import MainModal from "./RoomList/Modal";
-import SettingModal from "./RoomList/SettingModal";
+import MainModal from "./Main/RoomList/Modal";
+import SettingModal from "./Main/RoomList/SettingModal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
