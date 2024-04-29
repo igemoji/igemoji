@@ -7,12 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-<<<<<<< HEAD
-  Alert, // Alert import 추가
-  Platform,
-=======
   Alert,
->>>>>>> 0600323eb413c5694aee646c59397edb11d823f7
+  Platform,
 } from "react-native";
 
 import Background from "../../Background";

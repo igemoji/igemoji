@@ -36,7 +36,7 @@ const modalTitle = {
 const modalHeight = {
   small: 200,
   middle: 400,
-  large: 600,
+  large: 500,
 } as const;
 
 export default function MainModal({
