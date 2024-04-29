@@ -2,18 +2,13 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import React, { useState, useContext } from "react";
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-import { MusicIconName } from "@/types/types";
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
+import { MusicIconName } from "@/types/types";
 
 export default function MusicToggleButton() {
-  // const [iconName, setIconName] = useState<MusicIconName>("music-note");
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [isMusicOn, setIsMusicOn] = useState(true);
-
-  const toggleMusicIcon = () => {
-    setIsMusicOn(!isMusicOn);
-    // setIconName(iconName === "music-note" ? "music-off" : "music-note");
-  };
+  const { isMusicOn, toggleMusic } = useContext(MusicContext);
 
   return (
     <TouchableOpacity
@@ -22,7 +17,7 @@ export default function MusicToggleButton() {
         backgroundColor: theme.kungyaYelloLight,
       }}
       onPress={() => {
-        toggleMusicIcon();
+        toggleMusic();
       }}>
       <Text style={{ fontSize: 45 }}>🎵</Text>
       {!isMusicOn && <Text style={{ fontSize: 45, position: "absolute" }}>❌</Text>}

@@ -2,9 +2,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from "react-native";
 
-import CreateRoomModal from "./CreateRoomModal";
-import NotFoundModal from "./NotFoundModal";
-import SearchModal from "./SearchModal";
+import CreateRoomModal from "./Contents/CreateRoomModal";
+import NotFoundModal from "./Contents/NotFoundModal";
+import SearchModal from "./Contents/SearchModal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
