@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView } from "react-native";
 
-import RoomItem from "./RoomItem";
+import RoomItem from "./Contents/RoomItem";
 
 export default function Body() {
   const roomListInfo = [

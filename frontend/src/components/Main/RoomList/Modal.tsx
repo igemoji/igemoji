@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Text,
   Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import Button from "@/components/Button";
@@ -51,42 +52,45 @@ export default function MainModal({
 
   return (
     <Modal visible={visible} transparent>
-      <TouchableOpacity style={styles.modalContainer} activeOpacity={1} onPress={close}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={{
-            height: modalHeight[size],
-          }}>
-          <View
+      <TouchableWithoutFeedback onPress={close}>
+        <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback
             style={{
-              ...styles.modalContent,
-              backgroundColor: theme.kungya,
               height: modalHeight[size],
-              width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
             }}>
-            <TouchableOpacity
-              style={{ top: 10, right: 10, position: "absolute" }}
-              onPress={() => {
-                close();
-              }}>
-              <AntDesign name="close" size={24} color={theme.black} />
-            </TouchableOpacity>
-            <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
-            {children}
-            <View style={{ width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
-              <Button name="check" onPress={onPress} />
+            <View>
+              <View
+                style={{
+                  ...styles.modalContent,
+                  backgroundColor: theme.kungya,
+                  height: modalHeight[size],
+                  width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
+                }}>
+                <TouchableOpacity
+                  style={{ top: 10, right: 10, position: "absolute" }}
+                  onPress={() => {
+                    close();
+                  }}>
+                  <AntDesign name="close" size={24} color={theme.black} />
+                </TouchableOpacity>
+                <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
+                {children}
+                <View style={{ width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
+                  <Button name="check" onPress={onPress} />
+                </View>
+              </View>
+              <View
+                style={{
+                  ...styles.modalBackContent,
+                  backgroundColor: theme.kungyaYelloDark,
+                  height: modalHeight[size],
+                  width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
+                }}
+              />
             </View>
-          </View>
-          <View
-            style={{
-              ...styles.modalBackContent,
-              backgroundColor: theme.kungyaYelloDark,
-              height: modalHeight[size],
-              width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
-            }}
-          />
-        </TouchableOpacity>
-      </TouchableOpacity>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }

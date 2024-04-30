@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import { Audio } from "expo-av";
+import React, { useContext, useEffect } from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 
 import Body from "./Body";
@@ -6,12 +7,28 @@ import Header from "./Header";
 import Background from "../../Background";
 import Footer from "../../Footer";
 
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function RoomList({ navigation }: NavigationProps) {
+  const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const { theme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    async function loadSound() {
+      const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
+      setSound(newSound);
+      if (sound && isMusicOn) {
+        await sound.stopAsync();
+        await newSound.setIsLoopingAsync(true);
+        await newSound.setVolumeAsync(1);
+        await newSound.playAsync();
+      }
+    }
+    loadSound();
+  }, []);
   return (
     <Background>
       <View style={styles.container}>
