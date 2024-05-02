@@ -63,7 +63,7 @@ export default function Header() {
         style={{
           ...styles.memberListButton,
           borderColor: theme.grey,
-          backgroundColor: theme.kungyaYello,
+          backgroundColor: theme.kungya,
         }}>
         <Text style={{ ...Font.header, color: theme.text }}>인원 : {room.nowPeople}/6</Text>
       </TouchableOpacity>
@@ -71,7 +71,7 @@ export default function Header() {
         <View
           style={{
             ...styles.memberList,
-            backgroundColor: theme.kungyaYelloLight,
+            backgroundColor: theme.kungya,
             borderColor: theme.grey,
           }}>
           <View style={styles.row}>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 5,
-    paddingVertical: 3,
+    // paddingVertical: 1,
     alignItems: "center",
     justifyContent: "center",
   },

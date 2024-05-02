@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   chatBox: {
     position: "absolute",
     bottom: 0,
-    maxHeight: 100,
+    maxHeight: 80,
     width: "100%",
   },
   contentContainer: {

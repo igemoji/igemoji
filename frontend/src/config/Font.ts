@@ -1,6 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
+import { StyleSheet } from "react-native";
 
 const Font = StyleSheet.create({
   modalTitle: {
@@ -21,13 +19,13 @@ const Font = StyleSheet.create({
   },
   timeCount: {
     fontSize: 15,
-    fontFamily: "PretendardBold",
+    fontFamily: "PretendardRegular",
   },
   emoji: {
     fontSize: 30,
   },
   hint: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "PretendardRegular",
   },
   mainLarge: {
@@ -43,7 +41,7 @@ const Font = StyleSheet.create({
     fontFamily: "PretendardLight",
   },
   messages: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: "PretendardRegular",
   },
   gameWaitingMessage: {
@@ -75,6 +73,14 @@ const Font = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     fontFamily: "PretendardRegular",
+  },
+  similar: {
+    fontSize: 10,
+    fontFamily: "PretendardRegular",
+  },
+  similarRankTitle: {
+    fontSize: 11,
+    fontFamily: "PretendardBold",
   },
 });
 

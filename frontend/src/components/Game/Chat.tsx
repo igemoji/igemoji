@@ -27,7 +27,7 @@ export default function Chat() {
         style={{
           ...styles.sendButton,
           borderColor: theme.grey,
-          backgroundColor: theme.kungyaYello,
+          // backgroundColor: theme.kungyaYello,
         }}>
         <Image
           source={require("~/sendButton.png")}
@@ -44,27 +44,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 5,
     bottom: 0,
   },
   input: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 10,
-    height: 40,
+    borderRadius: 8,
+    height: 35,
     paddingHorizontal: 10,
-    marginRight: 10,
+    marginRight: 5,
   },
   sendButton: {
     borderWidth: 1,
-    borderRadius: 10,
-    height: 40,
-    width: 40,
+    borderRadius: 8,
+    height: 35,
+    width: 35,
     alignItems: "center",
     justifyContent: "center",
   },
   sendButtonImage: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
   },
 });
