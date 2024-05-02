@@ -1,11 +1,18 @@
 import { useContext } from "react";
 import AwesomeButton from "react-native-really-awesome-button";
 
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { ButtonName } from "@/types/types";
 
 export default function Button({ name, onPress }: { name: ButtonName; onPress: () => void }) {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
+
+  const handlePress = () => {
+    playButtonSound();
+    onPress();
+  };
 
   let content;
 
@@ -18,7 +25,7 @@ export default function Button({ name, onPress }: { name: ButtonName; onPress: (
         raiseLevel={2}
         stretch
         height={45}
-        onPress={onPress}>
+        onPress={handlePress}>
         확인
       </AwesomeButton>
     );
@@ -31,7 +38,7 @@ export default function Button({ name, onPress }: { name: ButtonName; onPress: (
         raiseLevel={2}
         stretch
         height={45}
-        onPress={onPress}>
+        onPress={handlePress}>
         게임 시작
       </AwesomeButton>
     );
@@ -44,7 +51,7 @@ export default function Button({ name, onPress }: { name: ButtonName; onPress: (
         raiseLevel={2}
         stretch
         height={45}
-        onPress={onPress}>
+        onPress={handlePress}>
         나가기
       </AwesomeButton>
     );
@@ -58,7 +65,7 @@ export default function Button({ name, onPress }: { name: ButtonName; onPress: (
         raiseLevel={2}
         stretch
         height={45}
-        onPress={onPress}>
+        onPress={handlePress}>
         시작하기
       </AwesomeButton>
     );

@@ -13,6 +13,7 @@ import {
 
 import Button from "@/components/Button";
 import Font from "@/config/Font";
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
@@ -49,10 +50,15 @@ export default function MainModal({
   onPress,
 }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
+  const handleClose = () => {
+    close();
+    playButtonSound();
+  };
 
   return (
     <Modal visible={visible} transparent>
-      <TouchableWithoutFeedback onPress={close}>
+      <TouchableWithoutFeedback onPress={handleClose}>
         <View style={styles.modalContainer}>
           <TouchableWithoutFeedback
             style={{

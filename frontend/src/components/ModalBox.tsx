@@ -5,6 +5,7 @@ import AwesomeButton from "react-native-really-awesome-button";
 import Button from "@/components/Button";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { MusicContext } from "@/config/Music";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -33,6 +34,15 @@ const modalHeight = {
 
 export default function ModalBox({ title, children, onPress, onPress2 }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
+  const handelPress1 = () => {
+    playButtonSound();
+    onPress();
+  };
+  const handlePress2 = () => {
+    playButtonSound();
+    onPress2 && onPress2();
+  };
   return (
     <View
       style={{
@@ -47,7 +57,7 @@ export default function ModalBox({ title, children, onPress, onPress2 }: MainMod
         }}>
         <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
         {children}
-        <ModalButton title={title} onPress={onPress} onPress2={onPress2} />
+        <ModalButton title={title} onPress={handelPress1} onPress2={handlePress2} />
       </View>
       <View
         style={{
