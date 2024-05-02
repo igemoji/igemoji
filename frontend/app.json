@@ -4,27 +4,38 @@
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/logo.png",
+    "icon": "./assets/logo/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo/logo.png",
+      "image": "./assets/logo/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.yourappname"
+      "bundleIdentifier": "com.teamGoAhead.egemoji"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/logo.png",
-        "backgroundColor": "#ffffff",
-        "package": "com.yourcompany.yourappname"
-      }
+        "foregroundImage": "./assets/logo/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.teamGoAhead.egemoji"
     },
     "web": {
-      "favicon": "./assets/logo/logo.png"
+      "favicon": "./assets/logo/icon.png",
+      "output": "static",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a11bcda6-d584-487f-90e2-3b998b95e7c9"
+      }
     }
   }
 }

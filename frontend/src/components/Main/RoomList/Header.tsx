@@ -7,25 +7,30 @@ import NotFoundModal from "./Contents/NotFoundModal";
 import SearchModal from "./Contents/SearchModal";
 
 import Font from "@/config/Font";
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function Header() {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
   const [createRoomModalVisible, setCreateRoomModalVisible] = useState(false);
   const [notFoundModalVisible, setNotFoundModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   const handleCreateRoomPress = () => {
+    playButtonSound();
     setCreateRoomModalVisible(true);
   };
 
   const handleQuickStartPress = () => {
+    playButtonSound();
     setNotFoundModalVisible(true);
   };
 
   const handleSearchPress = () => {
+    playButtonSound();
     setSearchModalVisible(true);
   };
 

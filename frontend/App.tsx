@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Audio } from "expo-av";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 
@@ -21,8 +22,8 @@ const Stack = createNativeStackNavigator();
 function App() {
   const [theme, setTheme] = React.useState(themes.light);
   const [sound, setSound] = React.useState<Audio.Sound | undefined>(undefined);
+  const [buttonSound, setButtonSound] = React.useState<Audio.Sound | undefined>(undefined);
   const [isMusicOn, setIsMusicOn] = React.useState(true);
-  const [currentRoute, setCurrentRoute] = React.useState("SignIn");
 
   const toggleTheme = () => {
     const newTheme = theme === themes.light ? themes.dark : themes.light;
@@ -40,6 +41,12 @@ function App() {
       }
       setIsMusicOn(!isMusicOn);
     }
+    if (buttonSound) {
+      setButtonSound(undefined);
+    } else {
+      const { sound } = await Audio.Sound.createAsync(require("~/music/pop_up.mp3"));
+      setButtonSound(sound);
+    }
   };
 
   async function loadSound() {
@@ -51,9 +58,21 @@ function App() {
       await sound.setVolumeAsync(1);
       await sound.playAsync();
     }
+    if (buttonSound === undefined) {
+      const { sound } = await Audio.Sound.createAsync(require("~/music/pop_up.mp3"));
+      setButtonSound(sound);
+    }
+  }
+
+  async function playButtonSound() {
+    if (buttonSound) {
+      await buttonSound.setVolumeAsync(1);
+      await buttonSound.playAsync();
+    }
   }
 
   React.useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
     loadSound();
   }, []);
 
@@ -71,23 +90,33 @@ function App() {
     PretendardThin: require("~/fonts/Pretendard-Thin.ttf"),
   });
 
-  if (!fontsLoaded) return null;
+  React.useEffect(() => {
+    // console.log(fontsLoaded);
+    // console.log(sound);
+
+    if (fontsLoaded && sound) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, sound]);
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <MusicContext.Provider value={{ isMusicOn, toggleMusic, sound, setSound }}>
-        <SafeAreaView style={styles.screen} />
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
-            <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="Game" component={Game} />
-            <Stack.Screen name="Main" component={Main} />
-            <Stack.Screen name="RoomList" component={RoomList} />
-            <Stack.Screen name="Rank" component={Rank} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </MusicContext.Provider>
-    </ThemeContext.Provider>
+    fontsLoaded && (
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <MusicContext.Provider value={{ isMusicOn, toggleMusic, sound, setSound, playButtonSound }}>
+          <SafeAreaView style={styles.screen} />
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
+              <Stack.Screen name="SignIn" component={SignIn} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="Game" component={Game} />
+              <Stack.Screen name="Main" component={Main} />
+              <Stack.Screen name="RoomList" component={RoomList} />
+              <Stack.Screen name="Rank" component={Rank} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </MusicContext.Provider>
+      </ThemeContext.Provider>
+    )
   );
 }
 

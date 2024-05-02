@@ -7,6 +7,7 @@ import PasswordRoomModal from "./PasswordRoomModal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { MusicContext } from "@/config/Music";
 
 interface RoomItemProps {
   roomNumber: number;
@@ -44,10 +45,12 @@ export default function RoomItem({
   playerNumber,
 }: RoomItemProps) {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handlePress = () => {
+    playButtonSound();
     if (!isPublic) {
       // 비밀방인 경우에만 모달 열기
       setIsModalVisible(true);
@@ -57,6 +60,7 @@ export default function RoomItem({
   };
 
   const closeModal = () => {
+    playButtonSound();
     setIsModalVisible(false);
   };
 

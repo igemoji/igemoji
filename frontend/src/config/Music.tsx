@@ -6,4 +6,5 @@ export const MusicContext = React.createContext({
   toggleMusic: () => {},
   sound: undefined as Audio.Sound | undefined,
   setSound: (sound: Audio.Sound | undefined) => {},
+  playButtonSound: () => {},
 });

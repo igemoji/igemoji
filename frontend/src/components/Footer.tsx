@@ -8,15 +8,18 @@ import SettingModal from "./Main/RoomList/Contents/SettingModal";
 import MainModal from "./Main/RoomList/Modal";
 
 import Font from "@/config/Font";
+import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 
 export default function Footer() {
   const { theme } = useContext(ThemeContext);
+  const { playButtonSound } = useContext(MusicContext);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const [isSettingModalVisible, setIsSettingModalVisible] = useState(false);
 
   const openSettingModal = () => {
+    playButtonSound();
     setIsSettingModalVisible(true);
   };
 
@@ -24,16 +27,26 @@ export default function Footer() {
     setIsSettingModalVisible(false);
   };
 
+  const goRank = () => {
+    playButtonSound();
+    navigation.navigate("Rank");
+  };
+
+  const goRoomList = () => {
+    playButtonSound();
+    navigation.navigate("RoomList");
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={{ ...styles.button, backgroundColor: theme.kungyaYello }}
-        onPress={() => navigation.navigate("Rank")}>
+        onPress={goRank}>
         <Text style={{ fontSize: 60 }}>🏆</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ ...styles.button, backgroundColor: theme.kungyaYello }}
-        onPress={() => navigation.navigate("RoomList")}>
+        onPress={goRoomList}>
         <Text style={{ fontSize: 60 }}>🏚️</Text>
       </TouchableOpacity>
       <TouchableOpacity
