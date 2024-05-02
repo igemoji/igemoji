@@ -1,58 +1,44 @@
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef, useEffect, useContext } from "react";
-import { StyleSheet, View, Animated, Image } from "react-native";
+import React, { useContext } from "react";
+import { View, Image, StyleSheet, Text } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 
 import { ThemeContext } from "@/config/Theme";
+import { useCountdown } from "@/hook/useCountdown";
+import type { Props } from "@/types/types";
+import { getWrapperStyle, timeStyle } from "@/utils/utils";
+import Font from "@/config/Font";
 
-interface IStep {
-  totalStep: number;
-  nowStep: number;
-}
-
-export default function Timer({ totalStep, nowStep }: IStep) {
+const Timer = (props: Props) => {
   const { theme } = useContext(ThemeContext);
-  const loaderValue = useRef(new Animated.Value(0)).current;
-
-  const load = (count: number) => {
-    Animated.timing(loaderValue, {
-      toValue: (count / totalStep) * 100,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const width = loaderValue.interpolate({
-    inputRange: [0, 100],
-    outputRange: ["0%", "100%"],
-    extrapolate: "clamp",
-  });
-
-  useEffect(() => {
-    load(nowStep);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nowStep]);
+  const { children, duration } = props;
+  const { stroke, remainingTime, elapsedTime } = useCountdown(props);
 
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.bar, backgroundColor: theme.grey }}>
-        <Animated.View
-          style={{
-            ...styles.animatedBar,
-            backgroundColor: theme.kungyaGreenAccent2,
-            width,
-          }}>
-          <LinearGradient
-            colors={["red", "yellow"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.animatedBar}>
+      <View style={getWrapperStyle("100%") as StyleProp<ViewStyle>}>
+        <View style={{ ...styles.bar, backgroundColor: theme.grey }}>
+          <View
+            style={{
+              ...styles.animatedBar,
+              backgroundColor: stroke,
+              width: `${102 - 100 * (elapsedTime / duration)}%`,
+            }}>
             <Image style={styles.image} source={require("~/timerEmoji.png")} />
-          </LinearGradient>
-        </Animated.View>
+          </View>
+        </View>
+        {typeof children === "function" && (
+          <View style={timeStyle as StyleProp<ViewStyle>}>
+            <Text style={[{ color: theme.text }, Font.timeCount]}>
+              {children({ remainingTime, elapsedTime, color: stroke })}초
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
-}
+};
+export default Timer;
+
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
@@ -68,7 +54,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: "absolute",
-    right: "-150%",
+    right: "-148%",
     top: "-150%",
     resizeMode: "contain",
     height: "300%",

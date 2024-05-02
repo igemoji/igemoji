@@ -50,15 +50,14 @@ export default function HostWaiting({ handleNewScreen }: HostWaitingProps) {
                     key={type}
                     style={{
                       ...styles.button,
-                      backgroundColor:
-                        selectedQuizType === type ? theme.kungyaGreenAccent2 : undefined,
+                      backgroundColor: selectedQuizType === type ? theme.kungyaYello : undefined,
                     }}
                     onPress={() => handleQuizTypePress(type)}>
                     <Text
                       style={[
                         { color: theme.text },
                         Font.modalContent,
-                        selectedQuizType === type && styles.selectedText,
+                        // selectedQuizType === type && styles.selectedText,
                       ]}>
                       {type}
                     </Text>
@@ -74,15 +73,14 @@ export default function HostWaiting({ handleNewScreen }: HostWaitingProps) {
                     key={count}
                     style={{
                       ...styles.button,
-                      backgroundColor:
-                        selectedQuizCount === count ? theme.kungyaGreenAccent2 : undefined,
+                      backgroundColor: selectedQuizCount === count ? theme.kungyaYello : undefined,
                     }}
                     onPress={() => handleQuizCountPress(count)}>
                     <Text
                       style={[
                         { color: theme.text },
                         Font.modalContent,
-                        selectedQuizCount === count && styles.selectedText,
+                        // selectedQuizCount === count && styles.selectedText,
                       ]}>
                       {count}
                     </Text>
@@ -129,7 +127,7 @@ const styles = StyleSheet.create({
     borderColor: "#C0C0C0",
     borderRadius: 5,
   },
-  selectedText: {
-    color: "#FDFDFD",
-  },
+  // selectedText: {
+  //   color: "#FDFDFD",
+  // },
 });

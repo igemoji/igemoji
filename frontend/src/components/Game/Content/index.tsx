@@ -17,10 +17,11 @@ import { ThemeContext } from "@/config/Theme";
 
 export default function Content() {
   const { theme } = useContext(ThemeContext);
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const [timeCount, setTimeCount] = useState(600);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const [key, setKey] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  // TODO: 백엔드에서 전달받은 데이터로 교체
+  const [timeCount, setTimeCount] = useState(5);
   const [quizCount, setQuizCount] = useState([1, 30]);
   const [genre, setGenre] = useState("영화");
   const [nowContent, setNowContent] = useState("hostwaiting");
@@ -30,37 +31,41 @@ export default function Content() {
   };
 
   const handleTimerStart = () => {
-    if (intervalId === null) {
-      const newIntervalId = setInterval(() => {
-        setTimeCount((prev) => (prev > 0 ? prev - 1 : 0));
-      }, 100);
-      setIntervalId(newIntervalId);
-    }
+    setIsPlaying(true);
+  };
+  const handleTimerStop = () => {
+    setIsPlaying(false);
   };
 
   const handleTimerReset = () => {
-    if (intervalId !== null) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-    }
-    setTimeCount(600);
+    setKey((prevKey) => prevKey + 1);
+    setIsPlaying(false);
   };
 
   return (
     <View style={styles.container}>
-      <Timer totalStep={600} nowStep={timeCount} />
-      <View
+      <Timer
+        key={key}
+        isPlaying={isPlaying}
+        duration={60}
+        colors={["#FAE738", "#FF5A5A"]}
+        colorsTime={[60, 0]}>
+        {({ remainingTime }) => remainingTime}
+      </Timer>
+      {/* <View
         style={{
           flexDirection: "row",
           top: 15,
           right: "10%",
           gap: 5,
           position: "absolute",
+          zIndex: 1,
         }}>
         <Button onPress={handleTimerStart} title="시작" />
+        <Button onPress={handleTimerStop} title="중지" />
         <Button onPress={handleTimerReset} title="초기화" />
-      </View>
-      <Count quiz={quizCount} time={Math.ceil(timeCount / 10)} genre={genre} />
+      </View> */}
+      <Count quiz={quizCount} time={timeCount} genre={genre} />
 
       {nowContent === "hostwaiting" && <HostWaiting handleNewScreen={handleNewScreen} />}
       {nowContent === "playerWaiting" && <PlayerWaiting />}

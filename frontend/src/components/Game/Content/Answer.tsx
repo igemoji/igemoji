@@ -8,7 +8,7 @@ export default function Answer() {
   const [containerHeight, setContainerHeight] = useState(0);
   // TODO: 백엔드에서 전달받은 데이터로 교체
   const uri =
-    "https://i.namu.wiki/i/l2UhHZ_N6Vx4903uuQl92fntuc3jlIG__3cwdduPueuqzON1fcX1lLZB99znfOmIW4p_K1sx6VPGNZf1GgxiThI4ndjc95ohHg6Pq5Vks8UU36R529LAJ8ABnyN3YbMH5lV5m4vMMxzGTHG31o88Ng.webp";
+    "https://search.pstatic.net/common?type=o&size=176x264&quality=85&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20140721_186%2F1405911310756Tt2X1_JPEG%2Fmovie_image.jpg%3Ftype%3Dw640_2";
   const answer = "명량";
 
   const handleLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
