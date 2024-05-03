@@ -82,6 +82,10 @@ const Font = StyleSheet.create({
     fontSize: 11,
     fontFamily: "PretendardBold",
   },
+  rankTitle: {
+    fontSize: 65,
+    fontFamily: "PretendardBlack",
+  },
 });
 
 export default Font;

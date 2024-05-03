@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import { View, Image, StyleSheet, Text } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 
+import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { useCountdown } from "@/hook/useCountdown";
 import type { Props } from "@/types/types";
 import { getWrapperStyle, timeStyle } from "@/utils/utils";
-import Font from "@/config/Font";
 
 const Timer = (props: Props) => {
   const { theme } = useContext(ThemeContext);

@@ -9,6 +9,7 @@ import ModalBox from "../../ModalBox";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SignIn() {

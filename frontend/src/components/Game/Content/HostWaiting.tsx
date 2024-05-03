@@ -6,15 +6,14 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import ModalBox from "@/components/ModalBox";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { gameSocket } from "@/sockets";
 
-interface HostWaitingProps {
-  handleNewScreen: (newScreen: string) => void;
-}
+const { send, disconnect } = gameSocket;
 
-export default function HostWaiting({ handleNewScreen }: HostWaitingProps) {
+export default function HostWaiting() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
-  const quizType = ["영화"];
+  const quizType = ["영화", "드라마"];
   const quizCount = [10, 20, 30];
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
   const [selectedQuizCount, setSelectedQuizCount] = useState(10);
@@ -30,10 +29,22 @@ export default function HostWaiting({ handleNewScreen }: HostWaitingProps) {
   };
 
   const handleGameStart = () => {
-    handleNewScreen("quiz");
+    const typeMap: Record<string, string> = {
+      영화: "movie",
+      드라마: "drama",
+    };
+    const koreanQuizType = typeMap[selectedQuizType];
+
+    send("/app/game/start", {
+      roomId: 3,
+      senderId: 6,
+      questionNum: selectedQuizCount,
+      genre: koreanQuizType,
+    });
   };
 
   const handleGameExit = () => {
+    disconnect();
     navigation.navigate("RoomList");
   };
 

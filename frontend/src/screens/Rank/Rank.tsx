@@ -1,10 +1,5 @@
-import React from "react";
-import { View, Text } from "react-native";
+import RankComponent from "@/components/Rank";
 
 export default function Rank() {
-  return (
-    <View>
-      <Text>This is the Rank screen</Text>
-    </View>
-  );
+  return <RankComponent />;
 }
