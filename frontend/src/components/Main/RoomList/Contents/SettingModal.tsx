@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import {
   View,
@@ -13,6 +14,7 @@ import {
 
 import MainModal from "../Modal";
 
+import { registNicknameAxios } from "@/API/Auth";
 import MusicToggleButton from "@/components/MusicToggleButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Font from "@/config/Font";
@@ -23,7 +25,16 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SettingModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
-  const [isTextInputFocused, setIsTextInputFocused] = useState(false); // 텍스트 입력에 포커스되었는지 여부
+  const [isTextInputFocused, setIsTextInputFocused] = useState(false);
+  const [memberId, setMemberId] = useState<number>(0);
+
+  useEffect(() => {
+    const getMemberId = async () => {
+      const id = (await AsyncStorage.getItem("memberId")) as string;
+      setMemberId(Number(id));
+    };
+    getMemberId();
+  });
 
   const handleTextInputFocus = () => {
     setIsTextInputFocused(true);
@@ -80,6 +91,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
         <ChangeNickname
           handleTextInputFocus={handleTextInputFocus}
           handleTextInputBlur={handleTextInputBlur}
+          memberId={memberId}
         />
         <View
           style={{
@@ -137,7 +149,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
           <TouchableOpacity
             style={{
               ...styles.changeNickname,
-              shadowColor: theme.black, // 그림자 색상
+              shadowColor: theme.black,
               backgroundColor: theme.kungyaYello,
               width: 100,
             }}>
@@ -155,13 +167,14 @@ export default function SettingModal({ visible, close }: MainModalProps) {
 const ChangeNickname = ({
   handleTextInputFocus,
   handleTextInputBlur,
+  memberId,
 }: {
   handleTextInputFocus: () => void;
   handleTextInputBlur: () => void;
+  memberId: number;
 }) => {
   const { theme } = useContext(ThemeContext);
   const [inputValue, setInputValue] = useState("");
-  const [isDuplicate, setIsDuplicate] = useState(false);
   const [isInvalidLength, setIsInvalidLength] = useState(false);
 
   const handleTextChange = (text: string) => {
@@ -169,22 +182,23 @@ const ChangeNickname = ({
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setInputValue(text);
-      if (text.length === 0) {
-        setIsInvalidLength(false);
-      } else if (text.length >= 2 && text.length <= 8) {
-        setIsInvalidLength(false);
-      } else {
-        setIsInvalidLength(true);
-      }
+      setIsInvalidLength(!(text.length >= 2 && text.length <= 8) && !(text.length === 0));
     }
   };
 
-  const handleNicknameAxios = () => {
-    if (!inputValue || isInvalidLength || isDuplicate) {
+  const handleNicknameAxios = async () => {
+    if (!inputValue || isInvalidLength) {
       if (Platform.OS === "web") {
         window.alert("올바른 닉네임을 입력하세요.");
       } else {
         Alert.alert("경고", "올바른 닉네임을 입력하세요.");
+      }
+    } else {
+      try {
+        await registNicknameAxios({ memberId, inputValue });
+        Alert.alert("닉네임 등록이 완료되었습니다.", "", [{ text: "확인" }]);
+      } catch (error) {
+        console.log(error);
       }
     }
   };
@@ -237,7 +251,7 @@ const ChangeNickname = ({
         <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>변경</Text>
       </TouchableOpacity>
       <View style={{ position: "absolute", top: 40, left: 60 }}>
-        <Validation isInvalidLength={isInvalidLength} isDuplicate={isDuplicate} />
+        <Validation isInvalidLength={isInvalidLength} />
       </View>
     </View>
   );
@@ -246,17 +260,13 @@ const ChangeNickname = ({
 // 유효성 검사 컴포넌트
 interface ValidationProps {
   isInvalidLength: boolean;
-  isDuplicate: boolean;
 }
 
-const Validation = ({ isInvalidLength, isDuplicate }: ValidationProps) => {
+const Validation = ({ isInvalidLength }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
         <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자의 문자입니다.</Text>
-      )}
-      {isDuplicate && (
-        <Text style={{ color: "red", fontSize: 12 }}>이미 사용 중인 닉네임입니다.</Text>
       )}
     </>
   );

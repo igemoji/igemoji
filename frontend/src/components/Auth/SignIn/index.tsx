@@ -16,7 +16,7 @@ export default function SignIn() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handleSignInAxios = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("KakaoLogin");
   };
   return (
     <Background>

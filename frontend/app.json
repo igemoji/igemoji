@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "egemoji",
+    "name": "igemoji",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,14 +14,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.teamGoAhead.egemoji"
+      "bundleIdentifier": "com.igemoji"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.teamGoAhead.egemoji"
+      "package": "com.igemoji"
     },
     "web": {
       "favicon": "./assets/logo/logo.png"
