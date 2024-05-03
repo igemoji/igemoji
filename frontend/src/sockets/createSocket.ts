@@ -1,6 +1,6 @@
 import { Client, messageCallbackType } from "@stomp/stompjs";
 
-import { getBaseSocketServerUrl } from "@/_lib/http";
+// import { getBaseSocketServerUrl } from "@/_lib/http";
 
 export const createSocket = () => {
   let stomp: Client | null = null;
@@ -8,7 +8,7 @@ export const createSocket = () => {
   const connect = (onConnect: () => void) => {
     if (!stomp) {
       stomp = new Client({
-        brokerURL: getBaseSocketServerUrl(),
+        // brokerURL: getBaseSocketServerUrl(),
         onConnect,
         connectHeaders: {},
         reconnectDelay: 100,

@@ -31,11 +31,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setInputTitle(text);
-      if (text.length <= 12) {
-        setIsInvalidLength(false);
-      } else {
-        setIsInvalidLength(true);
-      }
+      setIsInvalidLength(!(text.length <= 12));
     }
   };
 
@@ -115,6 +111,27 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         <View style={{ position: "absolute", top: 23, flexDirection: "row" }}>
           <Text style={{ ...Font.modalContent, color: theme.text, opacity: 0, marginRight: 10 }}>
             제목:
+          </Text>
+          <Validation isInvalidLength={isInvalidLength} />
+        </View>
+      </View>
+      <View
+        style={{ flexDirection: "row", width: Platform.OS === "web" ? 320 : SCREENWIDTH * 0.7 }}>
+        <Text style={{ ...Font.modalContent, color: theme.text }}>최대 인원 수:</Text>
+        <TextInput
+          style={{
+            ...styles.textInput,
+            ...Font.modalContent,
+            backgroundColor: theme.white,
+            borderColor: theme.grey,
+            color: theme.text,
+          }}
+          onChangeText={handleTextChange}
+          value={inputTitle}
+        />
+        <View style={{ position: "absolute", top: 23, flexDirection: "row" }}>
+          <Text style={{ ...Font.modalContent, color: theme.text, opacity: 0, marginRight: 10 }}>
+            최대 인원 수:
           </Text>
           <Validation isInvalidLength={isInvalidLength} />
         </View>

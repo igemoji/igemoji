@@ -8,6 +8,7 @@ import { SafeAreaView, StyleSheet } from "react-native";
 
 import { MusicContext } from "@/config/Music";
 import { themes, ThemeContext } from "@/config/Theme";
+import KakaoLogin from "@/screens/Auth/KakaoLogin";
 import SignIn from "@/screens/Auth/SignIn";
 import SignUp from "@/screens/Auth/SignUp";
 import Game from "@/screens/Game/Game";
@@ -101,6 +102,7 @@ function App() {
             <Stack.Screen name="Main" component={Main} />
             <Stack.Screen name="RoomList" component={RoomList} />
             <Stack.Screen name="Rank" component={Rank} />
+            <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
           </Stack.Navigator>
         </NavigationContainer>
       </MusicContext.Provider>
