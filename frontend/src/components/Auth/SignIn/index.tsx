@@ -1,3 +1,5 @@
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext } from "react";
 import { Text, View, Dimensions } from "react-native";
 
@@ -7,11 +9,12 @@ import ModalBox from "../../ModalBox";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
-import { NavigationProps } from "@/types/types";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
-export default function SignIn({ navigation }: NavigationProps) {
+export default function SignIn() {
   const { theme } = useContext(ThemeContext);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   const handleSignInAxios = () => {
     navigation.navigate("SignUp");
   };

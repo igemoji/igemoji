@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "frontend",
+    "name": "egemoji",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,18 +24,18 @@
       "package": "com.teamGoAhead.egemoji"
     },
     "web": {
-      "favicon": "./assets/logo/icon.png",
-      "output": "static",
-      "bundler": "metro"
+      "favicon": "./assets/logo/logo.png"
     },
-    "plugins": ["expo-router"],
     "extra": {
-      "router": {
-        "origin": false
-      },
       "eas": {
-        "projectId": "a11bcda6-d584-487f-90e2-3b998b95e7c9"
+        "projectId": "b7e89d2a-d16d-448d-a040-5aaeabd10ffe"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b7e89d2a-d16d-448d-a040-5aaeabd10ffe"
     }
   }
 }
