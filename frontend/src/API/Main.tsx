@@ -4,21 +4,23 @@ export const request = axios.create({
   baseURL: SERVER_API,
 });
 
-export const kakaoLoginAxios = async (code: string) => {
-  const res = await request.get(`/oauth/kakao/${code}`);
-  return res;
-};
-
-export const registNicknameAxios = async ({
+export const CreateRoomAxios = async ({
   memberId,
-  inputValue,
+  title,
+  isPublic,
+  password,
 }: {
   memberId: number;
-  inputValue: string;
+  title: string;
+  isPublic: boolean;
+  password: string;
 }) => {
-  const res = await request.post(`/member/nickname?memberId=${memberId}&nickname=${inputValue}`, {
+  const res = await request.post(`/room/create`, {
     memberId,
-    nickname: inputValue,
+    title,
+    isPublic,
+    password,
+    memberMaxNum: 6,
   });
   return res;
 };

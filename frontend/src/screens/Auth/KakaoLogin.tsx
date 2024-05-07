@@ -23,7 +23,7 @@ export default function LoginScreen({ navigation }: NavigationProps) {
         if (data.data.memberInfo.nickname === null) {
           navigation.navigate("SignUp");
         } else {
-          navigation.navigate("SignUp");
+          navigation.navigate("Main");
         }
       } catch (error) {
         console.log(error);

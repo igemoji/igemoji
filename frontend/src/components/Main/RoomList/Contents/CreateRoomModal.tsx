@@ -1,5 +1,8 @@
 import { Fontisto } from "@expo/vector-icons";
-import React, { useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,10 +11,12 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  Alert,
 } from "react-native";
 
 import MainModal from "../Modal";
 
+import { CreateRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
@@ -19,24 +24,52 @@ import { MainModalProps } from "@/types/types";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function CreateRoomModal({ visible, close }: MainModalProps) {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   const { theme } = useContext(ThemeContext);
   const [isPublic, setIsPublic] = useState(true);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [password, setPassword] = useState("");
   const [isInvalidLength, setIsInvalidLength] = useState(false);
-  const [inputTitle, setInputTitle] = useState("");
+  const [title, setTitle] = useState("");
+  const [memberId, setMemberId] = useState<number>(0);
+
+  useEffect(() => {
+    const getMemberId = async () => {
+      const id = (await AsyncStorage.getItem("memberId")) as string;
+      setMemberId(Number(id));
+    };
+    getMemberId();
+  });
 
   const handleTextChange = (text: string) => {
     // 입력값 길이 확인
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
-      setInputTitle(text);
+      setTitle(text);
       setIsInvalidLength(!(text.length <= 12));
     }
   };
 
-  const handleCreateRoomAxios = () => {
-    console.log("createRoom");
+  const handleCreateRoomAxios = async () => {
+    try {
+      const { data } = await CreateRoomAxios({
+        memberId,
+        title,
+        isPublic,
+        password,
+      });
+      await AsyncStorage.setItem("roomId", data.data.roomId);
+      navigation.navigate("Game");
+      close();
+    } catch (error) {
+      if (Platform.OS === "web") {
+        window.alert("올바른 방 정보를 입력하세요.");
+      } else {
+        Alert.alert("올바른 방 정보를 입력하세요.", "");
+      }
+      console.log(error);
+    }
   };
 
   const handlePublicClick = () => {
@@ -106,32 +139,12 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
             color: theme.text,
           }}
           onChangeText={handleTextChange}
-          value={inputTitle}
+          value={title}
+          maxLength={12}
         />
         <View style={{ position: "absolute", top: 23, flexDirection: "row" }}>
           <Text style={{ ...Font.modalContent, color: theme.text, opacity: 0, marginRight: 10 }}>
             제목:
-          </Text>
-          <Validation isInvalidLength={isInvalidLength} />
-        </View>
-      </View>
-      <View
-        style={{ flexDirection: "row", width: Platform.OS === "web" ? 320 : SCREENWIDTH * 0.7 }}>
-        <Text style={{ ...Font.modalContent, color: theme.text }}>최대 인원 수:</Text>
-        <TextInput
-          style={{
-            ...styles.textInput,
-            ...Font.modalContent,
-            backgroundColor: theme.white,
-            borderColor: theme.grey,
-            color: theme.text,
-          }}
-          onChangeText={handleTextChange}
-          value={inputTitle}
-        />
-        <View style={{ position: "absolute", top: 23, flexDirection: "row" }}>
-          <Text style={{ ...Font.modalContent, color: theme.text, opacity: 0, marginRight: 10 }}>
-            최대 인원 수:
           </Text>
           <Validation isInvalidLength={isInvalidLength} />
         </View>
@@ -151,6 +164,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
           keyboardType="numeric"
           onChangeText={handlePasswordChange}
           value={password}
+          maxLength={4}
         />
       </View>
     </MainModal>
@@ -166,7 +180,9 @@ const Validation = ({ isInvalidLength }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
-        <Text style={{ color: "red", fontSize: 12 }}>방 제목은 12글자 이하의 문자입니다.</Text>
+        <Text style={{ color: "red", fontSize: 12, marginTop: 4 }}>
+          방 제목은 12글자 이하의 문자입니다.
+        </Text>
       )}
     </>
   );
