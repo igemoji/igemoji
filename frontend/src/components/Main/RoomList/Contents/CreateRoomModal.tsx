@@ -59,7 +59,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         isPublic,
         password,
       });
-      await AsyncStorage.setItem("roomId", data.data.roomId);
+      await AsyncStorage.setItem("roomId", String(data.data.roomId));
       navigation.navigate("Game");
       close();
     } catch (error) {
