@@ -18,6 +18,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
     "@stomp/stompjs": "^7.0.0",
+    "axios": "^1.6.8",
     "expo": "~50.0.14",
     "expo-av": "~13.10.6",
     "expo-constants": "~15.4.6",

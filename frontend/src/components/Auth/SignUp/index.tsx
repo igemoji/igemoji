@@ -1,20 +1,12 @@
-import React, { useContext, useState } from "react";
-import {
-  TextInput,
-  View,
-  Dimensions,
-  Text,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  Alert,
-  Platform,
-} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useContext, useEffect, useState } from "react";
+import { TextInput, View, Dimensions, Text, StyleSheet, Alert, Platform } from "react-native";
 
 import Background from "../../Background";
 import Logo from "../../Logo";
 import ModalBox from "../../ModalBox";
 
+import { registNicknameAxios } from "@/API/Auth";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
@@ -24,39 +16,41 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 export default function SignUp({ navigation }: NavigationProps) {
   const { theme } = useContext(ThemeContext);
   const [inputValue, setInputValue] = useState("");
-  const [isDuplicate, setIsDuplicate] = useState(false);
   const [isInvalidLength, setIsInvalidLength] = useState(false);
+  const [memberId, setMemberId] = useState<number>(0);
+
+  useEffect(() => {
+    const getMemberId = async () => {
+      const id = (await AsyncStorage.getItem("memberId")) as string;
+      setMemberId(Number(id));
+    };
+    getMemberId();
+  });
 
   const handleTextChange = (text: string) => {
-    // 입력값 길이 확인
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setInputValue(text);
-      if (text.length === 0) {
-        setIsInvalidLength(false);
-      } else if (text.length >= 2 && text.length <= 8) {
-        setIsInvalidLength(false);
-      } else {
-        setIsInvalidLength(true);
-      }
+      setIsInvalidLength(!(text.length >= 2 && text.length <= 8) && !(text.length === 0));
     }
   };
 
-  const checkDuplicate = () => {
-    // 중복 확인 로직 (임시로 구현)
-    const isDuplicateValue = false; // 중복이면 true, 중복이 아니면 false
-    setIsDuplicate(isDuplicateValue);
-  };
-
-  const handleNicknameAxios = () => {
-    if (!inputValue || isInvalidLength || isDuplicate) {
+  const handleNicknameAxios = async () => {
+    if (!inputValue || isInvalidLength) {
       if (Platform.OS === "web") {
         window.alert("올바른 닉네임을 입력하세요.");
       } else {
-        Alert.alert("경고", "올바른 닉네임을 입력하세요.");
+        Alert.alert("올바른 닉네임을 입력하세요.", "");
       }
     } else {
-      navigation.navigate("Main");
+      try {
+        await registNicknameAxios({ memberId, inputValue });
+        Alert.alert("닉네임 등록이 완료되었습니다.", "", [
+          { text: "확인", onPress: () => navigation.navigate("Main") },
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -72,7 +66,7 @@ export default function SignUp({ navigation }: NavigationProps) {
                   ...styles.textInput,
                   ...Font.modalContent,
                   backgroundColor: theme.white,
-                  borderColor: isDuplicate || isInvalidLength ? "red" : theme.grey,
+                  borderColor: isInvalidLength ? "red" : theme.grey,
                   color: theme.text,
                 }}
                 placeholder="사용할 닉네임을 입력하세요."
@@ -81,7 +75,7 @@ export default function SignUp({ navigation }: NavigationProps) {
                 placeholderTextColor={theme.text}
               />
               <View style={{ position: "absolute", top: 25 }}>
-                <Validation isInvalidLength={isInvalidLength} isDuplicate={isDuplicate} />
+                <Validation isInvalidLength={isInvalidLength} />
               </View>
             </View>
           </ModalBox>
@@ -94,17 +88,13 @@ export default function SignUp({ navigation }: NavigationProps) {
 // 유효성 검사 컴포넌트
 interface ValidationProps {
   isInvalidLength: boolean;
-  isDuplicate: boolean;
 }
 
-const Validation = ({ isInvalidLength, isDuplicate }: ValidationProps) => {
+const Validation = ({ isInvalidLength }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
         <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자의 문자입니다.</Text>
-      )}
-      {isDuplicate && (
-        <Text style={{ color: "red", fontSize: 12 }}>이미 사용 중인 닉네임입니다.</Text>
       )}
     </>
   );
