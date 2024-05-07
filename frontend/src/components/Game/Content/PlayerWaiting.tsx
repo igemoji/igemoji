@@ -4,11 +4,15 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import ModalBox from "@/components/ModalBox";
+import { gameSocket } from "@/sockets";
+
+const { disconnect } = gameSocket;
 
 export default function PlayerWaiting() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handleGameExit = () => {
+    disconnect();
     navigation.navigate("RoomList");
   };
 

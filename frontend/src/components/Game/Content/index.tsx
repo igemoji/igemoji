@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Button } from "react-native";
 
 import Answer from "./Answer";
@@ -15,7 +15,7 @@ import WaitingScore from "./WaitingScore";
 
 import { ThemeContext } from "@/config/Theme";
 
-export default function Content() {
+export default function Content({ socketMessage }: any) {
   const { theme } = useContext(ThemeContext);
   const [key, setKey] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -24,16 +24,31 @@ export default function Content() {
   const [timeCount, setTimeCount] = useState(5);
   const [quizCount, setQuizCount] = useState([1, 30]);
   const [genre, setGenre] = useState("영화");
+  const [answerName, setAnswerName] = useState("");
+  const [answerImage, setAnswerImage] = useState("");
   const [nowContent, setNowContent] = useState("hostwaiting");
 
-  const handleNewScreen = (newScreen: string) => {
-    setNowContent(newScreen);
-  };
+  useEffect(() => {
+    if (socketMessage?.gameStatus === "PROCEEDING") {
+      setNowContent("quiz");
+    }
+    if (socketMessage?.gameStatus === "PRINT_ANSWER") {
+      setAnswerName(socketMessage.name);
+      setAnswerImage(socketMessage.img);
+      setNowContent("answer");
+    }
+    if (socketMessage?.gameStatus === "WAITING") {
+      setNowContent("waitingScore");
+    }
+    if (socketMessage?.gameStatus === "GAME_END") {
+      setNowContent("endScore");
+    }
+  }, [socketMessage]);
 
   const handleTimerStart = () => {
     setIsPlaying(true);
   };
-  const handleTimerStop = () => {
+  const handleTimerStop = async () => {
     setIsPlaying(false);
   };
 
@@ -67,7 +82,7 @@ export default function Content() {
       </View> */}
       <Count quiz={quizCount} time={timeCount} genre={genre} />
 
-      {nowContent === "hostwaiting" && <HostWaiting handleNewScreen={handleNewScreen} />}
+      {nowContent === "hostwaiting" && <HostWaiting />}
       {nowContent === "playerWaiting" && <PlayerWaiting />}
 
       {(nowContent === "quiz" || nowContent === "answer") && <Emoji />}

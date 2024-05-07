@@ -14,14 +14,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.igemoji"
+      "bundleIdentifier": "com.teamGoAhead.igemoji"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.igemoji"
+      "package": "com.teamGoAhead.igemoji"
     },
     "web": {
       "favicon": "./assets/logo/logo.png"
