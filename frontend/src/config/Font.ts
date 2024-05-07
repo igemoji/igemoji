@@ -83,8 +83,24 @@ const Font = StyleSheet.create({
     fontFamily: "PretendardBold",
   },
   rankTitle: {
-    fontSize: 65,
+    fontSize: 60,
     fontFamily: "PretendardBlack",
+  },
+  rankingNumber: {
+    fontSize: 16,
+    fontFamily: "PretendardMedium",
+  },
+  rankingLevel: {
+    fontSize: 10,
+    fontFamily: "PretendardRegular",
+  },
+  rankingNickname: {
+    fontSize: 16,
+    fontFamily: "PretendardMedium",
+  },
+  rankingScore: {
+    fontSize: 14,
+    fontFamily: "PretendardRegular",
   },
 });
 
