@@ -8,12 +8,13 @@ import Header from "./Header";
 
 import { MusicContext } from "@/config/Music";
 import { gameSocket } from "@/sockets";
+import { getItem } from "@/utils/asyncStorage";
 
 const { connect, subscribe, send, disconnect } = gameSocket;
 
 export default function Game() {
   const { sound, setSound, isMusicOn } = useContext(MusicContext);
-  const [socketMessage, setSocketMessage] = useState();
+  const [socketMessage, setSocketMessage] = useState(null);
 
   useEffect(() => {
     async function loadSound() {
@@ -31,24 +32,27 @@ export default function Game() {
     loadSound();
   }, []);
 
-  const onConnect = () => {
-    console.log("소켓 연결 성공");
-    subscribe(`/topic/room/3`, (message) => {
+  const onConnect = async () => {
+    const roomId = await getItem("roomId");
+    const memberId = await getItem("memberId");
+
+    subscribe(`/topic/room/${roomId}`, (message) => {
       const data = JSON.parse(message.body);
       if (data) {
         setSocketMessage(data);
-        console.log("소켓메세지: ", data);
+        console.log("서 > 클 ", data);
       }
     });
 
-    send("/app/enter", {
-      memberId: 6,
-      roomId: 3,
+    send("/app/room/enter", {
+      memberId,
+      roomId,
     });
   };
 
   useEffect(() => {
     connect(onConnect);
+
     return () => {
       disconnect();
     };
@@ -56,7 +60,7 @@ export default function Game() {
 
   return (
     <Background>
-      <Header />
+      <Header socketMessage={socketMessage} />
       <Content socketMessage={socketMessage} />
       <Chat />
     </Background>

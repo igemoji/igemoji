@@ -1,9 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View } from "react-native";
 import WebView from "react-native-webview";
 
 import { kakaoLoginAxios } from "@/API/Auth";
 import { NavigationProps } from "@/types/types";
+import { setItem } from "@/utils/asyncStorage";
 
 const REST_API_KEY = "eadd974df44f7b7ac3e7d3de4c20f947";
 const REDIRECT_URI = "https://back.igemoji.store/oauth2/kakao";
@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }: NavigationProps) {
       const requestCode = target.substring(condition + exp.length);
       try {
         const { data } = await kakaoLoginAxios(requestCode);
-        await AsyncStorage.setItem("memberId", String(data.data.memberInfo.memberId));
+        await setItem("memberId", data.data.memberInfo.memberId);
         if (data.data.memberInfo.nickname === null) {
           navigation.navigate("SignUp");
         } else {

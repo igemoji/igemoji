@@ -20,6 +20,7 @@ import { CreateRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
+import { setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -59,7 +60,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         isPublic,
         password,
       });
-      await AsyncStorage.setItem("roomId", String(data.data.roomId));
+      await setItem("roomId", data.data.roomId);
       navigation.navigate("Game");
       close();
     } catch (error) {
