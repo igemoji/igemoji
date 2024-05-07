@@ -40,7 +40,7 @@ export default function SignUp({ navigation }: NavigationProps) {
       if (Platform.OS === "web") {
         window.alert("올바른 닉네임을 입력하세요.");
       } else {
-        Alert.alert("경고", "올바른 닉네임을 입력하세요.");
+        Alert.alert("올바른 닉네임을 입력하세요.", "");
       }
     } else {
       try {
