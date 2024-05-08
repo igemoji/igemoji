@@ -15,7 +15,7 @@ export default function Count({ quiz, time, genre }: ICount) {
 
   return (
     <View>
-      <Text style={{ ...Font.quizCount, color: theme.text }}>장르 : {genre}</Text>
+      {/* <Text style={{ ...Font.quizCount, color: theme.text }}>장르 : {genre}</Text> */}
       <Text style={{ ...Font.quizCount, color: theme.text }}>
         문제 수 : {quiz[0]}/{quiz[1]}
       </Text>

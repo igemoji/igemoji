@@ -3,14 +3,11 @@ import { Text, StyleSheet, View } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { PlayerListProps } from "@/types/types";
 
-export default function WaitingScore() {
+export default function WaitingScore({ playerList }: PlayerListProps) {
   const { theme } = useContext(ThemeContext);
-
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const players = ["진쪽이", "이재종123", "서성원인프라", "박세헌사탈", "홍지은데이터", "김대원으"];
-  const scores = [5, 4, 3, 2, 1, 0];
-  const highestScore = Math.max(...scores);
+  const highestScore = playerList ? Math.max(...playerList.map((player) => player.score)) : 0;
 
   return (
     <View style={styles.outerContainer}>
@@ -20,20 +17,20 @@ export default function WaitingScore() {
             현재 점수
           </Text>
           <View style={styles.scoreContent}>
-            {players.map((player, index) => (
+            {playerList?.map((player, index) => (
               <View key={index} style={styles.row}>
                 {/* 현재 점수 1위에게 불타는 이모티콘 */}
-                {scores[index] === highestScore ? (
+                {player.score === highestScore ? (
                   <View style={styles.fire}>
                     <Text style={[{ color: theme.text, textAlign: "left" }, Font.score]}>🔥</Text>
                   </View>
                 ) : null}
                 <View style={{ flex: 1 }}>
-                  <Text style={[{ color: theme.text }, Font.score]}>{player}</Text>
+                  <Text style={[{ color: theme.text }, Font.score]}>{player.nickname}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={[{ color: theme.text, textAlign: "right" }, Font.score]}>
-                    {scores[index]}문제
+                    {player.score}문제
                   </Text>
                 </View>
               </View>

@@ -1,23 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Text, StyleSheet, ScrollView } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { Message } from "@/types/types";
 
-export default function Messages() {
+export default function Messages({ messages }: { messages: Message[] }) {
   const { theme } = useContext(ThemeContext);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const [messages, setMessages] = useState([
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-    "대원 : 이거 타이타닉 아님?",
-  ]);
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -34,7 +24,7 @@ export default function Messages() {
           key={index}
           style={{
             ...Font.messages,
-            color: theme.text,
+            color: message.message === "SYSTEM_CHAT" ? `tomato` : theme.text,
             opacity:
               index === messages.length - 1 || index === messages.length - 2
                 ? 1
@@ -42,7 +32,8 @@ export default function Messages() {
                   ? 0.5
                   : 0.3,
           }}>
-          {message}
+          {message.message === "WATCH_CHAT" ? "[관전]" : null} {message.nickname} :{" "}
+          {message.content}
         </Text>
       ))}
     </ScrollView>

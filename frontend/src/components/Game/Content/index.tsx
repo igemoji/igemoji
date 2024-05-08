@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet } from "react-native";
 
 import Answer from "./Answer";
 import Count from "./Count";
@@ -13,55 +13,93 @@ import Similar from "./Similar";
 import Timer from "./Timer";
 import WaitingScore from "./WaitingScore";
 
+import { Message } from "@/types/types";
 import { getItem } from "@/utils/asyncStorage";
 
-export default function Content({ socketMessage }: any) {
+export default function Content({
+  socketMessage,
+  messages,
+}: {
+  socketMessage: any;
+  messages: Message[];
+}) {
   const [key, setKey] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const [hostId, setHostId] = useState(null);
   const [timeCount, setTimeCount] = useState(5);
-  const [quizCount, setQuizCount] = useState([1, 30]);
+  const [allQuizCount, setAllQuizCount] = useState(10);
+  const [nowQuizCount, setNowQuizCount] = useState(10);
   const [genre, setGenre] = useState("영화");
+  const [emoji, setEmoji] = useState(null);
+  const [hint1, setHint1] = useState(null);
+  const [hint2, setHint2] = useState(null);
   const [answerName, setAnswerName] = useState("");
   const [answerImage, setAnswerImage] = useState("");
+  const [answerMember, setAnswerMember] = useState(null);
+  const [playerList, setPlayerList] = useState(null);
   const [nowContent, setNowContent] = useState("hostwaiting");
 
   useEffect(() => {
     async function setStorage() {
       const roomId = await getItem("roomId");
       const memberId = await getItem("memberId");
-      if (socketMessage?.message === "ENTER_SUCCESS" && socketMessage.host.memberId === memberId) {
-        setNowContent("hostwaiting");
+      if (
+        socketMessage?.message === "ENTER_SUCCESS" ||
+        socketMessage?.message === "CHANGE_SET" ||
+        socketMessage?.message === "LEAVE_ROOM"
+      ) {
+        setAllQuizCount(socketMessage.questionNum);
+        setNowQuizCount(socketMessage.questionNum);
+        setHostId(socketMessage.host?.memberId);
+
+        if (socketMessage.host?.memberId === memberId) {
+          setNowContent("hostwaiting");
+        } else {
+          setNowContent("playerWaiting");
+        }
       }
       if (socketMessage?.gameStatus === "PROCEEDING") {
         setNowContent("quiz");
+        setIsPlaying(true);
+        setEmoji(socketMessage.emoji);
+        setHint1(socketMessage.hint1);
+        setHint2(socketMessage.hint2);
       }
       if (socketMessage?.gameStatus === "PRINT_ANSWER") {
-        setAnswerName(socketMessage.name);
-        setAnswerImage(socketMessage.img);
-        setNowContent("answer");
+        if (socketMessage?.name) {
+          setAnswerName(socketMessage.name);
+          setAnswerImage(socketMessage.img);
+          setAnswerMember(socketMessage.correctMember);
+          setNowContent("answer");
+          setKey((prevKey) => prevKey + 1);
+          setIsPlaying(false);
+        }
       }
       if (socketMessage?.gameStatus === "WAITING") {
         setNowContent("waitingScore");
       }
+      if (socketMessage?.gameStatus === "ROUND_END") {
+        setPlayerList(socketMessage.playerList);
+      }
+      if (socketMessage?.currentRound) {
+        setNowQuizCount(allQuizCount - socketMessage.currentRound);
+      }
       if (socketMessage?.gameStatus === "GAME_END") {
+        setPlayerList(socketMessage.playerList);
         setNowContent("endScore");
+        setNowQuizCount(allQuizCount);
+        setTimeout(() => {
+          if (hostId === memberId) {
+            setNowContent("hostwaiting");
+          } else {
+            setNowContent("playerWaiting");
+          }
+        }, 5000);
       }
     }
     setStorage();
   }, [socketMessage]);
-
-  const handleTimerStart = () => {
-    setIsPlaying(true);
-  };
-  const handleTimerStop = async () => {
-    setIsPlaying(false);
-  };
-
-  const handleTimerReset = () => {
-    setKey((prevKey) => prevKey + 1);
-    setIsPlaying(false);
-  };
 
   return (
     <View style={styles.container}>
@@ -73,37 +111,22 @@ export default function Content({ socketMessage }: any) {
         colorsTime={[60, 0]}>
         {({ remainingTime }) => remainingTime}
       </Timer>
-      {/* <View
-        style={{
-          flexDirection: "row",
-          top: 15,
-          right: "10%",
-          gap: 5,
-          position: "absolute",
-          zIndex: 1,
-        }}>
-        <Button onPress={handleTimerStart} title="시작" />
-        <Button onPress={handleTimerStop} title="중지" />
-        <Button onPress={handleTimerReset} title="초기화" />
-      </View> */}
-      <Count quiz={quizCount} time={timeCount} genre={genre} />
-
+      <Count quiz={[nowQuizCount, allQuizCount]} time={timeCount} genre={genre} />
       {nowContent === "hostwaiting" && <HostWaiting />}
       {nowContent === "playerWaiting" && <PlayerWaiting />}
-
-      {(nowContent === "quiz" || nowContent === "answer") && <Emoji />}
+      {(nowContent === "quiz" || nowContent === "answer") && (
+        <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
+      )}
       {nowContent === "quiz" && <Similar />}
       {nowContent === "answer" && (
         <>
-          <Answer />
-          <Prompt />
+          <Answer answerName={answerName} answerImage={answerImage} />
+          <Prompt answerMember={answerMember} />
         </>
       )}
-
-      {nowContent === "waitingScore" && <WaitingScore />}
-      {nowContent === "endScore" && <EndScore />}
-
-      <Messages />
+      {nowContent === "waitingScore" && <WaitingScore playerList={playerList} />}
+      {nowContent === "endScore" && <EndScore playerList={playerList} />}
+      <Messages messages={messages} />
     </View>
   );
 }
