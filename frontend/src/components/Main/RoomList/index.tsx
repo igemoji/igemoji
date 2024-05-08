@@ -1,5 +1,5 @@
 import { Audio } from "expo-av";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 
 import Body from "./Body";
@@ -15,6 +15,7 @@ const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 export default function RoomList({ navigation }: NavigationProps) {
   const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const { theme } = useContext(ThemeContext);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     async function loadSound() {
@@ -29,12 +30,16 @@ export default function RoomList({ navigation }: NavigationProps) {
     }
     loadSound();
   }, []);
+
+  const refresh = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
   return (
     <Background>
       <View style={styles.container}>
-        <Header />
+        <Header refresh={refresh} />
         <View style={{ flex: 1, marginTop: 10 }}>
-          <Body />
+          <Body key={refreshKey} />
         </View>
         <View style={{ height: 120, justifyContent: "center" }}>
           <Footer />

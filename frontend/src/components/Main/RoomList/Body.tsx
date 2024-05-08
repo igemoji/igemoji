@@ -1,69 +1,71 @@
-import React from "react";
-import { ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 
 import RoomItem from "./Contents/RoomItem";
 
+import { getRoomListAxios } from "@/API/Main";
+
+interface RoomInfo {
+  roomId: number;
+  title: string;
+  isPublic: boolean;
+  isProgress: boolean;
+  memberNum: number;
+}
+
 export default function Body() {
-  const roomListInfo = [
-    {
-      roomNumber: 1,
-      title: "초보만",
-      state: "waiting",
-      genre: "movie",
-      isPublic: true,
-      playerNumber: 4,
-    },
-    {
-      roomNumber: 2,
-      title: "드루와",
-      state: "waiting",
-      genre: "movie",
-      isPublic: false,
-      playerNumber: 3,
-    },
-    {
-      roomNumber: 3,
-      title: "다 들어와라 이 자식들아!!!!!",
-      state: "gaming",
-      genre: "movie",
-      isPublic: true,
-      playerNumber: 6,
-    },
-  ];
+  const [roomListInfo, setRoomListInfo] = useState<RoomInfo[]>([]);
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getRoomList = async () => {
+      try {
+        const { data } = await getRoomListAxios(pageNum);
+        setRoomListInfo(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getRoomList();
+  }, []);
+
+  const fetchRoomList = async () => {
+    try {
+      setIsFetching(true);
+      const { data } = await getRoomListAxios(pageNum + 1);
+      setRoomListInfo((prevList) => [...prevList, ...data]);
+      setPageNum((prevPageNum) => prevPageNum + 1);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const paddingToBottom = 50;
+    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+      if (!isFetching) {
+        fetchRoomList();
+      }
+    }
+  };
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-      {/* roomListInfo 배열을 순회하며 각 RoomItem을 렌더링 */}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+      onScroll={handleScroll}>
       {roomListInfo.map((roomInfo, index) => (
         <RoomItem
           key={index}
-          roomNumber={roomInfo.roomNumber}
+          roomId={roomInfo.roomId}
           title={roomInfo.title}
-          state={roomInfo.state}
-          genre={roomInfo.genre}
           isPublic={roomInfo.isPublic}
-          playerNumber={roomInfo.playerNumber}
-        />
-      ))}
-      {roomListInfo.map((roomInfo, index) => (
-        <RoomItem
-          key={index}
-          roomNumber={roomInfo.roomNumber}
-          title={roomInfo.title}
-          state={roomInfo.state}
-          genre={roomInfo.genre}
-          isPublic={roomInfo.isPublic}
-          playerNumber={roomInfo.playerNumber}
-        />
-      ))}
-      {roomListInfo.map((roomInfo, index) => (
-        <RoomItem
-          key={index}
-          roomNumber={roomInfo.roomNumber}
-          title={roomInfo.title}
-          state={roomInfo.state}
-          genre={roomInfo.genre}
-          isPublic={roomInfo.isPublic}
-          playerNumber={roomInfo.playerNumber}
+          isProgress={roomInfo.isProgress}
+          memberNum={roomInfo.memberNum}
         />
       ))}
     </ScrollView>

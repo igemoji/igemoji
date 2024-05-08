@@ -6,16 +6,17 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PasswordRoomModal from "./PasswordRoomModal";
 
 import Font from "@/config/Font";
-import { ThemeContext } from "@/config/Theme";
 import { MusicContext } from "@/config/Music";
+import { ThemeContext } from "@/config/Theme";
+import { setItem } from "@/utils/asyncStorage";
 
 interface RoomItemProps {
-  roomNumber: number;
+  roomId: number;
   title: string;
-  state: string;
-  genre: string;
+  isProgress: boolean;
+  // genre: string;
   isPublic: boolean;
-  playerNumber: number;
+  memberNum: number;
 }
 
 interface States {
@@ -26,31 +27,27 @@ interface Genres {
   [key: string]: string;
 }
 
-const states: States = {
-  waiting: "대기중",
-  gaming: "게임중",
-};
-
 const genres: Genres = {
   movie: "영화",
   drama: "드라마",
 };
 
 export default function RoomItem({
-  roomNumber,
+  roomId,
   title,
-  state,
-  genre,
+  isProgress,
+  // genre,
   isPublic,
-  playerNumber,
+  memberNum,
 }: RoomItemProps) {
   const { theme } = useContext(ThemeContext);
   const { playButtonSound } = useContext(MusicContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handlePress = () => {
+  const handlePress = async () => {
     playButtonSound();
+    await setItem("roomId", roomId);
     if (!isPublic) {
       // 비밀방인 경우에만 모달 열기
       setIsModalVisible(true);
@@ -68,23 +65,25 @@ export default function RoomItem({
     <TouchableOpacity style={{ ...styles.container }} onPress={handlePress}>
       <View style={{ marginLeft: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainSmall, color: "#000000" }}>{states[state]}</Text>
-          <Text style={{ ...Font.mainSmall, color: "#000000" }}> - </Text>
-          <Text style={{ ...Font.mainSmall, color: "#000000" }}>{genres[genre]}</Text>
+          <Text style={{ ...Font.mainSmall, color: "#000000" }}>
+            {isProgress ? "게임 중" : "대기 중"}
+          </Text>
+          {/* <Text style={{ ...Font.mainSmall, color: "#000000" }}> - </Text> */}
+          {/* <Text style={{ ...Font.mainSmall, color: "#000000" }}>{genres[genre]}</Text> */}
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ ...Font.mainLarge, color: "#000000" }}>{roomNumber} </Text>
+          <Text style={{ ...Font.mainLarge, color: "#000000" }}>{roomId} </Text>
           <Text style={{ ...Font.mainLarge, color: "#000000" }}>{title}</Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
         {!isPublic && <Text style={{ fontSize: 25 }}>🔐 </Text>}
-        <Text style={{ ...Font.mainMiddle, color: "#000000" }}>{playerNumber}/6</Text>
+        <Text style={{ ...Font.mainMiddle, color: "#000000" }}>{memberNum}/6</Text>
       </View>
       <View
         style={{
           ...styles.background,
-          backgroundColor: state === "waiting" ? theme.kungyaGreen : theme.grey,
+          backgroundColor: isProgress ? theme.grey : theme.kungyaGreen,
         }}
       />
       <PasswordRoomModal visible={isModalVisible} close={closeModal} />
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute",
     borderRadius: 10,
-    opacity: 0.9,
+    opacity: 0.7,
     zIndex: -1,
   },
 });
