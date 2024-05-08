@@ -9,7 +9,7 @@ import { ThemeContext } from "@/config/Theme";
 import { gameSocket } from "@/sockets";
 import { getItem } from "@/utils/asyncStorage";
 
-const { send, disconnect } = gameSocket;
+const { send } = gameSocket;
 
 export default function HostWaiting() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -37,19 +37,18 @@ export default function HostWaiting() {
   };
 
   const handleGameStart = async () => {
-    const typeMap: Record<string, string> = {
-      영화: "movie",
-      드라마: "drama",
-    };
-    const koreanQuizType = typeMap[selectedQuizType];
+    // const typeMap: Record<string, string> = {
+    //   영화: "movie",
+    //   드라마: "drama",
+    // };
+    // const koreanQuizType = typeMap[selectedQuizType];
 
     const memberId = await getItem("memberId");
     const roomId = await getItem("roomId");
     send("/app/game/start", {
       roomId,
       senderId: memberId,
-      questionNum: selectedQuizCount,
-      genre: koreanQuizType,
+      // genre: koreanQuizType,
     });
   };
 

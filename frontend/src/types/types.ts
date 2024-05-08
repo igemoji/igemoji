@@ -4,6 +4,17 @@ type MusicIconName = "music-note" | "music-off";
 
 type ButtonName = "check" | "start" | "exit" | "mainStart";
 
+interface EmojiProps {
+  emoji: string | null;
+  hint1: string | null;
+  hint2: string | null;
+}
+
+interface AnswerProps {
+  answerName: string | null;
+  answerImage: string | null;
+}
+
 interface NavigationProps {
   navigation: {
     navigate: (screen: string) => void;
@@ -15,7 +26,44 @@ interface MainModalProps {
   close: () => void;
 }
 
-export type { ThemeIconName, MusicIconName, ButtonName, NavigationProps, MainModalProps };
+interface PromptProps {
+  answerMember: string | null;
+}
+
+type PlayerInfo = {
+  addRating: number | null;
+  exp: number;
+  level: number;
+  memberId: number;
+  nickname: string;
+  rating: number;
+  score: number;
+};
+
+interface PlayerListProps {
+  playerList: PlayerInfo[] | null;
+}
+
+type Message = {
+  content: string;
+  message: string;
+  nickname: string;
+  roomId: number;
+};
+
+export type {
+  ThemeIconName,
+  MusicIconName,
+  ButtonName,
+  NavigationProps,
+  MainModalProps,
+  EmojiProps,
+  AnswerProps,
+  PromptProps,
+  PlayerListProps,
+  Message,
+  PlayerInfo,
+};
 
 type ColorHex = `#${string}`;
 type ColorRGBA = `rgba(${string})`;

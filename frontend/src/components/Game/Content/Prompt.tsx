@@ -1,16 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 
-import { ThemeContext } from "@/config/Theme";
 import Font from "@/config/Font";
+import { ThemeContext } from "@/config/Theme";
+import { PromptProps } from "@/types/types";
 
-export default function Prompt() {
+export default function Prompt({ answerMember }: PromptProps) {
   const { theme } = useContext(ThemeContext);
   const [containerHeight, setContainerHeight] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
-
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const nickname = "이재종";
 
   const handleLayout = (event: { nativeEvent: { layout: { height: any; width: any } } }) => {
     const { width, height } = event.nativeEvent.layout;
@@ -30,7 +28,9 @@ export default function Prompt() {
       />
       <View style={{ ...styles.container }} onLayout={handleLayout}>
         <Text style={[{ color: theme.white }, Font.quizCount]}>
-          {nickname} 님께서 정답을 맞추셨습니다.
+          {answerMember
+            ? `${answerMember}님께서 정답을 맞히셨습니다.`
+            : "아무도 정답을 맞히지 못했습니다."}
         </Text>
       </View>
     </View>

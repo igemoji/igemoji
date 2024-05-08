@@ -7,35 +7,32 @@ import AnimatedNumbers from "react-native-animated-numbers";
 import Button from "@/components/Button";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { PlayerListProps } from "@/types/types";
+import { getItem } from "@/utils/asyncStorage";
 
-export default function WaitingScore() {
+export default function WaitingScore({ playerList }: PlayerListProps) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
-
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const players = [
-    "진쪽이",
-    "이재종안녕하세요",
-    "서성원인프라",
-    "박세헌사탈",
-    "홍지은데이터",
-    "김대원으",
-  ];
-  const scores = [10, 4, 3, 2, 1, 0];
-  const beforeRankPoint = [1780, 1630, 850, 950, 660, 900];
-  const afterRankPoint = [1810, 1650, 850, 940, 640, 870];
-  const [rankPoint, setRankPoint] = useState(beforeRankPoint[0]);
-  const highestScore = Math.max(...scores);
+  const [rankPoint, setRankPoint] = useState<number | null>(null);
+  const highestScore = playerList ? Math.max(...playerList.map((player) => player.score)) : 0;
 
   const handleGameExit = () => {
-    console.log("나가기");
-    navigation.navigate("RoomList");
+    navigation.reset({ routes: [{ name: "RoomList" }] });
+  };
+
+  const ratingChange = async () => {
+    const memberId = await getItem("memberId");
+    const rating = playerList?.find((player) => player.memberId === memberId)?.rating as number;
+    const addRating = playerList?.find((player) => player.memberId === memberId)
+      ?.addRating as number;
+    setRankPoint(rating);
+    setTimeout(() => {
+      setRankPoint(rating + addRating);
+    }, 1000);
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setRankPoint(afterRankPoint[0]);
-    }, 1000);
+    ratingChange();
   }, []);
 
   return (
@@ -46,38 +43,36 @@ export default function WaitingScore() {
             최종 점수
           </Text>
           <View style={styles.scoreContent}>
-            {players.map((player, index) => (
+            {playerList?.map((player, index) => (
               <View key={index} style={styles.row}>
-                {scores[index] === highestScore ? (
+                {player.score === highestScore ? (
                   <View style={styles.winner}>
                     <Text style={[{ color: theme.text }, Font.endScore]}>🏆</Text>
                   </View>
                 ) : null}
                 <View style={{ flex: 3 }}>
                   <Text style={[{ color: theme.text, textAlign: "left" }, Font.endScore]}>
-                    {player}
+                    {player.nickname}
                   </Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={[{ color: theme.text, textAlign: "center" }, Font.endScore]}>
-                    {scores[index]}문제
+                    {player.score}문제
                   </Text>
                 </View>
                 <View style={{ flex: 2 }}>
                   <Text style={[Font.endScore, { color: theme.text, textAlign: "right" }]}>
-                    {beforeRankPoint[index]}{" "}
-                    <Text
-                      style={[
-                        afterRankPoint[index] - beforeRankPoint[index] >= 0
-                          ? { color: theme.scoreGreen }
-                          : { color: theme.scoreRed },
-                      ]}>
-                      (
-                      {afterRankPoint[index] - beforeRankPoint[index] >= 0
-                        ? `+${afterRankPoint[index] - beforeRankPoint[index]}`
-                        : `${afterRankPoint[index] - beforeRankPoint[index]}`}
-                      )
-                    </Text>
+                    {player.rating + (player.addRating as number)}
+                    {player.addRating !== null && (
+                      <Text
+                        style={[
+                          player.addRating >= 0
+                            ? { color: theme.scoreGreen }
+                            : { color: theme.scoreRed },
+                        ]}>
+                        ({player.addRating >= 0 ? `+${player.addRating}` : `${player.addRating}`})
+                      </Text>
+                    )}
                   </Text>
                 </View>
               </View>
@@ -85,14 +80,16 @@ export default function WaitingScore() {
           </View>
         </View>
       </View>
-      <View style={styles.myRankPoint}>
-        <Text style={[{ color: theme.text }, Font.myRank]}>Rank Point</Text>
-        <AnimatedNumbers
-          animateToNumber={rankPoint}
-          animationDuration={3000}
-          fontStyle={[{ color: theme.text }, Font.myRankPoint]}
-        />
-      </View>
+      {rankPoint !== null && (
+        <View style={styles.myRankPoint}>
+          <Text style={[{ color: theme.text }, Font.myRank]}>Rank Point</Text>
+          <AnimatedNumbers
+            animateToNumber={rankPoint}
+            animationDuration={3000}
+            fontStyle={[{ color: theme.text }, Font.myRankPoint]}
+          />
+        </View>
+      )}
       <View style={styles.button}>
         <Button name="exit" onPress={handleGameExit} />
       </View>
