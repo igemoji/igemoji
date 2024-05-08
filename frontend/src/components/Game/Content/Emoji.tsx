@@ -3,15 +3,11 @@ import { Text, StyleSheet, View } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { EmojiProps } from "@/types/types";
 
-export default function Emoji() {
+export default function Emoji({ emoji, hint1, hint2 }: EmojiProps) {
   const { theme } = useContext(ThemeContext);
   const [containerHeight, setContainerHeight] = useState(0);
-
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const emoji = "🌊⚔️🛶😠🇰🇷";
-  const hint1 = "*명대사 : 싸움에 있어 죽고자 하면 반드시 살고 살고자 하면 죽는다";
-  const hint2 = "*초성 : ㅁㄹ";
 
   const handleLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
     const { height } = event.nativeEvent.layout;
@@ -23,8 +19,8 @@ export default function Emoji() {
   return (
     <View style={styles.container} onLayout={handleLayout}>
       <Text style={[Font.emoji, { fontSize }, styles.text]}>{emoji}</Text>
-      <Text style={{ ...Font.hint, ...styles.text, color: theme.text }}>{hint1}</Text>
-      <Text style={{ ...Font.hint, ...styles.text, color: theme.text }}>{hint2}</Text>
+      <Text style={[Font.hint, styles.text, { color: theme.text }]}>{hint1}</Text>
+      <Text style={[Font.hint, styles.text, { color: theme.text }]}>{hint2}</Text>
     </View>
   );
 }

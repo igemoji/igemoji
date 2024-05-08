@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
@@ -14,9 +14,7 @@ export default function Header({ socketMessage }: any) {
   const [host, setHost] = useState();
 
   useEffect(() => {
-    console.log("소켓메시지 변화 감지");
-
-    if (socketMessage?.message === "ENTER_SUCCESS") {
+    if (socketMessage?.message === "ENTER_SUCCESS" || socketMessage?.message === "CHANGE_SET") {
       setRoomTitle(socketMessage.title);
       setRoomId(socketMessage.roomId);
       setMemberList(socketMessage.memberList);
@@ -50,19 +48,20 @@ export default function Header({ socketMessage }: any) {
             borderColor: theme.grey,
           }}>
           <View style={styles.row}>
-            <View style={{ flex: 2 }}>
+            <View style={{ flex: 4 }}>
               <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>닉네임</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>레벨</Text>
+              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>Lv</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>랭크</Text>
+            <View style={{ flex: 2 }}>
+              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>Rp</Text>
             </View>
           </View>
           {memberList?.map((member, index) => (
             <View key={index} style={styles.row}>
-              <View style={{ flex: 2 }}>
+              <View style={{ flex: 4, position: "relative" }}>
+                {host && <Image style={styles.image} source={require("~/crown.png")} />}
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>
                   {member.nickname}
                 </Text>
@@ -70,7 +69,7 @@ export default function Header({ socketMessage }: any) {
               <View style={{ flex: 1 }}>
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>{member.level}</Text>
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 2 }}>
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>
                   {member.rating}점
                 </Text>
@@ -107,12 +106,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     justifyContent: "space-between",
-    width: "60%",
+    width: "70%",
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 5,
+  },
+  image: {
+    position: "absolute",
+    left: "-45%",
+    top: "-10%",
+    resizeMode: "contain",
+    height: "150%",
+    width: "100%",
   },
 });
