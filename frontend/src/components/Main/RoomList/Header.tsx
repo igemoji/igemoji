@@ -12,7 +12,7 @@ import { ThemeContext } from "@/config/Theme";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
-export default function Header() {
+export default function Header({ refresh }: { refresh: () => void }) {
   const { theme } = useContext(ThemeContext);
   const { playButtonSound } = useContext(MusicContext);
   const [createRoomModalVisible, setCreateRoomModalVisible] = useState(false);
@@ -59,7 +59,8 @@ export default function Header() {
             ...styles.smallButton,
             backgroundColor: theme.kungyaGreenAccent,
             marginLeft: 5,
-          }}>
+          }}
+          onPress={refresh}>
           <FontAwesome name="refresh" size={24} color="white" />
         </TouchableOpacity>
       </View>

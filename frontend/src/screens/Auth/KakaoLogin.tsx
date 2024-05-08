@@ -19,6 +19,7 @@ export default function LoginScreen({ navigation }: NavigationProps) {
       const requestCode = target.substring(condition + exp.length);
       try {
         const { data } = await kakaoLoginAxios(requestCode);
+        await setItem("nickname", data.data.memberInfo.nickname);
         await setItem("memberId", data.data.memberInfo.memberId);
         if (data.data.memberInfo.nickname === null) {
           navigation.navigate("SignUp");

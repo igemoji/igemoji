@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 
-export default function Header({ socketMessage, userState }: any) {
+export default function Header({ socketMessage }: any) {
   const { theme } = useContext(ThemeContext);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
 

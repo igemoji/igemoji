@@ -115,10 +115,11 @@ export default function Game() {
       disconnect();
     };
   }, []);
+  console.log(socketMessage);
 
   return (
     <Background>
-      <Header socketMessage={socketMessage} userState={userState} />
+      <Header socketMessage={socketMessage} />
       <Content socketMessage={socketMessage} messages={messages} />
       <Chat userState={userState} />
     </Background>

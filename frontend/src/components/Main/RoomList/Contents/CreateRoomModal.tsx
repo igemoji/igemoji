@@ -16,7 +16,7 @@ import {
 
 import MainModal from "../Modal";
 
-import { CreateRoomAxios } from "@/API/Main";
+import { createRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
@@ -54,14 +54,17 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
 
   const handleCreateRoomAxios = async () => {
     try {
-      const { data } = await CreateRoomAxios({
+      const { data } = await createRoomAxios({
         memberId,
         title,
         isPublic,
         password,
       });
       await setItem("roomId", data.data.roomId);
-      navigation.navigate("Game");
+      navigation.reset({ routes: [{ name: "Game" }] });
+      setIsPublic(true);
+      setPassword("");
+      setTitle("");
       close();
     } catch (error) {
       if (Platform.OS === "web") {

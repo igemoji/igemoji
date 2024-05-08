@@ -1,3 +1,5 @@
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, StyleSheet, Dimensions, Platform } from "react-native";
 
@@ -6,15 +8,17 @@ import MainModal from "../Modal";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
+import { setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function PasswordRoomModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
   const [password, setPassword] = useState("");
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handlePasswordRoomAxios = () => {
-    console.log("password");
+  const handlePasswordRoomAxios = async () => {
+    navigation.reset({ routes: [{ name: "Game" }] });
   };
 
   const handlePasswordChange = (text: string) => {

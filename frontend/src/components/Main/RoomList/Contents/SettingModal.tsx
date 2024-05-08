@@ -20,6 +20,7 @@ import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
+import { getItem, setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -48,8 +49,14 @@ export default function SettingModal({ visible, close }: MainModalProps) {
       size={Platform.OS === "web" ? "large" : isTextInputFocused ? "middle" : "large"}
       visible={visible}
       title="setting"
-      close={close}
-      onPress={close}>
+      close={() => {
+        close();
+        handleTextInputBlur();
+      }}
+      onPress={() => {
+        close();
+        handleTextInputBlur();
+      }}>
       {Platform.OS === "web" ? (
         <View
           style={{
@@ -92,6 +99,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
           handleTextInputFocus={handleTextInputFocus}
           handleTextInputBlur={handleTextInputBlur}
           memberId={memberId}
+          close={close}
         />
         <View
           style={{
@@ -168,16 +176,27 @@ const ChangeNickname = ({
   handleTextInputFocus,
   handleTextInputBlur,
   memberId,
+  close,
 }: {
   handleTextInputFocus: () => void;
   handleTextInputBlur: () => void;
   memberId: number;
+  close: () => void;
 }) => {
   const { theme } = useContext(ThemeContext);
   const [inputValue, setInputValue] = useState("");
   const [isInvalidLength, setIsInvalidLength] = useState(false);
+  const [nickname, setNickname] = useState("");
 
-  const handleTextChange = (text: string) => {
+  useEffect(() => {
+    const getNickname = async () => {
+      const n = await getItem("nickname");
+      setNickname(n);
+    };
+    getNickname();
+  });
+
+  const handleTextChange = async (text: string) => {
     // 입력값 길이 확인
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
@@ -196,9 +215,23 @@ const ChangeNickname = ({
     } else {
       try {
         await registNicknameAxios({ memberId, inputValue });
-        Alert.alert("닉네임 등록이 완료되었습니다.", "", [{ text: "확인" }]);
-      } catch (error) {
+        Alert.alert("닉네임 수정이 완료되었습니다.", "", [
+          {
+            text: "확인",
+            onPress: () => {
+              handleTextInputBlur();
+              setItem("nickname", inputValue);
+              close();
+            },
+          },
+        ]);
+      } catch (error: any) {
         console.log(error);
+        if (error.response.data.errorCode === "MEM_005") {
+          Alert.alert("이미 존재하는 닉네임입니다.", "다른 닉네임을 입력해주세요.", [
+            { text: "확인" },
+          ]);
+        }
       }
     }
   };
@@ -224,7 +257,7 @@ const ChangeNickname = ({
           placeholderTextColor={theme.text}
           onFocus={handleTextInputFocus}
           onBlur={handleTextInputBlur}
-          placeholder="리벨벨"
+          placeholder={nickname}
           style={{
             ...Font.modalContent,
             fontWeight: "600",
@@ -266,7 +299,7 @@ const Validation = ({ isInvalidLength }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
-        <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자의 문자입니다.</Text>
+        <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자입니다.</Text>
       )}
     </>
   );
