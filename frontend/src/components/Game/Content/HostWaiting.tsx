@@ -15,7 +15,7 @@ export default function HostWaiting() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
   const quizType = ["영화"];
-  const quizCount = [10, 20, 30];
+  const quizCount = [10, 1, 2];
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
   const [selectedQuizCount, setSelectedQuizCount] = useState(10);
 

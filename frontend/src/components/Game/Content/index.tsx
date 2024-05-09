@@ -38,7 +38,7 @@ export default function Content({
   const [answerImage, setAnswerImage] = useState("");
   const [answerMember, setAnswerMember] = useState(null);
   const [playerList, setPlayerList] = useState(null);
-  const [nowContent, setNowContent] = useState("hostwaiting");
+  const [nowContent, setNowContent] = useState<string | null>(null);
 
   useEffect(() => {
     async function setStorage() {
@@ -53,18 +53,22 @@ export default function Content({
         setNowQuizCount(socketMessage.questionNum);
         setHostId(socketMessage.host?.memberId);
 
-        if (socketMessage.host?.memberId === memberId) {
-          setNowContent("hostwaiting");
-        } else {
-          setNowContent("playerWaiting");
+        if (!socketMessage.isProgress) {
+          if (socketMessage.host?.memberId === memberId) {
+            setNowContent("hostwaiting");
+          } else {
+            setNowContent("playerWaiting");
+          }
         }
       }
       if (socketMessage?.gameStatus === "PROCEEDING") {
         setNowContent("quiz");
-        setIsPlaying(true);
         setEmoji(socketMessage.emoji);
         setHint1(socketMessage.hint1);
         setHint2(socketMessage.hint2);
+        if (socketMessage.remainingTime === 60) {
+          setIsPlaying(true);
+        }
       }
       if (socketMessage?.gameStatus === "PRINT_ANSWER") {
         if (socketMessage?.name) {
@@ -95,7 +99,7 @@ export default function Content({
           } else {
             setNowContent("playerWaiting");
           }
-        }, 5000);
+        }, 7000);
       }
     }
     setStorage();
@@ -103,30 +107,34 @@ export default function Content({
 
   return (
     <View style={styles.container}>
-      <Timer
-        key={key}
-        isPlaying={isPlaying}
-        duration={60}
-        colors={["#FAE738", "#FF5A5A"]}
-        colorsTime={[60, 0]}>
-        {({ remainingTime }) => remainingTime}
-      </Timer>
-      <Count quiz={[nowQuizCount, allQuizCount]} time={timeCount} genre={genre} />
-      {nowContent === "hostwaiting" && <HostWaiting />}
-      {nowContent === "playerWaiting" && <PlayerWaiting />}
-      {(nowContent === "quiz" || nowContent === "answer") && (
-        <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
-      )}
-      {nowContent === "quiz" && <Similar />}
-      {nowContent === "answer" && (
+      {nowContent && (
         <>
-          <Answer answerName={answerName} answerImage={answerImage} />
-          <Prompt answerMember={answerMember} />
+          <Timer
+            key={key}
+            isPlaying={isPlaying}
+            duration={60}
+            colors={["#FAE738", "#FF5A5A"]}
+            colorsTime={[60, 0]}>
+            {({ remainingTime }) => remainingTime}
+          </Timer>
+          <Count quiz={[nowQuizCount, allQuizCount]} />
+          {nowContent === "hostwaiting" && <HostWaiting />}
+          {nowContent === "playerWaiting" && <PlayerWaiting />}
+          {(nowContent === "quiz" || nowContent === "answer") && (
+            <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
+          )}
+          {nowContent === "quiz" && <Similar />}
+          {nowContent === "answer" && (
+            <>
+              <Answer answerName={answerName} answerImage={answerImage} />
+              <Prompt answerMember={answerMember} />
+            </>
+          )}
+          {nowContent === "waitingScore" && <WaitingScore playerList={playerList} />}
+          {nowContent === "endScore" && <EndScore playerList={playerList} />}
+          <Messages messages={messages} />
         </>
       )}
-      {nowContent === "waitingScore" && <WaitingScore playerList={playerList} />}
-      {nowContent === "endScore" && <EndScore playerList={playerList} />}
-      <Messages messages={messages} />
     </View>
   );
 }

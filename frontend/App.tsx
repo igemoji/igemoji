@@ -1,10 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Audio } from "expo-av";
-import Constants from "expo-constants";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
 
 import { MusicContext } from "@/config/Music";
 import { themes, ThemeContext } from "@/config/Theme";
@@ -95,7 +94,7 @@ function App() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <MusicContext.Provider value={{ isMusicOn, toggleMusic, sound, setSound, playButtonSound }}>
         <NavigationContainer>
-          <StatusBar hidden translucent={false} backgroundColor="transparent" />
+          <StatusBar hidden translucent={false} backgroundColor="translucent" />
           <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
@@ -110,11 +109,5 @@ function App() {
     </ThemeContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    paddingTop: Constants.statusBarHeight,
-  },
-});
 
 export default App;
