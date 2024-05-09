@@ -1,7 +1,5 @@
 import { Audio } from "expo-av";
-import Constants from "expo-constants";
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 
 import Background from "./Background";
 import Chat from "./Chat";

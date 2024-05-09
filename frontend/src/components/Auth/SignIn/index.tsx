@@ -46,6 +46,7 @@ export default function SignIn() {
       }
     }
   };
+
   useEffect(() => {
     if (Platform.OS === "web") {
       const url = window.location.href;
