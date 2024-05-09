@@ -19,6 +19,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     @Query("SELECT r " +
             "FROM Room r " +
             "LEFT JOIN r.memberList m " +
+            "WHERE r.isPublic = true " +
             "GROUP BY r.id " +
             "HAVING COUNT(m) < r.maxNum " +
             "ORDER BY r.createDate ASC " +
