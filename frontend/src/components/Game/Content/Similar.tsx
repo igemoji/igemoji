@@ -6,11 +6,7 @@ import { ThemeContext } from "@/config/Theme";
 
 export default function Similar() {
   const { theme } = useContext(ThemeContext);
-  // TODO: 유사도 분포 보고 상대 분포로 구현
-  const similarInfo: any[] = [
-    { title: "애나벨", similar: 60 },
-    { title: "닥터스트레인지 : 대혼돈의 멀티버스", similar: 80 },
-  ];
+  const similarInfo: any[] = [{ title: "준비중입니다", similar: 100 }];
 
   return (
     <View style={styles.container}>
