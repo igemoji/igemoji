@@ -120,15 +120,9 @@ export default function Game() {
 
   return (
     <Background>
-      <Header socketMessage={socketMessage} style={styles.screen} />
+      <Header socketMessage={socketMessage} />
       <Content socketMessage={socketMessage} messages={messages} />
       <Chat userState={userState} />
     </Background>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    marginTop: Constants.statusBarHeight,
-  },
-});
