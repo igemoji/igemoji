@@ -12,14 +12,16 @@ export default function Chat({ userState }: { userState: string }) {
   const [message, setMessage] = useState("");
 
   const sendMessage = async () => {
-    const roomId = await getItem("roomId");
-    const memberId = await getItem("memberId");
-    setMessage("");
-    send(`/app/${userState}/chat`, {
-      memberId,
-      roomId,
-      content: message,
-    });
+    if (message !== "") {
+      const roomId = await getItem("roomId");
+      const memberId = await getItem("memberId");
+      setMessage("");
+      send(`/app/${userState}/chat`, {
+        memberId,
+        roomId,
+        content: message,
+      });
+    }
   };
 
   return (
