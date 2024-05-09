@@ -15,6 +15,7 @@ import Game from "@/screens/Game/Game";
 import Main from "@/screens/Main/Main";
 import RoomList from "@/screens/Main/RoomList";
 import Rank from "@/screens/Rank/Rank";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 
@@ -93,8 +94,8 @@ function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <MusicContext.Provider value={{ isMusicOn, toggleMusic, sound, setSound, playButtonSound }}>
-        <SafeAreaView style={styles.screen} />
         <NavigationContainer>
+          <StatusBar hidden translucent={false} backgroundColor="transparent" />
           <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />

@@ -53,6 +53,22 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
   };
 
   const handleCreateRoomAxios = async () => {
+    if (!title.trim() || (!isPublic && !password.trim())) {
+      if (Platform.OS === "web") {
+        window.alert("올바른 방 정보를 입력하세요.");
+      } else {
+        Alert.alert("올바른 방 정보를 입력하세요.", "");
+      }
+      return;
+    }
+    if (!isPublic && password.trim().length !== 4) {
+      if (Platform.OS === "web") {
+        window.alert("비밀번호는 4자리입니다.");
+      } else {
+        Alert.alert("비밀번호는 4자리입니다.", "");
+      }
+      return;
+    }
     try {
       const { data } = await createRoomAxios({
         memberId,
@@ -61,7 +77,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         password,
       });
       await setItem("roomId", data.data.roomId);
-      navigation.reset({ routes: [{ name: "Game" }] });
+      navigation.navigate("Game");
       setIsPublic(true);
       setPassword("");
       setTitle("");
@@ -78,6 +94,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
 
   const handlePublicClick = () => {
     setIsPublic(true);
+    setPassword("");
     setShowPasswordInput(false);
   };
 
