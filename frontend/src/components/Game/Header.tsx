@@ -14,11 +14,15 @@ export default function Header({ socketMessage }: any) {
   const [host, setHost] = useState();
 
   useEffect(() => {
-    if (socketMessage?.message === "ENTER_SUCCESS" || socketMessage?.message === "CHANGE_SET") {
+    if (
+      socketMessage?.message === "ENTER_SUCCESS" ||
+      socketMessage?.message === "CHANGE_SET" ||
+      socketMessage?.message === "LEAVE_ROOM"
+    ) {
       setRoomTitle(socketMessage.title);
       setRoomId(socketMessage.roomId);
       setMemberList(socketMessage.memberList);
-      setHost(socketMessage.host);
+      setHost(socketMessage.host.nickname);
     }
   }, [socketMessage]);
 
@@ -61,7 +65,9 @@ export default function Header({ socketMessage }: any) {
           {memberList?.map((member, index) => (
             <View key={index} style={styles.row}>
               <View style={{ flex: 4, position: "relative" }}>
-                {host && <Image style={styles.image} source={require("~/crown.png")} />}
+                {host === member.nickname && (
+                  <Image style={styles.image} source={require("~/crown.png")} />
+                )}
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>
                   {member.nickname}
                 </Text>

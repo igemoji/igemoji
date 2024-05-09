@@ -1,47 +1,45 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, View, Dimensions, Text, Image, ScrollView } from "react-native";
 
 import Background from "./Background";
 import Footer from "../Footer";
 
 import Font from "@/config/Font";
-import { ThemeContext } from "@/config/Theme";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function Rank() {
-  const { theme } = useContext(ThemeContext);
   const ranking = [
     { rank: 4, level: 12, nickname: "나는2등", rankingPoint: 5013 },
     { rank: 4, level: 12, nickname: "나는1등", rankingPoint: 5013 },
     { rank: 4, level: 12, nickname: "3등", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "리벨벨", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
+    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
   ];
 
   return (
@@ -65,7 +63,7 @@ export default function Rank() {
               }}>
               <View style={{ width: "30%" }}>
                 <Text style={[Font.rankingLevel, { marginBottom: -3 }]}>Lv.12</Text>
-                <Text style={Font.rankingNickname}>리벨벨</Text>
+                <Text style={Font.rankingNickname}>준비중</Text>
               </View>
               <View style={{ justifyContent: "center", alignItems: "flex-end" }}>
                 <Text style={Font.rankingScore}>4072점</Text>

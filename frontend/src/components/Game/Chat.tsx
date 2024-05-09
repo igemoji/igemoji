@@ -28,7 +28,10 @@ export default function Chat({ userState }: { userState: string }) {
         style={{ ...styles.input, borderColor: theme.grey, color: theme.text }}
         placeholder="메시지를 입력하세요"
         placeholderTextColor={theme.text}
+        onSubmitEditing={sendMessage}
         value={message}
+        multiline={false}
+        blurOnSubmit={false}
         onChangeText={setMessage}
       />
       <TouchableOpacity

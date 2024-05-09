@@ -1,5 +1,7 @@
 import { Audio } from "expo-av";
+import Constants from "expo-constants";
 import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
 
 import Background from "./Background";
 import Chat from "./Chat";
@@ -115,13 +117,18 @@ export default function Game() {
       disconnect();
     };
   }, []);
-  console.log(socketMessage);
 
   return (
     <Background>
-      <Header socketMessage={socketMessage} />
+      <Header socketMessage={socketMessage} style={styles.screen} />
       <Content socketMessage={socketMessage} messages={messages} />
       <Chat userState={userState} />
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    marginTop: Constants.statusBarHeight,
+  },
+});
