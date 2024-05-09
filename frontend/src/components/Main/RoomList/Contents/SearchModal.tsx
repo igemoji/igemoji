@@ -1,26 +1,60 @@
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions, Platform, Alert } from "react-native";
 
+import PasswordRoomModal from "./PasswordRoomModal";
 import MainModal from "../Modal";
 
+import { enterRoomAxios, searchRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
+import { getItem, setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SearchModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
-  const [roomNumber, setRoomNumber] = useState("");
+  const [roomId, setRoomId] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handleSearchRoomAxios = () => {
-    console.log("searchRoom");
+  const handleSearchRoomAxios = async () => {
+    try {
+      const { data } = await searchRoomAxios(Number(roomId));
+      if (data.data.isPublic) {
+        await setItem("roomId", data.data.roomId);
+        handleEnterRoomAxios(data.data.roomId);
+      } else {
+        setIsModalVisible(true);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("방을 찾을 수 없습니다.", "", [{ text: "확인" }]);
+    }
+    close();
+  };
+
+  const handleEnterRoomAxios = async (roomId: string) => {
+    try {
+      const memberId = await getItem("memberId");
+      const { data } = await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
+      console.log(data);
+      navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
+    }
   };
 
   const handleRoomNumberChange = (text: string) => {
     const regex = /^[0-9]*$/;
     if (regex.test(text) || text === "") {
-      setRoomNumber(text);
+      setRoomId(text);
     }
   };
 
@@ -44,9 +78,10 @@ export default function SearchModal({ visible, close }: MainModalProps) {
           }}
           keyboardType="numeric"
           onChangeText={handleRoomNumberChange}
-          value={roomNumber}
+          value={roomId}
         />
       </View>
+      <PasswordRoomModal visible={isModalVisible} close={close} />
     </MainModal>
   );
 }

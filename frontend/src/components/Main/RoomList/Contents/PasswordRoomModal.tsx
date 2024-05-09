@@ -1,14 +1,15 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions, Platform, Alert } from "react-native";
 
 import MainModal from "../Modal";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
-import { setItem } from "@/utils/asyncStorage";
+import { getItem, setItem } from "@/utils/asyncStorage";
+import { enterRoomAxios } from "@/API/Main";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -18,7 +19,19 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handlePasswordRoomAxios = async () => {
-    navigation.reset({ routes: [{ name: "Game" }] });
+    try {
+      const memberId = await getItem("memberId");
+      const roomId = await getItem("roomId");
+      const { data } = await enterRoomAxios({ memberId, roomId, password });
+      console.log(data);
+      navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
+    }
   };
 
   const handlePasswordChange = (text: string) => {

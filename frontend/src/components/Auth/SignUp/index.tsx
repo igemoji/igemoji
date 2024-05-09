@@ -45,15 +45,24 @@ export default function SignUp({ navigation }: NavigationProps) {
     } else {
       try {
         await registNicknameAxios({ memberId, inputValue });
-        Alert.alert("닉네임 등록이 완료되었습니다.", "", [
-          { text: "확인", onPress: () => navigation.navigate("Main") },
-        ]);
+        if (Platform.OS === "web") {
+          window.alert("닉네임 등록이 완료되었습니다.");
+          navigation.reset({ routes: [{ name: "Main" }] });
+        } else {
+          Alert.alert("닉네임 등록이 완료되었습니다.", "", [
+            { text: "확인", onPress: () => navigation.reset({ routes: [{ name: "Main" }] }) },
+          ]);
+        }
       } catch (error: any) {
         console.log(error);
         if (error.response.data.errorCode === "MEM_005") {
-          Alert.alert("이미 존재하는 닉네임입니다.", "다른 닉네임을 입력해주세요.", [
-            { text: "확인" },
-          ]);
+          if (Platform.OS === "web") {
+            window.alert("이미 존재하는 닉네임입니다.");
+          } else {
+            Alert.alert("이미 존재하는 닉네임입니다.", "다른 닉네임을 입력해주세요.", [
+              { text: "확인" },
+            ]);
+          }
         }
       }
     }

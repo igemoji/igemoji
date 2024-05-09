@@ -16,7 +16,7 @@ import {
 
 import MainModal from "../Modal";
 
-import { createRoomAxios } from "@/API/Main";
+import { createRoomAxios, enterRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
@@ -57,7 +57,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       if (Platform.OS === "web") {
         window.alert("올바른 방 정보를 입력하세요.");
       } else {
-        Alert.alert("올바른 방 정보를 입력하세요.", "");
+        Alert.alert("올바른 방 정보를 입력하세요.", "", [{ text: "확인" }]);
       }
       return;
     }
@@ -65,7 +65,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       if (Platform.OS === "web") {
         window.alert("비밀번호는 4자리입니다.");
       } else {
-        Alert.alert("비밀번호는 4자리입니다.", "");
+        Alert.alert("비밀번호는 4자리입니다.", "", [{ text: "확인" }]);
       }
       return;
     }
@@ -77,18 +77,32 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         password,
       });
       await setItem("roomId", data.data.roomId);
-      navigation.navigate("Game");
+      handleEnterRoomAxios(data.data.roomId);
       setIsPublic(true);
       setPassword("");
       setTitle("");
       close();
-    } catch (error) {
+    } catch (error: any) {
       if (Platform.OS === "web") {
-        window.alert("올바른 방 정보를 입력하세요.");
+        window.alert(error.response.data.message);
       } else {
-        Alert.alert("올바른 방 정보를 입력하세요.", "");
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
       }
       console.log(error);
+    }
+  };
+
+  const handleEnterRoomAxios = async (roomId: string) => {
+    try {
+      const { data } = await enterRoomAxios({ roomId: Number(roomId), memberId, password });
+      console.log(data);
+      navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
     }
   };
 

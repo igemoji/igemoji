@@ -14,7 +14,6 @@ import Game from "@/screens/Game/Game";
 import Main from "@/screens/Main/Main";
 import RoomList from "@/screens/Main/RoomList";
 import Rank from "@/screens/Rank/Rank";
-import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 
