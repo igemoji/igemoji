@@ -38,7 +38,7 @@ export default function Content({
   const [answerImage, setAnswerImage] = useState("");
   const [answerMember, setAnswerMember] = useState(null);
   const [playerList, setPlayerList] = useState(null);
-  const [nowContent, setNowContent] = useState<string | null>(null);
+  const [nowContent, setNowContent] = useState<string | null>("quiz");
 
   useEffect(() => {
     async function setStorage() {
