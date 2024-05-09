@@ -32,6 +32,7 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
         Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
       }
     }
+    setPassword("");
   };
 
   const handlePasswordChange = (text: string) => {
@@ -47,7 +48,7 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
     <MainModal
       size="small"
       visible={visible}
-      title="searchRoom"
+      title="password"
       close={close}
       onPress={handlePasswordRoomAxios}>
       <View

@@ -23,8 +23,8 @@ export default function SearchModal({ visible, close }: MainModalProps) {
   const handleSearchRoomAxios = async () => {
     try {
       const { data } = await searchRoomAxios(Number(roomId));
+      await setItem("roomId", data.data.roomId);
       if (data.data.isPublic) {
-        await setItem("roomId", data.data.roomId);
         handleEnterRoomAxios(data.data.roomId);
       } else {
         setIsModalVisible(true);
@@ -33,6 +33,7 @@ export default function SearchModal({ visible, close }: MainModalProps) {
       console.log(error);
       Alert.alert("방을 찾을 수 없습니다.", "", [{ text: "확인" }]);
     }
+    setRoomId("");
     close();
   };
 
@@ -59,30 +60,32 @@ export default function SearchModal({ visible, close }: MainModalProps) {
   };
 
   return (
-    <MainModal
-      size="small"
-      visible={visible}
-      title="searchRoom"
-      close={close}
-      onPress={handleSearchRoomAxios}>
-      <View
-        style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
-        <Text style={{ ...Font.modalContent, color: theme.text }}>방 번호:</Text>
-        <TextInput
-          style={{
-            ...styles.textInput,
-            ...Font.modalContent,
-            backgroundColor: theme.white,
-            borderColor: theme.grey,
-            color: theme.black,
-          }}
-          keyboardType="numeric"
-          onChangeText={handleRoomNumberChange}
-          value={roomId}
-        />
-      </View>
-      <PasswordRoomModal visible={isModalVisible} close={close} />
-    </MainModal>
+    <>
+      <MainModal
+        size="small"
+        visible={visible}
+        title="searchRoom"
+        close={close}
+        onPress={handleSearchRoomAxios}>
+        <View
+          style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
+          <Text style={{ ...Font.modalContent, color: theme.text }}>방 번호:</Text>
+          <TextInput
+            style={{
+              ...styles.textInput,
+              ...Font.modalContent,
+              backgroundColor: theme.white,
+              borderColor: theme.grey,
+              color: theme.black,
+            }}
+            keyboardType="numeric"
+            onChangeText={handleRoomNumberChange}
+            value={roomId}
+          />
+        </View>
+      </MainModal>
+      <PasswordRoomModal visible={isModalVisible} close={() => setIsModalVisible(false)} />
+    </>
   );
 }
 
