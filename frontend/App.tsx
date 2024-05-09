@@ -93,7 +93,7 @@ function App() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <MusicContext.Provider value={{ isMusicOn, toggleMusic, sound, setSound, playButtonSound }}>
         <NavigationContainer>
-          <StatusBar hidden translucent={false} backgroundColor="transparent" />
+          <StatusBar hidden translucent={false} backgroundColor="translucent" />
           <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />

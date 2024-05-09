@@ -43,7 +43,7 @@ export default function LoginScreen({ navigation }: NavigationProps) {
   return (
     <View style={{ flex: 1 }}>
       <WebView
-        style={{ flex: 1, backgroundColor: isTrasparent ? "transparent" : "" }}
+        style={{ flex: 1 }}
         source={{
           uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`,
         }}
