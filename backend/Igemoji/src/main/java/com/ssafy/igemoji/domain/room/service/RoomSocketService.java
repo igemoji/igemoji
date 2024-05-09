@@ -25,12 +25,9 @@ public class RoomSocketService {
 
     /* 방 입장 */
     public RoomInfoDto enterRoom(RoomEnterRequestDto roomEnterRequestDto, String sessionId){
-        Room room = roomRepository.findById(roomEnterRequestDto.getRoomId()).orElseThrow(
+        Room room = roomRepository.findByIdByFetch(roomEnterRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(RoomErrorCode.NOT_FOUND_ROOM)
         );
-
-        if(room.getMaxNum() <= room.getMemberList().size())
-            throw new CustomException(RoomErrorCode.ROOM_FULL);
 
         Member member = memberRepository.findById(roomEnterRequestDto.getMemberId()).orElseThrow(
                 () -> new CustomException(MemberErrorCode.NOT_FOUND_MEMBER)
