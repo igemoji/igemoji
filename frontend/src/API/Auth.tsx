@@ -16,7 +16,7 @@ export const registNicknameAxios = async ({
   memberId: number;
   inputValue: string;
 }) => {
-  const res = await request.post(`/member/nickname?memberId=${memberId}&nickname=${inputValue}`, {
+  const res = await request.put(`/member/nickname?memberId=${memberId}&nickname=${inputValue}`, {
     memberId,
     nickname: inputValue,
   });

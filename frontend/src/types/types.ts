@@ -18,6 +18,7 @@ interface AnswerProps {
 interface NavigationProps {
   navigation: {
     navigate: (screen: string) => void;
+    reset: any;
   };
 }
 

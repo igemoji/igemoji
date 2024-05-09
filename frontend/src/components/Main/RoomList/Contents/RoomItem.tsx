@@ -1,14 +1,15 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert, Platform } from "react-native";
 
 import PasswordRoomModal from "./PasswordRoomModal";
 
 import Font from "@/config/Font";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
-import { setItem } from "@/utils/asyncStorage";
+import { getItem, setItem } from "@/utils/asyncStorage";
+import { enterRoomAxios } from "@/API/Main";
 
 interface RoomItemProps {
   roomId: number;
@@ -52,7 +53,21 @@ export default function RoomItem({
       // 비밀방인 경우에만 모달 열기
       setIsModalVisible(true);
     } else {
+      handleEnterRoomAxios();
+    }
+  };
+  const handleEnterRoomAxios = async () => {
+    try {
+      const memberId = await getItem("memberId");
+      const { data } = await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
+      console.log(data);
       navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
     }
   };
 

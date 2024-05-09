@@ -46,18 +46,20 @@ export default function SignIn() {
       }
     }
   };
+
   useEffect(() => {
     if (Platform.OS === "web") {
       const url = window.location.href;
       getCode(url);
     }
-  });
+  }, []);
 
   const handleSignInAxios = () => {
     if (Platform.OS === "web") {
       window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+    } else {
+      navigation.navigate("KakaoLogin");
     }
-    navigation.navigate("KakaoLogin");
   };
   return (
     <Background>
