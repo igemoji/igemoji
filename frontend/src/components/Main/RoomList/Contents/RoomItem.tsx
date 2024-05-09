@@ -52,7 +52,7 @@ export default function RoomItem({
       // 비밀방인 경우에만 모달 열기
       setIsModalVisible(true);
     } else {
-      navigation.reset({ routes: [{ name: "Game" }] });
+      navigation.navigate("Game");
     }
   };
 

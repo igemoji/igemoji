@@ -24,7 +24,9 @@
       "package": "com.teamGoAhead.igemoji"
     },
     "web": {
-      "favicon": "./assets/logo/logo.png"
+      "favicon": "./assets/logo/logo.png",
+      "output": "server",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {
