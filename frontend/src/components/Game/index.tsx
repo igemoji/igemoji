@@ -1,7 +1,5 @@
 import { Audio } from "expo-av";
-import Constants from "expo-constants";
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 
 import Background from "./Background";
 import Chat from "./Chat";
@@ -19,6 +17,7 @@ export default function Game() {
   const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const [socketMessage, setSocketMessage] = useState(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [answer, setAnswer] = useState("");
   const [userState, setUserState] = useState<string>("room");
 
   useEffect(() => {

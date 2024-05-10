@@ -40,8 +40,7 @@ export default function SearchModal({ visible, close }: MainModalProps) {
   const handleEnterRoomAxios = async (roomId: string) => {
     try {
       const memberId = await getItem("memberId");
-      const { data } = await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
-      console.log(data);
+      await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
       navigation.navigate("Game");
     } catch (error: any) {
       if (Platform.OS === "web") {
