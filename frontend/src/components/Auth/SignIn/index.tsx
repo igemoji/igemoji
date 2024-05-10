@@ -21,19 +21,13 @@ export default function SignIn() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const getCode = async (target: string) => {
-    console.log(target);
-
     const exp = "code=";
     const condition = target.indexOf(exp);
 
     if (condition !== -1) {
       const requestCode = target.substring(condition + exp.length);
-      console.log(requestCode);
-
       try {
         const { data } = await kakaoLoginAxios(requestCode);
-        console.log(data);
-
         await setItem("nickname", data.data.memberInfo.nickname);
         await setItem("memberId", data.data.memberInfo.memberId);
         if (data.data.memberInfo.nickname === null) {

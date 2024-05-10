@@ -21,11 +21,7 @@ const Font = StyleSheet.create({
     fontSize: 15,
     fontFamily: "PretendardRegular",
   },
-  emoji: {
-    fontSize: 30,
-  },
   hint: {
-    fontSize: 14,
     fontFamily: "PretendardRegular",
   },
   mainLarge: {

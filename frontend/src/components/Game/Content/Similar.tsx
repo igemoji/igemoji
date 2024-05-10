@@ -3,36 +3,46 @@ import { Text, StyleSheet, View, Animated } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
+import { Message } from "@/types/types";
 
-export default function Similar() {
+export default function Similar({ messages }: { messages: Message[] }) {
   const { theme } = useContext(ThemeContext);
-  const similarInfo: any[] = [
-    { title: "준비중입니다", similar: 100 },
-    { title: "준비중입니다", similar: 100 },
-    { title: "준비중입니다", similar: 100 },
-  ];
+  const [similarEffect, setSimilarEffect] = useState<Message[]>([]);
+  const [similarRank, setSimilarRank] = useState<Message[]>([]);
+
+  useEffect(() => {
+    if (messages.length && messages[messages.length - 1].similar) {
+      const isExisting = similarRank.some(
+        (item) => item.similar === messages[messages.length - 1].similar
+      );
+      if (!isExisting) {
+        setSimilarEffect((currentSimilar) => [...currentSimilar, messages[messages.length - 1]]);
+        setSimilarRank((currentSimilar) => [...currentSimilar, messages[messages.length - 1]]);
+        setTimeout(() => {
+          setSimilarEffect((currentSimilar) => currentSimilar.slice(1));
+        }, 5000);
+      }
+    }
+  }, [messages]);
+
+  const sortedSimilarRank = [...similarRank].sort((a, b) => {
+    const similarA = a.similar ?? 0;
+    const similarB = b.similar ?? 0;
+    return similarB - similarA;
+  });
 
   return (
     <View style={styles.container}>
       <View style={{ ...styles.word }}>
-        <ProgressBar title="영화 제목(유사도 준비중)" similar={70} />
-        <ProgressBar title="영화 제목(유사도 준비중)" similar={70} />
-        <ProgressBar title="영화 제목(유사도 준비중)" similar={70} />
-        {/* <View style={styles.progressBarBackground}>
-          <View style={{ ...styles.progressBarFill, width: "60%" }} />
-        </View>
-        <Text style={[styles.wordText, Font.similar, { color: theme.text }]}>애나벨</Text>
+        {similarEffect.map((data, index) => (
+          <ProgressBar
+            title={data.content}
+            similar={data.similar || 100}
+            key={data.nickname + index}
+          />
+        ))}
       </View>
-      <View style={{ ...styles.word, top: "80%", left: "40%" }}>
-        <View style={styles.progressBarBackground}>
-          <View style={{ ...styles.progressBarFill, width: "60%" }} />
-        </View>
-        <Text style={[styles.wordText, Font.similar, { color: theme.text }]}>
-          닥터스트레인지 대혼돈의 멀티버스
-        </Text> */}
-      </View>
-
-      {similarInfo.length !== 0 && (
+      {sortedSimilarRank.length !== 0 && (
         <View style={styles.similarRank}>
           <View style={styles.similarRankContent}>
             <View style={styles.similarRankWord}>
@@ -46,15 +56,14 @@ export default function Similar() {
               </Text>
             </View>
           </View>
-
-          {similarInfo.map((item, index) => (
+          {sortedSimilarRank.map((data, index) => (
             <View style={styles.similarRankContent} key={index}>
               <View style={styles.similarRankWord}>
                 <Text
                   style={[styles.benchmarkText, Font.similar, { color: theme.text }]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
-                  {item.title}
+                  {data.content}
                 </Text>
               </View>
               <View style={styles.similarRankNumber}>
@@ -62,7 +71,7 @@ export default function Similar() {
                   style={[styles.benchmarkText, Font.similar, { color: theme.text }]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
-                  {item.similar}
+                  {data.similar}
                 </Text>
               </View>
             </View>

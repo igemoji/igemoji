@@ -50,6 +50,7 @@ type Message = {
   message: string;
   nickname: string;
   roomId: number;
+  similar?: number;
 };
 
 type ranking = {

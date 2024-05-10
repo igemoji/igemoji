@@ -27,10 +27,9 @@ export default function Content({
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [hostId, setHostId] = useState(null);
-  const [timeCount, setTimeCount] = useState(5);
   const [allQuizCount, setAllQuizCount] = useState(10);
   const [nowQuizCount, setNowQuizCount] = useState(10);
-  const [genre, setGenre] = useState("영화");
+  // const [genre, setGenre] = useState("영화");
   const [emoji, setEmoji] = useState(null);
   const [hint1, setHint1] = useState(null);
   const [hint2, setHint2] = useState(null);
@@ -42,7 +41,7 @@ export default function Content({
 
   useEffect(() => {
     async function setStorage() {
-      const roomId = await getItem("roomId");
+      // const roomId = await getItem("roomId");
       const memberId = await getItem("memberId");
       if (
         socketMessage?.message === "ENTER_SUCCESS" ||
@@ -53,7 +52,7 @@ export default function Content({
         setNowQuizCount(socketMessage.questionNum);
         setHostId(socketMessage.host?.memberId);
 
-        if (!socketMessage.isProgress) {
+        if (!socketMessage.isProgress && socketMessage.senderId === memberId) {
           if (socketMessage.host?.memberId === memberId) {
             setNowContent("hostwaiting");
           } else {
@@ -118,12 +117,12 @@ export default function Content({
             {({ remainingTime }) => remainingTime}
           </Timer>
           <Count quiz={[nowQuizCount, allQuizCount]} />
-          {nowContent === "hostwaiting" && <HostWaiting />}
+          {nowContent === "hostwaiting" && <HostWaiting allQuizCount={allQuizCount} />}
           {nowContent === "playerWaiting" && <PlayerWaiting />}
           {(nowContent === "quiz" || nowContent === "answer") && (
             <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
           )}
-          {nowContent === "quiz" && <Similar />}
+          {nowContent === "quiz" && <Similar messages={messages} />}
           {nowContent === "answer" && (
             <>
               <Answer answerName={answerName} answerImage={answerImage} />
