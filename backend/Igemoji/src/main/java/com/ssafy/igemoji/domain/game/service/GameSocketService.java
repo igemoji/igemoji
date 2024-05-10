@@ -2,6 +2,9 @@ package com.ssafy.igemoji.domain.game.service;
 
 import com.ssafy.igemoji.domain.game.GameInfo;
 import com.ssafy.igemoji.domain.game.dto.*;
+import com.ssafy.igemoji.domain.level.Level;
+import com.ssafy.igemoji.domain.level.exception.LevelErrorCode;
+import com.ssafy.igemoji.domain.level.repository.LevelRepository;
 import com.ssafy.igemoji.domain.member.Member;
 import com.ssafy.igemoji.domain.member.exception.MemberErrorCode;
 import com.ssafy.igemoji.domain.member.repository.MemberRepository;
@@ -33,6 +36,7 @@ public class GameSocketService {
     private final MovieService movieService;
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
+    private final LevelRepository levelRepository;
 
     private final Map<Integer, ScheduledFuture<?>> scheduledFutures = new ConcurrentHashMap<>();
     private final Map<Integer, GameInfo> gameInfoMap = new HashMap<>();
@@ -110,12 +114,16 @@ public class GameSocketService {
             player.updateAddRating(player.getScore() * 10);
             Member member = memberRepository.findById(player.getMemberId())
                     .orElseThrow( () -> new CustomException(MemberErrorCode.NOT_FOUND_MEMBER));
+            Level level = levelRepository.findById(member.getLevel())
+                    .orElseThrow(() -> new CustomException(LevelErrorCode.NOT_FOUND_LEVEL));
             member.addRating(player.getScore() * 10);
             member.addExp(exp);
+            if(member.getExp() <= level.getExp())
+                member.levelUp(level.getExp());
             memberRepository.save(member);
         }
         Room room = roomRepository.findById(roomId)
-                .orElseThrow( () -> new CustomException(RoomErrorCode.NOT_FOUND_ROOM) );
+                .orElseThrow(() -> new CustomException(RoomErrorCode.NOT_FOUND_ROOM));
         room.stopGame();
         roomRepository.save(room);
     }

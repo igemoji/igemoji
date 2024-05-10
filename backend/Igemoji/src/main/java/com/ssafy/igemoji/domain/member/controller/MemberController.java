@@ -31,11 +31,21 @@ public class MemberController {
         return ResponseFactory.success("랭킹 조회 완료", memberService.getRank(memberId));
     }
 
-
     @GetMapping("/nickname/{nickname}")
     @Operation(summary = "닉네임 중복 체크", description = "맴버 닉네임 중복 체크 API")
     public ResponseEntity<?> exitNickname(@PathVariable String nickname){
         return ResponseFactory.success("중복 체크 완료", memberService.exitNickname(nickname));
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<?> getMember(@PathVariable Integer memberId){
+        return ResponseFactory.success("맴버 조회 완료", memberService.getMember(memberId));
+    }
+
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<?> removeMember(@PathVariable Integer memberId){
+        memberService.removeMember(memberId);
+        return ResponseFactory.success("맴버 탈퇴 완료");
     }
 
 }
