@@ -52,7 +52,7 @@ export default function Content({
         setNowQuizCount(socketMessage.questionNum);
         setHostId(socketMessage.host?.memberId);
 
-        if (!socketMessage.isProgress) {
+        if (!socketMessage.isProgress && socketMessage.senderId === memberId) {
           if (socketMessage.host?.memberId === memberId) {
             setNowContent("hostwaiting");
           } else {
@@ -117,7 +117,7 @@ export default function Content({
             {({ remainingTime }) => remainingTime}
           </Timer>
           <Count quiz={[nowQuizCount, allQuizCount]} />
-          {nowContent === "hostwaiting" && <HostWaiting />}
+          {nowContent === "hostwaiting" && <HostWaiting allQuizCount={allQuizCount} />}
           {nowContent === "playerWaiting" && <PlayerWaiting />}
           {(nowContent === "quiz" || nowContent === "answer") && (
             <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
