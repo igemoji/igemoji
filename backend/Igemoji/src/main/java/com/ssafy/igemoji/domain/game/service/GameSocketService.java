@@ -205,7 +205,9 @@ public class GameSocketService {
         sendMessage(responseDto, chatRequestDto.getRoomId()); // 채팅 전송
 
         // 정답 체크
-        if(gameInfo.getGameStatus().equals(GameStatus.PROCEEDING) && chatRequestDto.getContent().equals(gameInfo.currentAnswer())){
+        String answer = gameInfo.currentAnswer();
+        String answerNoSpace = gameInfo.currentAnswer().replaceAll(" ", "");
+        if(gameInfo.getGameStatus().equals(GameStatus.PROCEEDING) && (chatRequestDto.getContent().equals(answer)||chatRequestDto.getContent().equals(answerNoSpace))){
             gameInfo.correctAnswer(gameInfo.chatPlayer(chatRequestDto.getMemberId())); // 문제 정답자 닉네임 입력
             gameInfo.increasePlayerScore(chatRequestDto.getMemberId()); // 정답자 score 증가
             gameInfo.updateGameStatus(GameStatus.PRINT_ANSWER);
