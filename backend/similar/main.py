@@ -1,6 +1,6 @@
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from pydantic import BaseModel
 
 import pandas as pd
@@ -114,3 +114,7 @@ async def compare_answers(postData: AnswerData):
             answer_index = movie_titles.index(answer)
             # print(f"{answer} 영화와의 유사도 점수: {similarity_scores[answer_index]:.4f} ")
             return {"user_input": postData.user_answer, "similarity_score": min(float(f"{similarity_scores[answer_index]*100:.1f}"), 100)}
+
+@app.get("/similar/connect")
+async def test():
+    return Response(content="Connection successful", status_code=200)
