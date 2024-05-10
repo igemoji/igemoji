@@ -52,6 +52,14 @@ type Message = {
   roomId: number;
 };
 
+type ranking = {
+  rank: number;
+  memberId: number;
+  nickname: string;
+  level: number;
+  rating: number;
+};
+
 export type {
   ThemeIconName,
   MusicIconName,
@@ -64,6 +72,7 @@ export type {
   PlayerListProps,
   Message,
   PlayerInfo,
+  ranking,
 };
 
 type ColorHex = `#${string}`;

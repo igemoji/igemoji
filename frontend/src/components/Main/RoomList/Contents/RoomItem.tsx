@@ -72,7 +72,6 @@ export default function RoomItem({
   };
 
   const closeModal = () => {
-    playButtonSound();
     setIsModalVisible(false);
   };
 
