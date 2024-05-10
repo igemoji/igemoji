@@ -9,6 +9,16 @@ export const kakaoLoginAxios = async (code: string) => {
   return res;
 };
 
+export const getMemberInfoAxios = async (memberId: number) => {
+  const res = await request.get(`/member/${memberId}`);
+  return res;
+};
+
+export const deleteMemberAxios = async (memberId: number) => {
+  const res = await request.delete(`/member/${memberId}`);
+  return res;
+};
+
 export const registNicknameAxios = async ({
   memberId,
   inputValue,

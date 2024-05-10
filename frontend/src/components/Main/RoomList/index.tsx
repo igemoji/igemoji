@@ -10,6 +10,7 @@ import Footer from "../../Footer";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
+import { useFocusEffect } from "@react-navigation/native";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function RoomList({ navigation }: NavigationProps) {
@@ -17,23 +18,31 @@ export default function RoomList({ navigation }: NavigationProps) {
   const { theme } = useContext(ThemeContext);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    async function loadSound() {
-      const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
+  async function loadSound() {
+    const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
+
+    if (sound && isMusicOn) {
+      await sound.stopAsync();
       setSound(newSound);
-      if (sound && isMusicOn) {
-        await sound.stopAsync();
-        await newSound.setIsLoopingAsync(true);
-        await newSound.setVolumeAsync(1);
-        await newSound.playAsync();
-      }
+      await newSound.setIsLoopingAsync(true);
+      await newSound.setVolumeAsync(1);
+      await newSound.playAsync();
     }
-    loadSound();
-  }, []);
+  }
 
   const refresh = () => {
     setRefreshKey((prevKey) => prevKey + 1);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadSound();
+      setTimeout(() => {
+        refresh();
+      }, 500);
+    }, [])
+  );
+
   return (
     <Background>
       <View style={styles.container}>

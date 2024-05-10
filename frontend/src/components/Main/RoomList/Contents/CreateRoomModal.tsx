@@ -44,7 +44,6 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
   });
 
   const handleTextChange = (text: string) => {
-    // 입력값 길이 확인
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setTitle(text);
@@ -122,6 +121,12 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       if (text.length <= 4) {
         setPassword(text);
       }
+    } else {
+      if (Platform.OS === "web") {
+        window.alert("비밀번호는 4자리 숫자입니다.");
+      } else {
+        Alert.alert("비밀번호는 4자리 숫자입니다.", "", [{ text: "확인" }]);
+      }
     }
   };
 
@@ -130,7 +135,12 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       size="middle"
       visible={visible}
       title="createRoom"
-      close={close}
+      close={() => {
+        setPassword("");
+        setTitle("");
+        setIsPublic(true);
+        close();
+      }}
       onPress={handleCreateRoomAxios}>
       <View
         style={{

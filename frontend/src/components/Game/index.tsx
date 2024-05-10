@@ -25,9 +25,9 @@ export default function Game() {
       const { sound: newSound } = await Audio.Sound.createAsync(
         require("~/music/perfect_beauty.mp3")
       );
-      setSound(newSound);
       if (sound && isMusicOn) {
         await sound.stopAsync();
+        setSound(newSound);
         await newSound.setIsLoopingAsync(true);
         await newSound.setVolumeAsync(1);
         await newSound.playAsync();

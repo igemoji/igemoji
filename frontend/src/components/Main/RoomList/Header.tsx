@@ -45,7 +45,6 @@ export default function Header({ refresh }: { refresh: () => void }) {
       await setItem("roomId", data.data.roomId);
       handleEnterRoomAxios(data.data.roomId);
     } catch (error) {
-      console.log(error);
       setNotFoundModalVisible(true);
     }
   };
@@ -95,7 +94,10 @@ export default function Header({ refresh }: { refresh: () => void }) {
             backgroundColor: theme.kungyaGreenAccent,
             marginLeft: 5,
           }}
-          onPress={refresh}>
+          onPress={() => {
+            refresh();
+            playButtonSound();
+          }}>
           <FontAwesome name="refresh" size={24} color="white" />
         </TouchableOpacity>
       </View>
