@@ -18,12 +18,10 @@ class YourResponseModel(BaseModel):
     user_input: str
     similarity_score: float
 
+data = pd.read_csv('final_movie.csv')
 
 @app.post("/similar", response_model=YourResponseModel)
 async def compare_answers(postData: AnswerData):
-    def load_data():
-        return pd.read_csv('final_movie.csv')
-
 
     def create_tfidf_embeddings(texts):
         vectorizer = TfidfVectorizer(analyzer='word')
@@ -91,7 +89,6 @@ async def compare_answers(postData: AnswerData):
     answer = custom_strip(postData.correct_answer)
     print(answer)
     
-    data = load_data()
     texts = data['text'].tolist()
     movie_titles = data['영화 제목'].tolist()
 
