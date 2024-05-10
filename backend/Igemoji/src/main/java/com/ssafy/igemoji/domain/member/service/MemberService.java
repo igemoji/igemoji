@@ -75,7 +75,7 @@ public class MemberService {
 
     /* 회원 탈퇴 */
     public void removeMember(Integer memberId) {
-        if(memberRepository.existsById(memberId))
+        if(!memberRepository.existsById(memberId))
             throw new CustomException(MemberErrorCode.NOT_FOUND_MEMBER);
 
         memberRepository.deleteById(memberId);
