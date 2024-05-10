@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { Text, StyleSheet, View, Keyboard } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
@@ -7,29 +7,52 @@ import { EmojiProps } from "@/types/types";
 
 export default function Emoji({ emoji, hint1, hint2 }: EmojiProps) {
   const { theme } = useContext(ThemeContext);
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
 
-  const handleLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
-    const { height } = event.nativeEvent.layout;
-    setContainerHeight(height);
-  };
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(false);
+    });
 
-  const fontSize = containerHeight * 0.3;
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
-    <View style={styles.container} onLayout={handleLayout}>
-      <Text style={[Font.emoji, { fontSize }, styles.text]}>{emoji}</Text>
-      <Text style={[Font.hint, styles.text, { color: theme.text }]}>{hint1}</Text>
-      <Text style={[Font.hint, styles.text, { color: theme.text }]}>{hint2}</Text>
+    <View style={styles.container}>
+      <Text style={[styles.text, { fontSize: keyboardStatus ? 30 : 45 }]}>{emoji}</Text>
+      {hint1 && (
+        <Text
+          style={[
+            Font.hint,
+            styles.text,
+            { color: theme.text, fontSize: keyboardStatus ? 16 : 20 },
+          ]}>
+          {hint1}
+        </Text>
+      )}
+      {hint2 && (
+        <Text
+          style={[
+            Font.hint,
+            styles.text,
+            { color: theme.text, fontSize: keyboardStatus ? 20 : 24 },
+          ]}>
+          {hint2}
+        </Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingVertical: "5%",
+    marginVertical: 10,
   },
   text: {
     textAlign: "center",

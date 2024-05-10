@@ -11,16 +11,15 @@ import { getItem } from "@/utils/asyncStorage";
 
 const { send } = gameSocket;
 
-export default function HostWaiting() {
+export default function HostWaiting({ allQuizCount }: { allQuizCount: number }) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
   const quizType = ["영화"];
   const quizCount = [10, 1, 2];
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
-  const [selectedQuizCount, setSelectedQuizCount] = useState(10);
+  const [selectedQuizCount, setSelectedQuizCount] = useState(allQuizCount);
 
   const handleQuizTypePress = (type: string) => {
-    // TODO: 변경하는 소켓 메세지 전송
     setSelectedQuizType(type);
   };
 
