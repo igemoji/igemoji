@@ -50,7 +50,7 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close })
           </Text>
           <View style={styles.buttonContainer}>
             <View style={{ width: 100 }}>
-              <AwesomeButton
+              {/* <AwesomeButton
                 backgroundColor={theme.kungyaRed}
                 backgroundDarker={theme.kungyaRedDark}
                 textColor={theme.text}
@@ -60,10 +60,10 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close })
                 height={45}
                 onPress={handleDeleteMember}>
                 탈퇴
-              </AwesomeButton>
+              </AwesomeButton> */}
             </View>
             <View style={{ width: 100 }}>
-              <AwesomeButton
+              {/* <AwesomeButton
                 backgroundColor={theme.kungyaYelloLight}
                 backgroundDarker={theme.kungyaYelloDark}
                 textColor={theme.text}
@@ -73,7 +73,7 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close })
                 height={45}
                 onPress={close}>
                 취소
-              </AwesomeButton>
+              </AwesomeButton> */}
             </View>
           </View>
         </View>

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { View, StyleSheet, Dimensions, Text, Image } from "react-native";
-import AwesomeButton from "react-native-really-awesome-button";
+// import AwesomeButton from "react-native-really-awesome-button";
 
 import Button from "@/components/Button";
 import Font from "@/config/Font";
@@ -102,19 +102,19 @@ function ModalButton({
       </View>
     );
   } else {
-    return (
-      <AwesomeButton
-        width={300}
-        height={45}
-        backgroundColor="#FEE500"
-        backgroundDarker="#8B8000"
-        borderRadius={10}
-        onPress={onPress}
-        style={styles.awesomeButton}>
-        <Image style={styles.kakaoLogin} source={require("~/kakao/kakaoLogo.png")} />
-        <Text style={{ opacity: 0.85, fontSize: 16 }}>카카오 로그인</Text>
-      </AwesomeButton>
-    );
+    // return (
+    //   <AwesomeButton
+    //     width={300}
+    //     height={45}
+    //     backgroundColor="#FEE500"
+    //     backgroundDarker="#8B8000"
+    //     borderRadius={10}
+    //     onPress={onPress}
+    //     style={styles.awesomeButton}>
+    //     <Image style={styles.kakaoLogin} source={require("~/kakao/kakaoLogo.png")} />
+    //     <Text style={{ opacity: 0.85, fontSize: 16 }}>카카오 로그인</Text>
+    //   </AwesomeButton>
+    // );
   }
 }
 
