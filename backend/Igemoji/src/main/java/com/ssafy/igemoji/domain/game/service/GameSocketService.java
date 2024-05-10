@@ -118,7 +118,7 @@ public class GameSocketService {
                     .orElseThrow(() -> new CustomException(LevelErrorCode.NOT_FOUND_LEVEL));
             member.addRating(player.getScore() * 10);
             member.addExp(exp);
-            if(member.getExp() <= level.getExp())
+            if(member.getExp() >= level.getExp())
                 member.levelUp(level.getExp());
             memberRepository.save(member);
         }
