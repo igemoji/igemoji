@@ -1,46 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Image, ScrollView } from "react-native";
 
 import Background from "./Background";
 import Footer from "../Footer";
 
 import Font from "@/config/Font";
+import { getRankListAxios } from "@/API/Rank";
+import { getItem } from "@/utils/asyncStorage";
+import { ranking } from "@/types/types";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function Rank() {
-  const ranking = [
-    { rank: 4, level: 12, nickname: "나는2등", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "나는1등", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "3등", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-    { rank: 4, level: 12, nickname: "준비중", rankingPoint: 5013 },
-  ];
+  const [ranking, setRanking] = useState<ranking[]>([]);
+  const [myRanking, setMyRanking] = useState<ranking>();
+  const [topRanking, setTopRanking] = useState<ranking[]>([]);
+
+  useEffect(() => {
+    const getRankList = async () => {
+      try {
+        const memberId = await getItem("memberId");
+        const { data } = await getRankListAxios(Number(memberId));
+        setRanking(data.data.ranks);
+        setMyRanking(data.data.myRank);
+        setTopRanking([data.data.ranks[1], data.data.ranks[0], data.data.ranks[2]]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRankList();
+  }, []);
 
   return (
     <Background>
@@ -52,7 +41,7 @@ export default function Rank() {
           <View style={styles.myRanking}>
             <Image style={styles.image} source={require("~/timerEmoji.png")} />
             <View style={{ flex: 1, marginLeft: 10 }}>
-              <Text style={Font.rankingNumber}>17</Text>
+              <Text style={Font.rankingNumber}>{myRanking?.rank}</Text>
             </View>
             <View
               style={{
@@ -62,17 +51,17 @@ export default function Rank() {
                 paddingEnd: 30,
               }}>
               <View style={{ width: "30%" }}>
-                <Text style={[Font.rankingLevel, { marginBottom: -3 }]}>Lv.12</Text>
-                <Text style={Font.rankingNickname}>준비중</Text>
+                <Text style={[Font.rankingLevel, { marginBottom: -3 }]}>Lv.{myRanking?.level}</Text>
+                <Text style={Font.rankingNickname}>{myRanking?.nickname}</Text>
               </View>
               <View style={{ justifyContent: "center", alignItems: "flex-end" }}>
-                <Text style={Font.rankingScore}>4072점</Text>
+                <Text style={Font.rankingScore}>{myRanking?.rating}점</Text>
               </View>
             </View>
           </View>
           <View style={styles.allRanking}>
             <View style={styles.topThreeUser}>
-              {ranking.slice(0, 3).map((user, index) => (
+              {topRanking.map((user, index) => (
                 <View
                   style={{
                     ...styles.topThreeRanking,
@@ -94,7 +83,7 @@ export default function Rank() {
                   />
                   <Text style={Font.rankingLevel}>Lv.{user.level}</Text>
                   <Text style={Font.rankingNickname}>{user.nickname}</Text>
-                  <Text style={Font.rankingScore}>{user.rankingPoint}점</Text>
+                  <Text style={Font.rankingScore}>{user.rating}점</Text>
                 </View>
               ))}
             </View>
@@ -116,7 +105,7 @@ export default function Rank() {
                       <Text style={Font.rankingNickname}>{user.nickname}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: "flex-end" }}>
-                      <Text style={Font.rankingScore}>{user.rankingPoint}점</Text>
+                      <Text style={Font.rankingScore}>{user.rating}점</Text>
                     </View>
                   </View>
                 </View>

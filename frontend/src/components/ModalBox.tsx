@@ -34,13 +34,10 @@ const modalHeight = {
 
 export default function ModalBox({ title, children, onPress, onPress2 }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
-  const { playButtonSound } = useContext(MusicContext);
   const handelPress1 = () => {
-    playButtonSound();
     onPress();
   };
   const handlePress2 = () => {
-    playButtonSound();
     onPress2 && onPress2();
   };
   return (

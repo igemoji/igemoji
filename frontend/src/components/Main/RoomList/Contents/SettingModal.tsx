@@ -14,13 +14,14 @@ import {
 
 import MainModal from "../Modal";
 
-import { registNicknameAxios } from "@/API/Auth";
+import { getMemberInfoAxios, registNicknameAxios } from "@/API/Auth";
 import MusicToggleButton from "@/components/MusicToggleButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 import { getItem, setItem } from "@/utils/asyncStorage";
+import DeleteMemberModal from "./DeleteMemberModal";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -28,13 +29,34 @@ export default function SettingModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
   const [isTextInputFocused, setIsTextInputFocused] = useState(false);
   const [memberId, setMemberId] = useState<number>(0);
+  const [nickname, setNickname] = useState<string>("");
+  const [rank, setRank] = useState<number>(0);
+  const [rating, setRating] = useState<number>(0);
+  const [exp, setExp] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);
+  const [levelExp, setLevelExp] = useState<number>(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
-    const getMemberId = async () => {
-      const id = (await AsyncStorage.getItem("memberId")) as string;
-      setMemberId(Number(id));
+    const getMemberInfo = async () => {
+      try {
+        const mi = await getItem("memberId");
+        setMemberId(mi);
+
+        const { data } = await getMemberInfoAxios(Number(mi));
+
+        setNickname(data.data.nickname);
+        await setItem("nickname", data.data.nickname);
+        setRank(data.data.rank);
+        setRating(data.data.rating);
+        setExp(data.data.exp);
+        setLevel(data.data.level);
+        setLevelExp(data.data.level_exp);
+      } catch (error) {
+        console.log(error);
+      }
     };
-    getMemberId();
+    getMemberInfo();
   });
 
   const handleTextInputFocus = () => {
@@ -45,129 +67,143 @@ export default function SettingModal({ visible, close }: MainModalProps) {
   };
 
   return (
-    <MainModal
-      size={Platform.OS === "web" ? "large" : isTextInputFocused ? "middle" : "large"}
-      visible={visible}
-      title="setting"
-      close={() => {
-        close();
-        handleTextInputBlur();
-      }}
-      onPress={() => {
-        close();
-        handleTextInputBlur();
-      }}>
-      {Platform.OS === "web" ? (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            width: 350,
-          }}>
-          <ThemeToggleButton />
-          <MusicToggleButton />
-        </View>
-      ) : (
-        !isTextInputFocused && (
+    <>
+      <MainModal
+        size={Platform.OS === "web" ? "large" : isTextInputFocused ? "middle" : "large"}
+        visible={visible}
+        title="setting"
+        close={() => {
+          close();
+          handleTextInputBlur();
+        }}
+        onPress={() => {
+          close();
+          handleTextInputBlur();
+        }}>
+        {Platform.OS === "web" ? (
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-around",
-              width: SCREENWIDTH * 0.7,
+              width: 350,
             }}>
             <ThemeToggleButton />
             <MusicToggleButton />
           </View>
-        )
-      )}
-      <View
-        style={{
-          ...styles.box,
-          borderColor: theme.grey,
-          width: Platform.OS === "web" ? 350 : SCREENWIDTH * 0.7,
-        }}>
-        <Text
-          style={{
-            ...Font.modalContent,
-            fontWeight: "600",
-            color: theme.text,
-            marginBottom: 20,
-          }}>
-          내 정보
-        </Text>
-        <ChangeNickname
-          handleTextInputFocus={handleTextInputFocus}
-          handleTextInputBlur={handleTextInputBlur}
-          memberId={memberId}
-          close={close}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
-          }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text
+        ) : (
+          !isTextInputFocused && (
+            <View
               style={{
-                ...Font.modalContent,
-                fontWeight: "600",
-                color: theme.text,
+                flexDirection: "row",
+                justifyContent: "space-around",
+                width: SCREENWIDTH * 0.7,
               }}>
-              레벨
-            </Text>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}> : </Text>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>2</Text>
-          </View>
-          {/* 애니메이션 */}
-          <ProgressBar />
-        </View>
+              <ThemeToggleButton />
+              <MusicToggleButton />
+            </View>
+          )
+        )}
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+            ...styles.box,
+            borderColor: theme.grey,
+            width: Platform.OS === "web" ? 350 : SCREENWIDTH * 0.7,
           }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text
-              style={{
-                ...Font.modalContent,
-                fontWeight: "600",
-                color: theme.text,
-              }}>
-              랭킹
-            </Text>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}> : </Text>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>2위 </Text>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
-              (1,601점)
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
-          }}>
-          <View />
-          <TouchableOpacity
+          <Text
             style={{
-              ...styles.changeNickname,
-              shadowColor: theme.black,
-              backgroundColor: theme.kungyaYello,
-              width: 100,
+              ...Font.modalContent,
+              fontWeight: "600",
+              color: theme.text,
+              marginBottom: 20,
             }}>
-            <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
-              회원 탈퇴
-            </Text>
-          </TouchableOpacity>
+            내 정보
+          </Text>
+          <ChangeNickname
+            handleTextInputFocus={handleTextInputFocus}
+            handleTextInputBlur={handleTextInputBlur}
+            memberId={memberId}
+            close={close}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+            }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  ...Font.modalContent,
+                  fontWeight: "600",
+                  color: theme.text,
+                }}>
+                레벨
+              </Text>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                {" "}
+                :{" "}
+              </Text>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                {level}
+              </Text>
+            </View>
+            {/* 애니메이션 */}
+            <ProgressBar exp={exp} levelExp={levelExp} />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+            }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  ...Font.modalContent,
+                  fontWeight: "600",
+                  color: theme.text,
+                }}>
+                랭킹
+              </Text>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                {" "}
+                :{" "}
+              </Text>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                {rank}위{" "}
+              </Text>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                ({rating}점)
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+            }}>
+            <View />
+            <TouchableOpacity
+              style={{
+                ...styles.changeNickname,
+                shadowColor: theme.black,
+                backgroundColor: theme.kungyaYello,
+                width: 100,
+              }}
+              onPress={() => setShowDeleteModal(true)}>
+              <Text style={{ ...Font.modalContent, fontWeight: "600", color: theme.text }}>
+                회원 탈퇴
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </MainModal>
+      </MainModal>
+      <DeleteMemberModal visible={showDeleteModal} close={() => setShowDeleteModal(false)} />
+    </>
   );
 }
 
@@ -305,21 +341,19 @@ const Validation = ({ isInvalidLength }: ValidationProps) => {
   );
 };
 
-const ProgressBar = () => {
+const ProgressBar = ({ exp, levelExp }: { exp: number; levelExp: number }) => {
   const { theme } = useContext(ThemeContext);
-  const [presentPrice, setPresentPrice] = useState(350);
-  const [targetPrice, setTargetPrice] = useState(500);
   const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const percentage = (presentPrice / targetPrice) * 100;
+    const percentage = (exp / levelExp) * 100;
 
     Animated.timing(progressAnim, {
       toValue: percentage,
       duration: 1000,
       useNativeDriver: false,
     }).start();
-  }, [presentPrice, targetPrice]);
+  }, [exp, levelExp]);
 
   const width = progressAnim.interpolate({
     inputRange: [0, 100],
@@ -333,7 +367,7 @@ const ProgressBar = () => {
         style={[styles.progressBarFill, { width }, { backgroundColor: theme.kungyaGreenAccent2 }]}
       />
       <Text style={{ alignSelf: "flex-end", ...Font.mainSmall, color: theme.text }}>
-        {presentPrice} / {targetPrice} EXP
+        {exp} / {levelExp} EXP
       </Text>
     </View>
   );
