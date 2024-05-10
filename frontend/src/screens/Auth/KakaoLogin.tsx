@@ -11,13 +11,11 @@ const REDIRECT_URI = "https://back.igemoji.store/oauth2/kakao";
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 export default function LoginScreen({ navigation }: NavigationProps) {
-  const [isTrasparent, setIsTransparent] = useState(true);
   const getCode = async (target: string) => {
     const exp = "code=";
     const condition = target.indexOf(exp);
 
     if (condition !== -1) {
-      setIsTransparent(true);
       const requestCode = target.substring(condition + exp.length);
       try {
         const { data } = await kakaoLoginAxios(requestCode);
@@ -32,7 +30,6 @@ export default function LoginScreen({ navigation }: NavigationProps) {
         console.log(error);
       }
     } else {
-      setIsTransparent(false);
     }
   };
 
