@@ -38,11 +38,13 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
+    @Operation(summary = "맴버 상세 조회", description = "맴버 상세 조회 API")
     public ResponseEntity<?> getMember(@PathVariable Integer memberId){
         return ResponseFactory.success("맴버 조회 완료", memberService.getMember(memberId));
     }
 
     @DeleteMapping("/{memberId}")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴")
     public ResponseEntity<?> removeMember(@PathVariable Integer memberId){
         memberService.removeMember(memberId);
         return ResponseFactory.success("맴버 탈퇴 완료");
