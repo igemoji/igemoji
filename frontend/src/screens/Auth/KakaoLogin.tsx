@@ -1,11 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { REST_API_KEY } from "@env";
 import { View } from "react-native";
 import WebView from "react-native-webview";
 
 import { kakaoLoginAxios } from "@/API/Auth";
 import { NavigationProps } from "@/types/types";
+import { setItem } from "@/utils/asyncStorage";
 
-const REST_API_KEY = "eadd974df44f7b7ac3e7d3de4c20f947";
 const REDIRECT_URI = "https://back.igemoji.store/oauth2/kakao";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
@@ -19,17 +19,20 @@ export default function LoginScreen({ navigation }: NavigationProps) {
       const requestCode = target.substring(condition + exp.length);
       try {
         const { data } = await kakaoLoginAxios(requestCode);
-        await AsyncStorage.setItem("memberId", String(data.data.memberInfo.memberId));
+        await setItem("nickname", data.data.memberInfo.nickname);
+        await setItem("memberId", data.data.memberInfo.memberId);
         if (data.data.memberInfo.nickname === null) {
-          navigation.navigate("SignUp");
+          navigation.reset({ routes: [{ name: "SignUp" }] });
         } else {
-          navigation.navigate("Main");
+          navigation.reset({ routes: [{ name: "Main" }] });
         }
       } catch (error) {
         console.log(error);
       }
+    } else {
     }
   };
+
   return (
     <View style={{ flex: 1 }}>
       <WebView
@@ -39,6 +42,7 @@ export default function LoginScreen({ navigation }: NavigationProps) {
         }}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         javaScriptEnabled
+        startInLoadingState
         onMessage={(event) => {
           const data = event.nativeEvent.url;
           getCode(data);

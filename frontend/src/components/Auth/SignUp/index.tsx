@@ -27,7 +27,7 @@ export default function SignUp({ navigation }: NavigationProps) {
     getMemberId();
   });
 
-  const handleTextChange = (text: string) => {
+  const handleTextChange = async (text: string) => {
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setInputValue(text);
@@ -45,11 +45,25 @@ export default function SignUp({ navigation }: NavigationProps) {
     } else {
       try {
         await registNicknameAxios({ memberId, inputValue });
-        Alert.alert("닉네임 등록이 완료되었습니다.", "", [
-          { text: "확인", onPress: () => navigation.navigate("Main") },
-        ]);
-      } catch (error) {
+        if (Platform.OS === "web") {
+          window.alert("닉네임 등록이 완료되었습니다.");
+          navigation.reset({ routes: [{ name: "Main" }] });
+        } else {
+          Alert.alert("닉네임 등록이 완료되었습니다.", "", [
+            { text: "확인", onPress: () => navigation.reset({ routes: [{ name: "Main" }] }) },
+          ]);
+        }
+      } catch (error: any) {
         console.log(error);
+        if (error.response.data.errorCode === "MEM_005") {
+          if (Platform.OS === "web") {
+            window.alert("이미 존재하는 닉네임입니다.");
+          } else {
+            Alert.alert("이미 존재하는 닉네임입니다.", "다른 닉네임을 입력해주세요.", [
+              { text: "확인" },
+            ]);
+          }
+        }
       }
     }
   };
@@ -73,6 +87,7 @@ export default function SignUp({ navigation }: NavigationProps) {
                 onChangeText={handleTextChange}
                 value={inputValue}
                 placeholderTextColor={theme.text}
+                maxLength={8}
               />
               <View style={{ position: "absolute", top: 25 }}>
                 <Validation isInvalidLength={isInvalidLength} />
@@ -94,7 +109,7 @@ const Validation = ({ isInvalidLength }: ValidationProps) => {
   return (
     <>
       {isInvalidLength && (
-        <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자의 문자입니다.</Text>
+        <Text style={{ color: "red", fontSize: 12 }}>닉네임은 2 ~ 8글자 입니다.</Text>
       )}
     </>
   );

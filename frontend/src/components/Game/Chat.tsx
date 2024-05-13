@@ -2,15 +2,26 @@ import React, { useContext, useState } from "react";
 import { View, StyleSheet, TextInput, TouchableOpacity, Image } from "react-native";
 
 import { ThemeContext } from "@/config/Theme";
+import { gameSocket } from "@/sockets";
+import { getItem } from "@/utils/asyncStorage";
 
-export default function Chat() {
+const { send } = gameSocket;
+
+export default function Chat({ userState }: { userState: string }) {
   const { theme } = useContext(ThemeContext);
   const [message, setMessage] = useState("");
 
-  const sendMessage = () => {
-    // TODO: 메세지 전송하는 소켓 구현
-    console.log("Send message:", message);
-    setMessage("");
+  const sendMessage = async () => {
+    if (message !== "") {
+      const roomId = await getItem("roomId");
+      const memberId = await getItem("memberId");
+      setMessage("");
+      send(`/app/${userState}/chat`, {
+        memberId,
+        roomId,
+        content: message,
+      });
+    }
   };
 
   return (
@@ -19,7 +30,10 @@ export default function Chat() {
         style={{ ...styles.input, borderColor: theme.grey, color: theme.text }}
         placeholder="메시지를 입력하세요"
         placeholderTextColor={theme.text}
+        onSubmitEditing={sendMessage}
         value={message}
+        multiline={false}
+        blurOnSubmit={false}
         onChangeText={setMessage}
       />
       <TouchableOpacity

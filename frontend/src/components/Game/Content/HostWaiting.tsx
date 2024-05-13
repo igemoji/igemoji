@@ -7,45 +7,52 @@ import ModalBox from "@/components/ModalBox";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { gameSocket } from "@/sockets";
+import { getItem } from "@/utils/asyncStorage";
 
-const { send, disconnect } = gameSocket;
+const { send } = gameSocket;
 
-export default function HostWaiting() {
+export default function HostWaiting({ allQuizCount }: { allQuizCount: number }) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
-  const quizType = ["영화", "드라마"];
-  const quizCount = [10, 20, 30];
+  const quizType = ["영화"];
+  const quizCount = [10, 1, 2];
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
-  const [selectedQuizCount, setSelectedQuizCount] = useState(10);
+  const [selectedQuizCount, setSelectedQuizCount] = useState(allQuizCount);
 
   const handleQuizTypePress = (type: string) => {
-    // TODO: 변경하는 소켓 메세지 전송
     setSelectedQuizType(type);
   };
 
-  const handleQuizCountPress = (count: number) => {
-    // TODO: 변경하는 소켓 메세지 전송
+  const handleQuizCountPress = async (count: number) => {
     setSelectedQuizCount(count);
+    const memberId = await getItem("memberId");
+    const roomId = await getItem("roomId");
+
+    send("/app/room/question", {
+      memberId,
+      roomId,
+      questionNum: count,
+    });
   };
 
-  const handleGameStart = () => {
-    const typeMap: Record<string, string> = {
-      영화: "movie",
-      드라마: "drama",
-    };
-    const koreanQuizType = typeMap[selectedQuizType];
+  const handleGameStart = async () => {
+    // const typeMap: Record<string, string> = {
+    //   영화: "movie",
+    //   드라마: "drama",
+    // };
+    // const koreanQuizType = typeMap[selectedQuizType];
 
+    const memberId = await getItem("memberId");
+    const roomId = await getItem("roomId");
     send("/app/game/start", {
-      roomId: 3,
-      senderId: 6,
-      questionNum: selectedQuizCount,
-      genre: koreanQuizType,
+      roomId,
+      senderId: memberId,
+      // genre: koreanQuizType,
     });
   };
 
   const handleGameExit = () => {
-    disconnect();
-    navigation.navigate("RoomList");
+    navigation.reset({ routes: [{ name: "RoomList" }] });
   };
 
   return (

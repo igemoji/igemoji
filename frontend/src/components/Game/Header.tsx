@@ -1,53 +1,30 @@
-import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 
-export default function Header() {
+export default function Header({ socketMessage }: any) {
   const { theme } = useContext(ThemeContext);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
 
-  // TODO: 백엔드에서 전달받은 데이터로 교체
-  const room = { number: 18, name: "방 제목입니다", nowPeople: 6 };
-  const memberList = [
-    {
-      host: true,
-      level: 1,
-      nickname: "이재종안녕하세요",
-      rankPoint: 1080,
-    },
-    {
-      host: false,
-      level: 20,
-      nickname: "김대원123",
-      rankPoint: 980,
-    },
-    {
-      host: false,
-      level: 20,
-      nickname: "김대원123",
-      rankPoint: 980,
-    },
-    {
-      host: false,
-      level: 20,
-      nickname: "김대원123",
-      rankPoint: 980,
-    },
-    {
-      host: false,
-      level: 20,
-      nickname: "김대원123",
-      rankPoint: 980,
-    },
-    {
-      host: false,
-      level: 20,
-      nickname: "김대원123",
-      rankPoint: 980,
-    },
-  ];
+  const [roomTitle, setRoomTitle] = useState();
+  const [roomId, setRoomId] = useState();
+  const [memberList, setMemberList] = useState<any[]>([]);
+  const [host, setHost] = useState();
+
+  useEffect(() => {
+    if (
+      socketMessage?.message === "ENTER_SUCCESS" ||
+      socketMessage?.message === "CHANGE_SET" ||
+      socketMessage?.message === "LEAVE_ROOM"
+    ) {
+      setRoomTitle(socketMessage.title);
+      setRoomId(socketMessage.roomId);
+      setMemberList(socketMessage.memberList);
+      setHost(socketMessage.host.nickname);
+    }
+  }, [socketMessage]);
 
   const handleOpenMemberList = () => {
     setIsMemberOpen(!isMemberOpen);
@@ -56,7 +33,7 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <Text style={{ ...Font.header, color: theme.text }}>
-        {room.number}번 : {room.name}
+        {roomId}번 : {roomTitle}
       </Text>
       <TouchableOpacity
         onPress={handleOpenMemberList}
@@ -65,7 +42,7 @@ export default function Header() {
           borderColor: theme.grey,
           backgroundColor: theme.kungya,
         }}>
-        <Text style={{ ...Font.header, color: theme.text }}>인원 : {room.nowPeople}/6</Text>
+        <Text style={{ ...Font.header, color: theme.text }}>인원 : {memberList.length}/6</Text>
       </TouchableOpacity>
       {isMemberOpen && (
         <View
@@ -75,19 +52,22 @@ export default function Header() {
             borderColor: theme.grey,
           }}>
           <View style={styles.row}>
-            <View style={{ flex: 2 }}>
+            <View style={{ flex: 4 }}>
               <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>닉네임</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>레벨</Text>
+              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>Lv</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>랭크</Text>
+            <View style={{ flex: 2 }}>
+              <Text style={[{ color: theme.text }, Font.memberInfoTitle]}>Rp</Text>
             </View>
           </View>
-          {memberList.map((member, index) => (
+          {memberList?.map((member, index) => (
             <View key={index} style={styles.row}>
-              <View style={{ flex: 2 }}>
+              <View style={{ flex: 4, position: "relative" }}>
+                {host === member.nickname && (
+                  <Image style={styles.image} source={require("~/crown.png")} />
+                )}
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>
                   {member.nickname}
                 </Text>
@@ -95,9 +75,9 @@ export default function Header() {
               <View style={{ flex: 1 }}>
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>{member.level}</Text>
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 2 }}>
                 <Text style={[{ color: theme.text }, Font.memberInfoContent]}>
-                  {member.rankPoint}점
+                  {member.rating}점
                 </Text>
               </View>
             </View>
@@ -120,7 +100,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 5,
-    // paddingVertical: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -133,12 +112,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     justifyContent: "space-between",
-    width: "60%",
+    width: "70%",
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 5,
+  },
+  image: {
+    position: "absolute",
+    left: "-45%",
+    top: "-10%",
+    resizeMode: "contain",
+    height: "150%",
+    width: "100%",
   },
 });

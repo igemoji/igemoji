@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "igemoji",
+    "name": "이게모지",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,7 +24,9 @@
       "package": "com.teamGoAhead.igemoji"
     },
     "web": {
-      "favicon": "./assets/logo/logo.png"
+      "favicon": "./assets/logo/logo.png",
+      "output": "server",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {
@@ -36,6 +38,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/b7e89d2a-d16d-448d-a040-5aaeabd10ffe"
-    }
+    },
+    "plugins": ["expo-router"]
   }
 }

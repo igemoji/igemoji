@@ -21,11 +21,7 @@ const Font = StyleSheet.create({
     fontSize: 15,
     fontFamily: "PretendardRegular",
   },
-  emoji: {
-    fontSize: 30,
-  },
   hint: {
-    fontSize: 12,
     fontFamily: "PretendardRegular",
   },
   mainLarge: {
@@ -41,8 +37,8 @@ const Font = StyleSheet.create({
     fontFamily: "PretendardLight",
   },
   messages: {
-    fontSize: 12,
-    fontFamily: "PretendardRegular",
+    fontSize: 14,
+    fontFamily: "PretendardMedium",
   },
   gameWaitingMessage: {
     fontSize: 24,

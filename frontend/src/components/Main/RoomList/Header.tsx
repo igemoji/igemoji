@@ -1,32 +1,66 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, TextInput } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  Platform,
+} from "react-native";
 
 import CreateRoomModal from "./Contents/CreateRoomModal";
 import NotFoundModal from "./Contents/NotFoundModal";
 import SearchModal from "./Contents/SearchModal";
 
+import { enterFastRoomAxios, enterRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
+import { getItem, setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
-export default function Header() {
+export default function Header({ refresh }: { refresh: () => void }) {
   const { theme } = useContext(ThemeContext);
   const { playButtonSound } = useContext(MusicContext);
   const [createRoomModalVisible, setCreateRoomModalVisible] = useState(false);
   const [notFoundModalVisible, setNotFoundModalVisible] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handleCreateRoomPress = () => {
     playButtonSound();
     setCreateRoomModalVisible(true);
   };
 
-  const handleQuickStartPress = () => {
+  const handleQuickStartPress = async () => {
     playButtonSound();
-    setNotFoundModalVisible(true);
+    try {
+      const { data } = await enterFastRoomAxios();
+      await setItem("roomId", data.data.roomId);
+      handleEnterRoomAxios(data.data.roomId);
+    } catch (error) {
+      setNotFoundModalVisible(true);
+    }
+  };
+
+  const handleEnterRoomAxios = async (roomId: string) => {
+    try {
+      const memberId = await getItem("memberId");
+      await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
+      navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
+    }
   };
 
   const handleSearchPress = () => {
@@ -59,6 +93,10 @@ export default function Header() {
             ...styles.smallButton,
             backgroundColor: theme.kungyaGreenAccent,
             marginLeft: 5,
+          }}
+          onPress={() => {
+            refresh();
+            playButtonSound();
           }}>
           <FontAwesome name="refresh" size={24} color="white" />
         </TouchableOpacity>

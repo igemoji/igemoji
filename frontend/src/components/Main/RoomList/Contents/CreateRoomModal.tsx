@@ -16,10 +16,11 @@ import {
 
 import MainModal from "../Modal";
 
-import { CreateRoomAxios } from "@/API/Main";
+import { createRoomAxios, enterRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
+import { setItem } from "@/utils/asyncStorage";
 
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
@@ -43,7 +44,6 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
   });
 
   const handleTextChange = (text: string) => {
-    // 입력값 길이 확인
     const isValidTitle = /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]*$/i.test(text);
     if (isValidTitle) {
       setTitle(text);
@@ -52,28 +52,61 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
   };
 
   const handleCreateRoomAxios = async () => {
+    if (!title.trim() || (!isPublic && !password.trim())) {
+      if (Platform.OS === "web") {
+        window.alert("올바른 방 정보를 입력하세요.");
+      } else {
+        Alert.alert("올바른 방 정보를 입력하세요.", "", [{ text: "확인" }]);
+      }
+      return;
+    }
+    if (!isPublic && password.trim().length !== 4) {
+      if (Platform.OS === "web") {
+        window.alert("비밀번호는 4자리입니다.");
+      } else {
+        Alert.alert("비밀번호는 4자리입니다.", "", [{ text: "확인" }]);
+      }
+      return;
+    }
     try {
-      const { data } = await CreateRoomAxios({
+      const { data } = await createRoomAxios({
         memberId,
         title,
         isPublic,
         password,
       });
-      await AsyncStorage.setItem("roomId", String(data.data.roomId));
-      navigation.navigate("Game");
+      await setItem("roomId", data.data.roomId);
+      handleEnterRoomAxios(data.data.roomId);
+      setIsPublic(true);
+      setPassword("");
+      setTitle("");
       close();
-    } catch (error) {
+    } catch (error: any) {
       if (Platform.OS === "web") {
-        window.alert("올바른 방 정보를 입력하세요.");
+        window.alert(error.response.data.message);
       } else {
-        Alert.alert("올바른 방 정보를 입력하세요.", "");
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
       }
       console.log(error);
     }
   };
 
+  const handleEnterRoomAxios = async (roomId: string) => {
+    try {
+      await enterRoomAxios({ roomId: Number(roomId), memberId, password });
+      navigation.navigate("Game");
+    } catch (error: any) {
+      if (Platform.OS === "web") {
+        window.alert(error.response.data.message);
+      } else {
+        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
+      }
+    }
+  };
+
   const handlePublicClick = () => {
     setIsPublic(true);
+    setPassword("");
     setShowPasswordInput(false);
   };
 
@@ -88,6 +121,12 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       if (text.length <= 4) {
         setPassword(text);
       }
+    } else {
+      if (Platform.OS === "web") {
+        window.alert("비밀번호는 4자리 숫자입니다.");
+      } else {
+        Alert.alert("비밀번호는 4자리 숫자입니다.", "", [{ text: "확인" }]);
+      }
     }
   };
 
@@ -96,7 +135,12 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       size="middle"
       visible={visible}
       title="createRoom"
-      close={close}
+      close={() => {
+        setPassword("");
+        setTitle("");
+        setIsPublic(true);
+        close();
+      }}
       onPress={handleCreateRoomAxios}>
       <View
         style={{
