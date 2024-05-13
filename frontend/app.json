@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/logo/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.teamGoAhead.igemoji"
+      "package": "com.teamGoAhead.igemoji",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/logo/logo.png",
