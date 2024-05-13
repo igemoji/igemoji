@@ -111,7 +111,7 @@ public class GameSocketService {
 
         stopGameScheduler(roomId);
 
-        int exp = playerList.size();
+        int exp = playerList.size() * 10;
         for(PlayerResponseDto player : playerList){
             player.updateAddRating(player.getScore() * 10);
             Member member = memberRepository.findById(player.getMemberId())
