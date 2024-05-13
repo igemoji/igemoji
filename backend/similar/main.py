@@ -37,36 +37,68 @@ async def compare_answers(postData: AnswerData):
     def calculate_tfidf_similarity(input_text, tfidf_matrix, vectorizer, movies_df, answer_title):
         input_tfidf = vectorizer.transform([input_text])
         similarities = cosine_similarity(input_tfidf, tfidf_matrix)[0]
+            # answer_title에 해당하는 영화의 인덱스 찾기
+        answer_index = movies_df.index[movies_df['영화 제목'].str.lower() == answer_title.lower()].tolist()[0]
         
         if input_text.lower() == answer_title.lower():
-            index = movies_df.index[movies_df['영화 제목'].str.lower() == answer_title.lower()].tolist()[0]
-            similarities[index] = 1.0
+            similarities[answer_index] = 1.0
             return similarities
-        
-            # Adjust the similarity based on word inclusion
-        # 단어 포함 관계 검사를 위해 입력과 정답을 모두 소문자로 변환
-        input_text_lower = input_text.lower()
-        answer_text_lower = answer_title.lower()
-        
-        # 부분 문자열 포함 여부 확인
-        if input_text_lower in answer_text_lower or answer_text_lower in input_text_lower:
-            # print(f"가중치 적용: '{input_text}'과(와) '{answer_title}'는 서로 포함 관계에 있는 단어가 있습니다.")
-            answer_index = movies_df.index[movies_df['영화 제목'].str.lower() == answer_title.lower()].tolist()[0]
-            similarities[answer_index] *= 10  # 가중치 적용
-        
-        if answer_title in movies_df['영화 제목'].values:
-            movie_data = movies_df.loc[movies_df['영화 제목'] == answer_title].iloc[0]
-            actors = [actor.strip().lower() for actor in movie_data['영화 배우'].split(',')]
-            roles = [role.strip().lower() for role in movie_data['영화 배역'].split(',')]
-            role_names = [role.split(' 역')[0].strip().lower() for role in roles if ' 역' in role]  # '역' 이름 부분만 추출
+        else:
+            # input_text가 answer_title의 영화 줄거리에 포함되는지 확인
+            answer_plot = movies_df.loc[answer_index, '영화 줄거리'].lower()
+            if input_text.lower() in answer_plot:
+                # print(f"가중치 적용: '{input_text}'이(가) '{answer_title}'의 줄거리에 포함되어 있습니다.")
+                similarities[answer_index] *= 10
+            else:
 
-            if input_text.lower() in actors or input_text.lower() in roles or input_text.lower() in role_names:
-                # print(f"가중치 적용: '{input_text}'은(는) '{answer_title}'의 배우, 배역 또는 역할 이름 중 하나에 일치합니다.")
-                index = movies_df.index[movies_df['영화 제목'] == answer_title].tolist()[0]
-                similarities[index] *= 5  # 가중치 적용
+                # 기존의 단어 포함 관계 가중치 적용 로직도 유지
+                input_text_lower = input_text.lower()
+                answer_text_lower = answer_title.lower()
+                
+                if input_text_lower in answer_text_lower or answer_text_lower in input_text_lower:
+                    # print(f"가중치 적용: '{input_text}'과(와) '{answer_title}'는 서로 포함 관계에 있는 단어가 있습니다.")
+                    similarities[answer_index] *= 10
+                else:
+                    # 배우, 배역, 역할 이름 가중치 적용 로직
+                    movie_data = movies_df.loc[movies_df['영화 제목'] == answer_title].iloc[0]
+                    actors = [actor.strip().lower() for actor in movie_data['영화 배우'].split(',')]
+                    roles = [role.strip().lower() for role in movie_data['영화 배역'].split(',')]
+                    role_names = [role.split(' 역')[0].strip().lower() for role in roles if ' 역' in role]
+
+                    if input_text.lower() in actors or input_text.lower() in roles or input_text.lower() in role_names:
+                        # print(f"가중치 적용: '{input_text}'은(는) '{answer_title}'의 배우, 배역 또는 역할 이름 중 하나에 일치합니다.")
+                        similarities[answer_index] *= 10
+
+            return similarities
+        # if input_text.lower() == answer_title.lower():
+        #     index = movies_df.index[movies_df['영화 제목'].str.lower() == answer_title.lower()].tolist()[0]
+        #     similarities[index] = 1.0
+        #     return similarities
+        
+        #     # Adjust the similarity based on word inclusion
+        # # 단어 포함 관계 검사를 위해 입력과 정답을 모두 소문자로 변환
+        # input_text_lower = input_text.lower()
+        # answer_text_lower = answer_title.lower()
+        
+        # # 부분 문자열 포함 여부 확인
+        # if input_text_lower in answer_text_lower or answer_text_lower in input_text_lower:
+        #     # print(f"가중치 적용: '{input_text}'과(와) '{answer_title}'는 서로 포함 관계에 있는 단어가 있습니다.")
+        #     answer_index = movies_df.index[movies_df['영화 제목'].str.lower() == answer_title.lower()].tolist()[0]
+        #     similarities[answer_index] *= 10  # 가중치 적용
+        
+        # if answer_title in movies_df['영화 제목'].values:
+        #     movie_data = movies_df.loc[movies_df['영화 제목'] == answer_title].iloc[0]
+        #     actors = [actor.strip().lower() for actor in movie_data['영화 배우'].split(',')]
+        #     roles = [role.strip().lower() for role in movie_data['영화 배역'].split(',')]
+        #     role_names = [role.split(' 역')[0].strip().lower() for role in roles if ' 역' in role]  # '역' 이름 부분만 추출
+
+        #     if input_text.lower() in actors or input_text.lower() in roles or input_text.lower() in role_names:
+        #         # print(f"가중치 적용: '{input_text}'은(는) '{answer_title}'의 배우, 배역 또는 역할 이름 중 하나에 일치합니다.")
+        #         index = movies_df.index[movies_df['영화 제목'] == answer_title].tolist()[0]
+        #         similarities[index] *= 5  # 가중치 적용
 
 
-        return similarities
+        # return similarities
 
 
     def calculate_tfidf_similarity2(input_text, tfidf_matrix, vectorizer, index=None):
