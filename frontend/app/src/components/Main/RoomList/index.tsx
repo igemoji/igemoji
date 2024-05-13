@@ -1,6 +1,6 @@
 import { Audio } from "expo-av";
-import React, { useContext, useEffect, useState } from "react";
-import { Text, View, Dimensions, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Dimensions, StyleSheet } from "react-native";
 
 import Body from "./Body";
 import Header from "./Header";
@@ -11,7 +11,6 @@ import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
 import { useFocusEffect } from "@react-navigation/native";
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function RoomList({ navigation }: NavigationProps) {
   const { sound, setSound, isMusicOn } = useContext(MusicContext);
@@ -60,8 +59,9 @@ export default function RoomList({ navigation }: NavigationProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SCREENHEIGHT * 0.1,
-    width: SCREENWIDTH * 0.9,
+    marginTop: 50,
+    maxWidth: 500,
+    width: "90%",
     flex: 1,
   },
 });

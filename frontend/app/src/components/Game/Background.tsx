@@ -1,13 +1,11 @@
 import React, { useContext, ReactNode } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 
 import { ThemeContext } from "@/config/Theme";
 
 interface BackgroundProps {
   children: ReactNode;
 }
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function Background({ children }: BackgroundProps) {
   const { theme } = useContext(ThemeContext);
@@ -32,11 +30,11 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    height: SCREENHEIGHT,
+    height: "100%",
     width: "100%",
   },
   content: {
     flex: 1,
-    marginHorizontal: SCREENWIDTH * 0.03,
+    marginHorizontal: 30,
   },
 });

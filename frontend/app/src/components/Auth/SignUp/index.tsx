@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useEffect, useState } from "react";
-import { TextInput, View, Dimensions, Text, StyleSheet, Alert, Platform } from "react-native";
+import { TextInput, View, Text, StyleSheet, Alert, Platform } from "react-native";
 
 import Background from "../../Background";
 import Logo from "../../Logo";
@@ -10,8 +10,6 @@ import { registNicknameAxios } from "@/API/Auth";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SignUp({ navigation }: NavigationProps) {
   const { theme } = useContext(ThemeContext);
@@ -69,10 +67,10 @@ export default function SignUp({ navigation }: NavigationProps) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Background>
+    <Background>
+      <View style={styles.container}>
         <Logo />
-        <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.1 }}>
+        <View style={{ position: "absolute", bottom: "10%" }}>
           <ModalBox title="signup" onPress={handleNicknameAxios}>
             <View>
               <TextInput
@@ -95,8 +93,8 @@ export default function SignUp({ navigation }: NavigationProps) {
             </View>
           </ModalBox>
         </View>
-      </Background>
-    </View>
+      </View>
+    </Background>
   );
 }
 
@@ -116,6 +114,11 @@ const Validation = ({ isInvalidLength }: ValidationProps) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: "90%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   textInput: {
     width: 300,
     borderWidth: 1,

@@ -141,5 +141,6 @@ export default function Content({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: 1,
   },
 });

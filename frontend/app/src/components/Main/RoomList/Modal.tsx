@@ -4,7 +4,6 @@ import {
   Modal,
   View,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   Text,
   Platform,
@@ -15,8 +14,6 @@ import Button from "@/components/Button";
 import Font from "@/config/Font";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 interface MainModalProps {
   size: "small" | "middle" | "large";
@@ -70,7 +67,7 @@ export default function MainModal({
                   ...styles.modalContent,
                   backgroundColor: theme.kungya,
                   height: modalHeight[size],
-                  width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
+                  width: Platform.OS === "web" ? 400 : "80%",
                 }}>
                 <TouchableOpacity
                   style={{ top: 10, right: 10, position: "absolute" }}
@@ -81,7 +78,7 @@ export default function MainModal({
                 </TouchableOpacity>
                 <Text style={{ ...Font.modalTitle, color: theme.text }}>{modalTitle[title]}</Text>
                 {children}
-                <View style={{ width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
+                <View style={{ width: Platform.OS === "web" ? 300 : "70%" }}>
                   <Button name="check" onPress={onPress} />
                 </View>
               </View>
@@ -90,7 +87,7 @@ export default function MainModal({
                   ...styles.modalBackContent,
                   backgroundColor: theme.kungyaYelloDark,
                   height: modalHeight[size],
-                  width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
+                  width: Platform.OS === "web" ? 400 : "80%",
                 }}
               />
             </View>

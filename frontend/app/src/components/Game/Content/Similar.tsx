@@ -11,9 +11,13 @@ export default function Similar({ messages }: { messages: Message[] }) {
   const [similarRank, setSimilarRank] = useState<Message[]>([]);
 
   useEffect(() => {
-    if (messages.length && messages[messages.length - 1].similar) {
+    if (
+      messages.length &&
+      messages[messages.length - 1].similarScore &&
+      (messages[messages.length - 1].similarScore as number) > 9
+    ) {
       const isExisting = similarRank.some(
-        (item) => item.similar === messages[messages.length - 1].similar
+        (item) => item.similarScore === messages[messages.length - 1].similarScore
       );
       if (!isExisting) {
         setSimilarEffect((currentSimilar) => [...currentSimilar, messages[messages.length - 1]]);
@@ -26,8 +30,8 @@ export default function Similar({ messages }: { messages: Message[] }) {
   }, [messages]);
 
   const sortedSimilarRank = [...similarRank].sort((a, b) => {
-    const similarA = a.similar ?? 0;
-    const similarB = b.similar ?? 0;
+    const similarA = a.similarScore ?? 0;
+    const similarB = b.similarScore ?? 0;
     return similarB - similarA;
   });
 
@@ -37,7 +41,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
         {similarEffect.map((data, index) => (
           <ProgressBar
             title={data.content}
-            similar={data.similar || 100}
+            similar={data.similarScore || 100}
             key={data.nickname + index}
           />
         ))}
@@ -71,7 +75,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
                   style={[styles.benchmarkText, Font.similar, { color: theme.text }]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
-                  {data.similar}
+                  {Math.round(data.similarScore as number)}
                 </Text>
               </View>
             </View>
@@ -85,7 +89,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
 const styles = StyleSheet.create({
   container: {
     flex: 4,
-    marginBottom: "20%",
+    marginBottom: 100,
     flexDirection: "row",
     justifyContent: "space-between",
   },

@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, Dimensions, Text, Image } from "react-native";
-// import AwesomeButton from "react-native-really-awesome-button";
+
+import { AwesomeButton } from "react-awesome-button";
+import "@/styles/styles.css";
+import { View, StyleSheet, Text, Image } from "react-native";
 
 import Button from "@/components/Button";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
-import { MusicContext } from "@/config/Music";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 interface MainModalProps {
   title: keyof typeof modalTitle;
@@ -24,8 +23,6 @@ const modalTitle = {
 } as const;
 
 const modalHeight = {
-  // hostWaiting: SCREENHEIGHT * 0.3,
-  // playerWaiting: SCREENHEIGHT * 0.15,
   hostWaiting: 300,
   playerWaiting: 150,
   signin: 200,
@@ -80,17 +77,17 @@ function ModalButton({
 
   if (title === "playerWaiting") {
     return (
-      <View style={{ width: SCREENWIDTH * 0.4 }}>
+      <View style={{ width: "40%" }}>
         <Button name="exit" onPress={onPress} />
       </View>
     );
   } else if (title === "hostWaiting") {
     return (
       <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
-        <View style={{ width: SCREENWIDTH * 0.4 }}>
+        <View style={{ width: "40%" }}>
           <Button name="start" onPress={onPress} />
         </View>
-        <View style={{ width: SCREENWIDTH * 0.4 }}>
+        <View style={{ width: "40%" }}>
           <Button name="exit" onPress={handlePress2} />
         </View>
       </View>
@@ -102,19 +99,14 @@ function ModalButton({
       </View>
     );
   } else {
-    // return (
-    //   <AwesomeButton
-    //     width={300}
-    //     height={45}
-    //     backgroundColor="#FEE500"
-    //     backgroundDarker="#8B8000"
-    //     borderRadius={10}
-    //     onPress={onPress}
-    //     style={styles.awesomeButton}>
-    //     <Image style={styles.kakaoLogin} source={require("~/kakao/kakaoLogo.png")} />
-    //     <Text style={{ opacity: 0.85, fontSize: 16 }}>카카오 로그인</Text>
-    //   </AwesomeButton>
-    // );
+    return (
+      <AwesomeButton onPress={onPress} size="small" type="primary">
+        <Image style={styles.kakaoLogin} source={require("~/kakao/kakaoLogo.png")} />
+        <Text style={{ opacity: 0.85, fontSize: 16, fontFamily: "PretendardRegular" }}>
+          카카오 로그인
+        </Text>
+      </AwesomeButton>
+    );
   }
 }
 
@@ -137,9 +129,5 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 8,
-  },
-  awesomeButton: {
-    flexDirection: "row",
-    alignItems: "center",
   },
 });

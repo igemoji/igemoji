@@ -1,17 +1,15 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, Platform, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Platform, Alert } from "react-native";
 
 import MainModal from "../Modal";
 
+import { enterRoomAxios } from "@/API/Main";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
-import { getItem, setItem } from "@/utils/asyncStorage";
-import { enterRoomAxios } from "@/API/Main";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
+import { getItem } from "@/utils/asyncStorage";
 
 export default function PasswordRoomModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
@@ -51,8 +49,7 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
       title="password"
       close={close}
       onPress={handlePasswordRoomAxios}>
-      <View
-        style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
+      <View style={{ flexDirection: "row", width: 300 }}>
         <Text style={{ ...Font.modalContent, color: theme.text }}>비밀번호:</Text>
         <TextInput
           style={{

@@ -3,16 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Platform,
-  Alert,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform, Alert } from "react-native";
 
 import MainModal from "../Modal";
 
@@ -21,8 +12,6 @@ import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 import { setItem } from "@/utils/asyncStorage";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function CreateRoomModal({ visible, close }: MainModalProps) {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -145,14 +134,14 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
       <View
         style={{
           flexDirection: "row",
-          width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7,
+          width: 300,
           justifyContent: "space-between",
         }}>
         <TouchableOpacity
           onPress={handlePublicClick}
           style={{
             ...styles.box,
-            width: Platform.OS === "web" ? 100 : SCREENWIDTH * 0.3,
+            width: 120,
             backgroundColor: isPublic ? theme.kungyaYello : theme.white,
             borderColor: isPublic ? theme.grey : theme.grey,
           }}>
@@ -163,7 +152,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
           onPress={handlePrivateClick}
           style={{
             ...styles.box,
-            width: Platform.OS === "web" ? 100 : SCREENWIDTH * 0.3,
+            width: 120,
             backgroundColor: isPublic ? theme.white : theme.kungyaYello,
             borderColor: isPublic ? theme.grey : theme.grey,
           }}>
@@ -171,8 +160,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
           <Text style={{ ...Font.modalContent, marginLeft: 10, color: theme.text }}>비공개</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{ flexDirection: "row", width: Platform.OS === "web" ? 320 : SCREENWIDTH * 0.7 }}>
+      <View style={{ flexDirection: "row", width: 320 }}>
         <Text style={{ ...Font.modalContent, color: theme.text }}>제목:</Text>
         <TextInput
           style={{
@@ -186,7 +174,7 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
           value={title}
           maxLength={12}
         />
-        <View style={{ position: "absolute", top: 23, flexDirection: "row" }}>
+        <View style={{ position: "absolute", top: 23, flexDirection: "row", alignItems: "center" }}>
           <Text style={{ ...Font.modalContent, color: theme.text, opacity: 0, marginRight: 10 }}>
             제목:
           </Text>
@@ -194,7 +182,11 @@ export default function CreateRoomModal({ visible, close }: MainModalProps) {
         </View>
       </View>
       <View
-        style={{ flexDirection: "row", width: Platform.OS === "web" ? 320 : SCREENWIDTH * 0.7 }}>
+        style={{
+          flexDirection: "row",
+          width: 320,
+          alignItems: "center",
+        }}>
         <Text style={{ ...Font.modalContent, color: theme.text }}>비밀번호:</Text>
         <TextInput
           editable={!isPublic}
@@ -236,6 +228,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     borderRadius: 5,
+    height: 30,
     paddingHorizontal: 10,
     marginLeft: 10,
     borderWidth: 1,

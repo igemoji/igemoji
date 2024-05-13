@@ -1,8 +1,8 @@
-import { REST_API_KEY } from "@env";
+import { REST_API_KEY, REDIRECT_URI } from "@env";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useEffect } from "react";
-import { Text, View, Dimensions, Platform } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 import Background from "../../Background";
 import Logo from "../../Logo";
@@ -12,9 +12,6 @@ import { kakaoLoginAxios } from "@/API/Auth";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { setItem } from "@/utils/asyncStorage";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
-const REDIRECT_URI = "http://localhost:8081";
 
 export default function SignIn() {
   const { theme } = useContext(ThemeContext);
@@ -42,29 +39,38 @@ export default function SignIn() {
   };
 
   useEffect(() => {
-    if (Platform.OS === "web") {
-      const url = window.location.href;
-      getCode(url);
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    if (code) {
+      getCode(window.location.href);
+      url.searchParams.delete("code");
+      window.history.replaceState({}, "", url.href);
     }
   }, []);
 
   const handleSignInAxios = () => {
-    if (Platform.OS === "web") {
-      window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
-    } else {
-      navigation.navigate("KakaoLogin");
-    }
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   };
   return (
     <Background>
-      <Logo />
-      <View style={{ position: "absolute", bottom: SCREENHEIGHT * 0.1 }}>
-        <ModalBox title="signin" onPress={handleSignInAxios}>
-          <Text style={{ ...Font.modalContent, color: theme.text }}>
-            SNS 로그인으로 간편하게 시작하세요.
-          </Text>
-        </ModalBox>
+      <View style={styles.container}>
+        <Logo />
+        <View>
+          <ModalBox title="signin" onPress={handleSignInAxios}>
+            <Text style={{ ...Font.modalContent, color: theme.text }}>
+              SNS 로그인으로 간편하게 시작하세요.
+            </Text>
+          </ModalBox>
+        </View>
       </View>
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: "90%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+});

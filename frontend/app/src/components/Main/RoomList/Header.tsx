@@ -2,16 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  Platform,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert, Platform } from "react-native";
 
 import CreateRoomModal from "./Contents/CreateRoomModal";
 import NotFoundModal from "./Contents/NotFoundModal";
@@ -22,8 +13,6 @@ import Font from "@/config/Font";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { getItem, setItem } from "@/utils/asyncStorage";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function Header({ refresh }: { refresh: () => void }) {
   const { theme } = useContext(ThemeContext);
@@ -115,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: SCREENWIDTH * 0.9,
+    width: "100%",
   },
   largeButton: {
     width: 100,
@@ -130,11 +119,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-  },
-  searchRoom: {
-    flex: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginLeft: 10,
   },
 });

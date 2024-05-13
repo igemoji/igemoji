@@ -1,7 +1,7 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Dimensions, Platform, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Platform, Alert } from "react-native";
 
 import PasswordRoomModal from "./PasswordRoomModal";
 import MainModal from "../Modal";
@@ -11,8 +11,6 @@ import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 import { getItem, setItem } from "@/utils/asyncStorage";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SearchModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
@@ -66,8 +64,7 @@ export default function SearchModal({ visible, close }: MainModalProps) {
         title="searchRoom"
         close={close}
         onPress={handleSearchRoomAxios}>
-        <View
-          style={{ flexDirection: "row", width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.7 }}>
+        <View style={{ flexDirection: "row", width: 300 }}>
           <Text style={{ ...Font.modalContent, color: theme.text }}>방 번호:</Text>
           <TextInput
             style={{

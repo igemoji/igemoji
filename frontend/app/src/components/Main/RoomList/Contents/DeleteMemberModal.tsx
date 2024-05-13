@@ -1,20 +1,18 @@
-import React, { useContext } from "react";
-import { Modal, Text, View, StyleSheet, Dimensions, Platform, Alert } from "react-native";
-import AwesomeButton from "react-native-really-awesome-button";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React, { useContext } from "react";
+import { Modal, Text, View, StyleSheet, Platform, Alert } from "react-native";
 
 import { deleteMemberAxios } from "@/API/Auth";
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { getItem } from "@/utils/asyncStorage";
+import { AwesomeButton } from "react-awesome-button";
 
 interface DeleteMemberModalProps {
   visible: boolean;
   close: () => void;
 }
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close }) => {
   const { theme } = useContext(ThemeContext);
@@ -42,7 +40,7 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close })
             ...styles.modalContent,
             backgroundColor: theme.kungya,
             height: 200,
-            width: Platform.OS === "web" ? 400 : SCREENWIDTH * 0.8,
+            width: 400,
           }}>
           <Text style={{ ...Font.modalTitle, color: theme.text }}>회원 탈퇴</Text>
           <Text style={{ ...Font.modalContent, color: theme.text }}>
@@ -50,30 +48,18 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ visible, close })
           </Text>
           <View style={styles.buttonContainer}>
             <View style={{ width: 100 }}>
-              {/* <AwesomeButton
-                backgroundColor={theme.kungyaRed}
-                backgroundDarker={theme.kungyaRedDark}
-                textColor={theme.text}
-                style={{ ...Font.modalContent }}
-                raiseLevel={2}
-                stretch
-                height={45}
-                onPress={handleDeleteMember}>
-                탈퇴
-              </AwesomeButton> */}
+              <AwesomeButton type="twitter" size="large" onPress={handleDeleteMember}>
+                <Text style={{ opacity: 0.85, fontSize: 16, fontFamily: "PretendardRegular" }}>
+                  탈퇴
+                </Text>
+              </AwesomeButton>
             </View>
             <View style={{ width: 100 }}>
-              {/* <AwesomeButton
-                backgroundColor={theme.kungyaYelloLight}
-                backgroundDarker={theme.kungyaYelloDark}
-                textColor={theme.text}
-                style={{ ...Font.modalContent }}
-                raiseLevel={2}
-                stretch
-                height={45}
-                onPress={close}>
-                취소
-              </AwesomeButton> */}
+              <AwesomeButton size="large" type="secondary" onPress={close}>
+                <Text style={{ opacity: 0.85, fontSize: 16, fontFamily: "PretendardRegular" }}>
+                  취소
+                </Text>
+              </AwesomeButton>
             </View>
           </View>
         </View>

@@ -1,8 +1,7 @@
 import React, { useContext, ReactNode } from "react";
-import { View, ImageBackground, StyleSheet, Dimensions } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 
 import { ThemeContext } from "@/config/Theme";
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 interface BackgroundProps {
   children: ReactNode;
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    height: SCREENHEIGHT,
+    height: "100%",
     width: "100%",
   },
 });

@@ -27,7 +27,7 @@ export default function Answer({ answerName, answerImage }: AnswerProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 4,
-    marginBottom: "15%",
+    marginBottom: 100,
     alignItems: "center",
   },
   image: {

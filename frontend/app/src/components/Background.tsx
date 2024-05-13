@@ -1,8 +1,7 @@
 import React, { useContext, ReactNode } from "react";
-import { View, ImageBackground, StyleSheet, Dimensions } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 
 import { ThemeContext } from "@/config/Theme";
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 interface BackgroundProps {
   children: ReactNode;
@@ -13,9 +12,7 @@ export default function Background({ children }: BackgroundProps) {
   return (
     <ImageBackground
       style={styles.backgroundImage}
-      source={require("~/background/mainBackground.png")}
-      // resizeMode="cover"
-    >
+      source={require("~/background/mainBackground.png")}>
       <View style={{ ...styles.container, backgroundColor: theme.background }}>{children}</View>
     </ImageBackground>
   );
@@ -25,12 +22,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   backgroundImage: {
     flex: 1,
-    // position: "absolute",
-    height: SCREENHEIGHT,
-    // width: SCREENWIDTH,
+    height: "100%",
     width: "100%",
   },
 });

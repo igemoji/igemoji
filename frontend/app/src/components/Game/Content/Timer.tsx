@@ -21,7 +21,7 @@ const Timer = (props: Props) => {
             style={{
               ...styles.animatedBar,
               backgroundColor: stroke,
-              width: `${102 - 100 * (elapsedTime / duration)}%`,
+              width: `${100 - 100 * (elapsedTime / duration)}%`,
             }}>
             <Image style={styles.image} source={require("~/timerEmoji.png")} />
           </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   image: {
     position: "absolute",
-    right: "-148%",
+    right: "-150%",
     top: "-150%",
     resizeMode: "contain",
     height: "300%",

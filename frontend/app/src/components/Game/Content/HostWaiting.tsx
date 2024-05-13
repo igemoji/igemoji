@@ -15,7 +15,7 @@ export default function HostWaiting({ allQuizCount }: { allQuizCount: number }) 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { theme } = useContext(ThemeContext);
   const quizType = ["영화"];
-  const quizCount = [10, 1, 2];
+  const quizCount = [10, 20, 30];
   const [selectedQuizType, setSelectedQuizType] = useState("영화");
   const [selectedQuizCount, setSelectedQuizCount] = useState(allQuizCount);
 
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: "20%",
   },
   hostWaiting: {
     width: "100%",

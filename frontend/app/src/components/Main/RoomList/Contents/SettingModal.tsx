@@ -1,9 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -12,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 
+import DeleteMemberModal from "./DeleteMemberModal";
 import MainModal from "../Modal";
 
 import { getMemberInfoAxios, registNicknameAxios } from "@/API/Auth";
@@ -21,9 +20,6 @@ import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { MainModalProps } from "@/types/types";
 import { getItem, setItem } from "@/utils/asyncStorage";
-import DeleteMemberModal from "./DeleteMemberModal";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function SettingModal({ visible, close }: MainModalProps) {
   const { theme } = useContext(ThemeContext);
@@ -96,7 +92,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-around",
-                width: SCREENWIDTH * 0.7,
+                width: "70%",
               }}>
               <ThemeToggleButton />
               <MusicToggleButton />
@@ -107,7 +103,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
           style={{
             ...styles.box,
             borderColor: theme.grey,
-            width: Platform.OS === "web" ? 350 : SCREENWIDTH * 0.7,
+            width: 350,
           }}>
           <Text
             style={{
@@ -129,7 +125,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+              width: 300,
             }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
@@ -156,7 +152,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+              width: 300,
             }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
@@ -184,7 +180,7 @@ export default function SettingModal({ visible, close }: MainModalProps) {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+              width: 300,
             }}>
             <View />
             <TouchableOpacity
@@ -251,22 +247,11 @@ const ChangeNickname = ({
     } else {
       try {
         await registNicknameAxios({ memberId, inputValue });
-        Alert.alert("닉네임 수정이 완료되었습니다.", "", [
-          {
-            text: "확인",
-            onPress: () => {
-              handleTextInputBlur();
-              setItem("nickname", inputValue);
-              close();
-            },
-          },
-        ]);
+        window.alert("닉네임 수정이 완료되었습니다.");
       } catch (error: any) {
         console.log(error);
         if (error.response.data.errorCode === "MEM_005") {
-          Alert.alert("이미 존재하는 닉네임입니다.", "다른 닉네임을 입력해주세요.", [
-            { text: "확인" },
-          ]);
+          window.alert("이미 존재하는 닉네임입니다.");
         }
       }
     }
@@ -277,7 +262,7 @@ const ChangeNickname = ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        width: Platform.OS === "web" ? 300 : SCREENWIDTH * 0.6,
+        width: 300,
       }}>
       <View style={{ marginRight: 10, flex: 1, flexDirection: "row", alignItems: "center" }}>
         <Text

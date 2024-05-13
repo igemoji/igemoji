@@ -50,6 +50,7 @@ export default function Header({ socketMessage }: any) {
             ...styles.memberList,
             backgroundColor: theme.kungya,
             borderColor: theme.grey,
+            zIndex: 999,
           }}>
           <View style={styles.row}>
             <View style={{ flex: 4 }}>
@@ -90,6 +91,7 @@ export default function Header({ socketMessage }: any) {
 
 const styles = StyleSheet.create({
   container: {
+    zIndex: 2,
     marginTop: 5,
     marginBottom: 20,
     flexDirection: "row",
@@ -107,7 +109,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "120%",
     right: 0,
-    zIndex: 999,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,

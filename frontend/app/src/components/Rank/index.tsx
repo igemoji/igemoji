@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Dimensions, Text, Image, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 
 import Background from "./Background";
 import Footer from "../Footer";
 
-import Font from "@/config/Font";
 import { getRankListAxios } from "@/API/Rank";
-import { getItem } from "@/utils/asyncStorage";
+import Font from "@/config/Font";
 import { ranking } from "@/types/types";
-
-const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
+import { getItem } from "@/utils/asyncStorage";
 
 export default function Rank() {
   const [ranking, setRanking] = useState<ranking[]>([]);
@@ -123,11 +121,12 @@ export default function Rank() {
 
 const styles = StyleSheet.create({
   container: {
-    width: SCREENWIDTH * 0.9,
+    width: "90%",
     flex: 1,
+    maxWidth: 500,
   },
   title: {
-    height: SCREENHEIGHT * 0.1,
+    marginTop: 10,
     alignItems: "center",
   },
   titleText: {
@@ -140,8 +139,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   myRanking: {
-    height: SCREENHEIGHT * 0.06,
-    paddingStart: "20%",
+    height: 50,
+    paddingStart: 50,
     flexDirection: "row",
     position: "relative",
     backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -155,14 +154,14 @@ const styles = StyleSheet.create({
   },
   image: {
     position: "absolute",
-    left: "-200%",
+    left: "-210%",
     top: "-80%",
     resizeMode: "contain",
     height: "200%",
     width: "420%",
   },
   topThreeUser: {
-    height: SCREENHEIGHT * 0.2,
+    height: 150,
     flexDirection: "row",
     alignItems: "flex-end",
     marginBottom: 5,
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   etcUser: {
-    maxHeight: SCREENHEIGHT * 0.4,
+    maxHeight: "60%",
   },
   etcRanking: {
     height: 50,
