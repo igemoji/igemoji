@@ -6,5 +6,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SimilarResponseDto {
     private String user_input;
-    private double similarity_score;
+    private Double similarity_score;
 }

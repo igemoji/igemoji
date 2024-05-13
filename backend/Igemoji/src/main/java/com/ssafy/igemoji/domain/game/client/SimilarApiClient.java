@@ -22,7 +22,7 @@ public class SimilarApiClient {
 
     private String SIMILAR_URI = "https://back.igemoji.store/similar";
 
-    public SimilarResponseDto requestSimilar(String userAnswer, String correctAnswer){
+    public double requestSimilar(String userAnswer, String correctAnswer){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON); // Update content type
 
@@ -31,6 +31,7 @@ public class SimilarApiClient {
         requestBody.put("correct_answer", correctAnswer);
 
         HttpEntity<?> request = new HttpEntity<>(requestBody, httpHeaders);
-        return restTemplate.postForObject(SIMILAR_URI, request, SimilarResponseDto.class);
+        SimilarResponseDto similarResponseDto = restTemplate.postForObject(SIMILAR_URI, request, SimilarResponseDto.class);
+        return similarResponseDto != null ? similarResponseDto.getSimilarity_score() : 0.0;
     }
 }

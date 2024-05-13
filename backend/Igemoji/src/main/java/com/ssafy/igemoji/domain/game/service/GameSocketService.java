@@ -1,6 +1,7 @@
 package com.ssafy.igemoji.domain.game.service;
 
 import com.ssafy.igemoji.domain.game.GameInfo;
+import com.ssafy.igemoji.domain.game.client.SimilarApiClient;
 import com.ssafy.igemoji.domain.game.dto.*;
 import com.ssafy.igemoji.domain.level.Level;
 import com.ssafy.igemoji.domain.level.exception.LevelErrorCode;
@@ -37,6 +38,7 @@ public class GameSocketService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
+    private final SimilarApiClient similarApiClient;
 
     private final Map<Integer, ScheduledFuture<?>> scheduledFutures = new ConcurrentHashMap<>();
     private final Map<Integer, GameInfo> gameInfoMap = new HashMap<>();
@@ -195,23 +197,28 @@ public class GameSocketService {
     public void gameChat(ChatRequestDto chatRequestDto) {
         GameInfo gameInfo = gameInfoMap.get(chatRequestDto.getRoomId());
 
-        ChatResponseDto responseDto = ChatResponseDto.builder()
+        GameChatResponseDto responseDto = GameChatResponseDto.builder()
                 .roomId(gameInfo.getRoomId())
                 .nickname(gameInfo.chatPlayer(chatRequestDto.getMemberId()))
                 .content(chatRequestDto.getContent())
                 .message(MessageType.GAME_CHAT)
                 .build();
 
-        sendMessage(responseDto, chatRequestDto.getRoomId()); // 채팅 전송
 
         // 정답 체크
         String answer = gameInfo.currentAnswer();
         String answerNoSpace = gameInfo.currentAnswer().replaceAll(" ", "");
-        if(gameInfo.getGameStatus().equals(GameStatus.PROCEEDING) && (chatRequestDto.getContent().equals(answer)||chatRequestDto.getContent().equals(answerNoSpace))){
-            gameInfo.correctAnswer(gameInfo.chatPlayer(chatRequestDto.getMemberId())); // 문제 정답자 닉네임 입력
-            gameInfo.increasePlayerScore(chatRequestDto.getMemberId()); // 정답자 score 증가
-            gameInfo.updateGameStatus(GameStatus.PRINT_ANSWER);
-            gameInfo.waitTime();
+        if(gameInfo.getGameStatus().equals(GameStatus.PROCEEDING)){
+            responseDto.setSimilarScore(similarApiClient.requestSimilar(responseDto.getContent(), answer));
+
+            if(chatRequestDto.getContent().equals(answer)||chatRequestDto.getContent().equals(answerNoSpace)) {
+                gameInfo.correctAnswer(gameInfo.chatPlayer(chatRequestDto.getMemberId())); // 문제 정답자 닉네임 입력
+                gameInfo.increasePlayerScore(chatRequestDto.getMemberId()); // 정답자 score 증가
+                gameInfo.updateGameStatus(GameStatus.PRINT_ANSWER);
+                gameInfo.waitTime();
+            }
         }
+
+        sendMessage(responseDto, chatRequestDto.getRoomId()); // 채팅 전송
     }
 }
