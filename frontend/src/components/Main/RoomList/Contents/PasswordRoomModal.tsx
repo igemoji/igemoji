@@ -22,8 +22,7 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
     try {
       const memberId = await getItem("memberId");
       const roomId = await getItem("roomId");
-      const { data } = await enterRoomAxios({ memberId, roomId, password });
-      console.log(data);
+      await enterRoomAxios({ memberId, roomId, password });
       navigation.navigate("Game");
     } catch (error: any) {
       if (Platform.OS === "web") {

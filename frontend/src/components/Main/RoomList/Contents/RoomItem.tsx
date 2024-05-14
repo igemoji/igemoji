@@ -59,8 +59,7 @@ export default function RoomItem({
   const handleEnterRoomAxios = async () => {
     try {
       const memberId = await getItem("memberId");
-      const { data } = await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
-      console.log(data);
+      await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
       navigation.navigate("Game");
     } catch (error: any) {
       if (Platform.OS === "web") {

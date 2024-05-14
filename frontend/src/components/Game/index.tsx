@@ -42,7 +42,7 @@ export default function Game() {
 
     subscribe(`/topic/room/${roomId}`, (message) => {
       const data = JSON.parse(message.body);
-      console.log("서 > 클 ", data);
+      // console.log("서 > 클 ", data);
       if (
         data.message === "ROOM_CHAT" ||
         data?.message === "GAME_CHAT" ||

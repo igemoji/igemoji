@@ -48,7 +48,7 @@ export const createSocket = () => {
     if (!stomp) {
       throw new Error("socket이 연결되어있지 않아요");
     }
-    console.log("클 > 서", body);
+    // console.log("클 > 서", body);
 
     stomp.publish({
       destination,
@@ -69,7 +69,6 @@ export const createSocket = () => {
     }
     stomp.deactivate();
     stomp = null;
-    console.log("클라이언트 소켓이 성공적으로 닫혔어요");
   };
 
   return {
