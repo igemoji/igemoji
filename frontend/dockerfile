@@ -4,9 +4,6 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-RUN npm config set proxy http://igemoji.store:8081
-RUN npm config set https-proxy https://igemoji.store:8081
-RUN npm config set strict-ssl false
 RUN npm install
 
 CMD npx expo start
