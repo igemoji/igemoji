@@ -69,7 +69,7 @@ export const createSocket = () => {
     }
     stomp.deactivate();
     stomp = null;
-    console.log("클라이언트 소켓이 성공적으로 닫혔어요");
+    // console.log("클라이언트 소켓이 성공적으로 닫혔어요");
   };
 
   return {

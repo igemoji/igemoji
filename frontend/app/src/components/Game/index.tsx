@@ -17,7 +17,6 @@ export default function Game() {
   const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const [socketMessage, setSocketMessage] = useState(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [answer, setAnswer] = useState("");
   const [userState, setUserState] = useState<string>("room");
 
   useEffect(() => {
@@ -42,7 +41,6 @@ export default function Game() {
 
     subscribe(`/topic/room/${roomId}`, (message) => {
       const data = JSON.parse(message.body);
-      console.log("서 > 클 ", data);
       if (
         data.message === "ROOM_CHAT" ||
         data?.message === "GAME_CHAT" ||

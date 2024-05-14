@@ -37,7 +37,7 @@ const Font = StyleSheet.create({
     fontFamily: "PretendardLight",
   },
   messages: {
-    fontSize: 14,
+    fontSize: 18,
     fontFamily: "PretendardMedium",
   },
   gameWaitingMessage: {
@@ -71,11 +71,11 @@ const Font = StyleSheet.create({
     fontFamily: "PretendardRegular",
   },
   similar: {
-    fontSize: 10,
+    fontSize: 16,
     fontFamily: "PretendardRegular",
   },
   similarRankTitle: {
-    fontSize: 11,
+    fontSize: 18,
     fontFamily: "PretendardBold",
   },
   rankTitle: {

@@ -71,7 +71,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
                   style={[styles.benchmarkText, Font.similar, { color: theme.text }]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
-                  {Math.round(data.similarScore as number)}
+                  {data.similarScore}
                 </Text>
               </View>
             </View>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: 10,
-    width: 100,
+    width: 200,
     backgroundColor: "#e0e0e0",
   },
   progressBarFill: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   similarRank: {
-    width: 100,
+    width: 300,
     gap: 3,
     overflow: "hidden",
   },
@@ -154,14 +154,14 @@ const ProgressBar = ({ title, similar }: { title: string; similar: number }) => 
       style={{
         alignItems: "center",
         justifyContent: "space-around",
-        width: "80%",
+        width: "100%",
       }}>
       <View style={styles.progressBarBackground}>
         <Animated.View
           style={[styles.progressBarFill, { width }, { backgroundColor: theme.kungyaGreenAccent2 }]}
         />
       </View>
-      <Text style={{ ...Font.mainSmall, color: theme.text, textAlign: "center" }}>{title}</Text>
+      <Text style={{ ...Font.mainLarge, color: theme.text, textAlign: "center" }}>{title}</Text>
     </View>
   );
 };
