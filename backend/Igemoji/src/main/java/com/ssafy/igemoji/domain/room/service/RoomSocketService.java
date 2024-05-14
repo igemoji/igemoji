@@ -61,7 +61,7 @@ public class RoomSocketService {
         }
 
         sessionMap.remove(sessionId); // 퇴장한 맴버 session 제거
-        gameSocketService.leavePlayer(room.getId(), member.getId());
+//        gameSocketService.leavePlayer(room.getId(), member.getId());
 
         return RoomInfoDto.toDto(room, member.getId(), member.getNickname(), MessageType.LEAVE_ROOM);
     }
