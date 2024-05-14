@@ -55,6 +55,7 @@ public class GameInfo {
     public String currentAnswer(){ return this.movieList.get(remainingRound).getName(); }
 
     public String chatPlayer(Integer playerId){ return players.get(playerId).getNickname(); }
+    public void leavePlayer(Integer playerId){ players.remove(playerId); }
 
     public void increasePlayerScore(Integer playerId){ players.get(playerId).increaseScore(); }
 

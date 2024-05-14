@@ -221,4 +221,13 @@ public class GameSocketService {
 
         sendMessage(responseDto, chatRequestDto.getRoomId()); // 채팅 전송
     }
+
+    /* 진행 중인 유저 퇴장 */
+    public void leavePlayer(Integer roomId, Integer memberId){
+        GameInfo gameInfo = gameInfoMap.get(roomId);
+        gameInfo.leavePlayer(memberId);
+
+        if(gameInfo.getPlayers().size() <= 0)
+            gameInfo.updateGameStatus(GameStatus.GAME_END);
+    }
 }
