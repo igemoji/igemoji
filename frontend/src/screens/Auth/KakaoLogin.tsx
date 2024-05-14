@@ -1,12 +1,10 @@
-import { REST_API_KEY } from "@env";
+import { REST_API_KEY, REDIRECT_URI } from "@env";
 import { View } from "react-native";
 import WebView from "react-native-webview";
 
 import { kakaoLoginAxios } from "@/API/Auth";
 import { NavigationProps } from "@/types/types";
 import { setItem } from "@/utils/asyncStorage";
-
-const REDIRECT_URI = "https://back.igemoji.store/oauth2/kakao";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
