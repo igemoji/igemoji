@@ -23,18 +23,8 @@ public class GameSocketController {
     /* 게임 시작 */
     @MessageMapping("/game/start")
     public void gameStart(StartRequestDto requestDto){
-        Room room = roomRepository.findById(requestDto.getRoomId()).orElseThrow(
-                () -> new CustomException(RoomErrorCode.NOT_FOUND_ROOM)
-        );
-
-        // 이미 진행 중인 경우 또는 방장이 아닌 경우 종료
-        if(room.getIsProgress() || !room.getHost().getId().equals(requestDto.getMemberId())){
-            return;
-        }
-
         // 게임 시작
         gameSocketService.startGame(requestDto);
-
     }
 
     /* 채팅 소켓 */
