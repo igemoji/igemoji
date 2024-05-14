@@ -1,5 +1,6 @@
 package com.ssafy.igemoji.domain.room.service;
 
+import com.ssafy.igemoji.domain.game.service.GameSocketService;
 import com.ssafy.igemoji.domain.member.Member;
 import com.ssafy.igemoji.domain.member.exception.MemberErrorCode;
 import com.ssafy.igemoji.domain.member.repository.MemberRepository;
@@ -21,6 +22,7 @@ public class RoomSocketService {
 
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
+    private final GameSocketService gameSocketService;
     private static final Map<String, Integer> sessionMap = new HashMap<>();
 
     /* 방 입장 */
@@ -59,6 +61,7 @@ public class RoomSocketService {
         }
 
         sessionMap.remove(sessionId); // 퇴장한 맴버 session 제거
+        gameSocketService.leavePlayer(room.getId(), member.getId());
 
         return RoomInfoDto.toDto(room, member.getId(), member.getNickname(), MessageType.LEAVE_ROOM);
     }
