@@ -52,7 +52,7 @@ export default function Content({
         setNowQuizCount(socketMessage.questionNum);
         setHostId(socketMessage.host?.memberId);
 
-        if (!socketMessage.isProgress && socketMessage.senderId === memberId) {
+        if (!socketMessage.isProgress) {
           if (socketMessage.host?.memberId === memberId) {
             setNowContent("hostwaiting");
           } else {
