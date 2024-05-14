@@ -96,6 +96,10 @@ async def compare_answers(postData: AnswerData):
 
     if user_input == answer:
         return {"user_input": postData.user_answer, "similarity_score": 100}
+    
+    elif user_input == '.' or user_input==',':
+        return {"user_input": postData.user_answer, "similarity_score": 0}
+    
     else:
         if user_input in movie_titles:
             tfidf_matrix, vectorizer = create_tfidf_embeddings(texts)
