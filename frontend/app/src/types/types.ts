@@ -2,7 +2,7 @@ type ThemeIconName = "sun-o" | "moon-o";
 
 type MusicIconName = "music-note" | "music-off";
 
-type ButtonName = "check" | "start" | "exit" | "mainStart";
+type ButtonName = "check" | "start" | "exit" | "mainStart" | "miniExit";
 
 interface EmojiProps {
   emoji: string | null;

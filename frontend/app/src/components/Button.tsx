@@ -5,11 +5,9 @@ import "@/styles/styles.css";
 import { Text } from "react-native";
 
 import { MusicContext } from "@/config/Music";
-import { ThemeContext } from "@/config/Theme";
 import { ButtonName } from "@/types/types";
 
 export default function Button({ name, onPress }: { name: ButtonName; onPress: () => void }) {
-  const { theme } = useContext(ThemeContext);
   const { playButtonSound } = useContext(MusicContext);
 
   const handlePress = () => {
@@ -46,6 +44,19 @@ export default function Button({ name, onPress }: { name: ButtonName; onPress: (
           style={{
             opacity: 0.85,
             fontSize: 16,
+            color: "#47473F",
+            fontFamily: "PretendardRegular",
+          }}>
+          나가기
+        </Text>
+      </AwesomeButton>
+    );
+  } else if (name === "miniExit") {
+    content = (
+      <AwesomeButton type="twitter" size="medium" onPress={handlePress}>
+        <Text
+          style={{
+            fontSize: 12,
             color: "#47473F",
             fontFamily: "PretendardRegular",
           }}>
