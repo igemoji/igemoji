@@ -71,7 +71,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
                   style={[styles.benchmarkText, Font.similar, { color: theme.text }]}
                   numberOfLines={1}
                   ellipsizeMode="tail">
-                  {Math.round(data.similarScore as number)}
+                  {data.similarScore}
                 </Text>
               </View>
             </View>
