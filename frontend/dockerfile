@@ -2,10 +2,6 @@ FROM node:20.10.0-slim
 
 WORKDIR /usr/src/app
 
-# npm 프록시 설정
-ENV HTTP_PROXY=http://jenkins.igemoji.store
-ENV HTTPS_PROXY=https://jenkins.igemoji.store
-
 COPY ./ ./
 
 RUN npm install
