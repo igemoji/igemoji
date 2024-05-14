@@ -107,7 +107,7 @@ public class GameSocketService {
         for(PlayerResponseDto player : playerList) player.updateAddRating(player.getScore() * 10);
 
         /* 게임 최종 스코어 및 rating 점수 send */
-        sendMessage(new ScoreResponseDto( MessageType.GAME_PROGRESS, GameStatus.GAME_END, playerList), roomId);
+        sendMessage(new ScoreResponseDto(MessageType.GAME_PROGRESS, GameStatus.GAME_END, playerList), roomId);
 
         stopGameScheduler(roomId);
 
@@ -206,12 +206,13 @@ public class GameSocketService {
 
 
         // 정답 체크
-        String answer = gameInfo.currentAnswer();
-        String answerNoSpace = gameInfo.currentAnswer().replaceAll(" ", "");
         if(gameInfo.getGameStatus().equals(GameStatus.PROCEEDING)){
-            responseDto.setSimilarScore(similarApiClient.requestSimilar(responseDto.getContent(), answer));
+            String answer = gameInfo.currentAnswer();
+            String answerNoSpace = answer.replaceAll(" ", "");
+            String userAnswer = chatRequestDto.getContent().replaceAll(" ", "");
+            responseDto.setSimilarScore(similarApiClient.requestSimilar(chatRequestDto.getContent(), answer));
 
-            if(chatRequestDto.getContent().equals(answer)||chatRequestDto.getContent().equals(answerNoSpace)) {
+            if(chatRequestDto.getContent().equals(answer)||chatRequestDto.getContent().equals(answerNoSpace) || userAnswer.equals(answerNoSpace)) {
                 gameInfo.correctAnswer(gameInfo.chatPlayer(chatRequestDto.getMemberId())); // 문제 정답자 닉네임 입력
                 gameInfo.increasePlayerScore(chatRequestDto.getMemberId()); // 정답자 score 증가
                 gameInfo.updateGameStatus(GameStatus.PRINT_ANSWER);
