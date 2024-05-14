@@ -11,11 +11,7 @@ export default function Similar({ messages }: { messages: Message[] }) {
   const [similarRank, setSimilarRank] = useState<Message[]>([]);
 
   useEffect(() => {
-    if (
-      messages.length &&
-      messages[messages.length - 1].similarScore &&
-      (messages[messages.length - 1].similarScore as number) > 9
-    ) {
+    if (messages.length && messages[messages.length - 1].similarScore) {
       const isExisting = similarRank.some(
         (item) => item.similarScore === messages[messages.length - 1].similarScore
       );
