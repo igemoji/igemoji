@@ -1,5 +1,5 @@
 FROM node:20.12.2-slim
-EXPOSE 8081
+
 WORKDIR /usr/src/app
 
 COPY ./ ./
@@ -7,4 +7,3 @@ COPY ./ ./
 RUN npm install
 
 CMD npx expo start
-
