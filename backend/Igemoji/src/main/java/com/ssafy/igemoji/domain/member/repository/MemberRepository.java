@@ -13,8 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @Query("SELECT m " +
             "FROM Member m " +
             "ORDER BY m.rating DESC " +
-            "LIMIT 10")
-    List<Member> getTop10Members();
+            "LIMIT 30")
+    List<Member> getTop30Members();
 
     @Query("SELECT COUNT(m)" +
             "FROM Member m " +
