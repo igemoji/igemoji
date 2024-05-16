@@ -32,6 +32,7 @@ export default function PasswordRoomModal({ visible, close }: MainModalProps) {
       }
     }
     setPassword("");
+    close();
   };
 
   const handlePasswordChange = (text: string) => {

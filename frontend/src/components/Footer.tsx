@@ -1,24 +1,12 @@
-import { Fontisto } from "@expo/vector-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import SettingModal from "./Main/RoomList/Contents/SettingModal";
-import MainModal from "./Main/RoomList/Modal";
 
-import Font from "@/config/Font";
 import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
-import { MainModalProps } from "@/types/types";
 
 export default function Footer() {
   const { theme } = useContext(ThemeContext);
