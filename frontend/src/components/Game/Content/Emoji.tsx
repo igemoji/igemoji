@@ -1,27 +1,12 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Text, StyleSheet, View, Keyboard } from "react-native";
+import React, { useContext } from "react";
+import { Text, StyleSheet, View } from "react-native";
 
 import Font from "@/config/Font";
 import { ThemeContext } from "@/config/Theme";
 import { EmojiProps } from "@/types/types";
 
-export default function Emoji({ emoji, hint1, hint2 }: EmojiProps) {
+export default function Emoji({ emoji, hint1, hint2, keyboardStatus }: EmojiProps) {
   const { theme } = useContext(ThemeContext);
-  const [keyboardStatus, setKeyboardStatus] = useState(false);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus(true);
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus(false);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   return (
     <View style={styles.container}>

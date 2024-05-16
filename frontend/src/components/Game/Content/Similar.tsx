@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   similarRank: {
-    width: 100,
+    width: 120,
     gap: 3,
     overflow: "hidden",
   },

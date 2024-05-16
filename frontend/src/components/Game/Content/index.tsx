@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 
 import Answer from "./Answer";
 import Count from "./Count";
@@ -38,6 +38,21 @@ export default function Content({
   const [answerMember, setAnswerMember] = useState(null);
   const [playerList, setPlayerList] = useState(null);
   const [nowContent, setNowContent] = useState<string | null>(null);
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     async function setStorage() {
@@ -120,7 +135,7 @@ export default function Content({
           {nowContent === "hostwaiting" && <HostWaiting allQuizCount={allQuizCount} />}
           {nowContent === "playerWaiting" && <PlayerWaiting />}
           {(nowContent === "quiz" || nowContent === "answer") && (
-            <Emoji emoji={emoji} hint1={hint1} hint2={hint2} />
+            <Emoji emoji={emoji} hint1={hint1} hint2={hint2} keyboardStatus={keyboardStatus} />
           )}
           {nowContent === "quiz" && <Similar messages={messages} />}
           {nowContent === "answer" && (

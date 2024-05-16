@@ -8,6 +8,7 @@ interface EmojiProps {
   emoji: string | null;
   hint1: string | null;
   hint2: string | null;
+  keyboardStatus: boolean;
 }
 
 interface AnswerProps {
