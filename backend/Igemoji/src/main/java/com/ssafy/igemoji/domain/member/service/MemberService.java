@@ -46,7 +46,7 @@ public class MemberService {
         Integer rank = memberRepository.getMemberRank(member.getRating());
         MemberRankDto myRank = MemberRankDto.toDto(member, rank + 1);
 
-        List<Member> memberList = memberRepository.getTop10Members();
+        List<Member> memberList = memberRepository.getTop30Members();
         List<MemberRankDto> memberRankDtoList = new ArrayList<>();
         for(int i = 0; i < memberList.size(); i++){
             memberRankDtoList.add(MemberRankDto.toDto(memberList.get(i), i+1));
