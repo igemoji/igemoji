@@ -41,14 +41,16 @@ function App() {
     if (buttonSound) {
       setButtonSound(undefined);
     } else {
-      const { sound } = await Audio.Sound.createAsync(require("~/music/pop_up.mp3"));
+      const { sound } = await Audio.Sound.createAsync(require("~/music/multi-pop.mp3"));
       setButtonSound(sound);
     }
   };
 
   async function loadSound() {
     if (sound === undefined) {
-      const { sound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
+      const { sound } = await Audio.Sound.createAsync(
+        require("~/music/happy_corporate_project.mp3")
+      );
       setSound(sound);
 
       await sound.setIsLoopingAsync(true);
@@ -56,7 +58,7 @@ function App() {
       await sound.playAsync();
     }
     if (buttonSound === undefined) {
-      const { sound } = await Audio.Sound.createAsync(require("~/music/pop_up.mp3"));
+      const { sound } = await Audio.Sound.createAsync(require("~/music/multi-pop.mp3"));
       setButtonSound(sound);
     }
   }

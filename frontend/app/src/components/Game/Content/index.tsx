@@ -49,10 +49,10 @@ export default function Content({
         socketMessage?.message === "LEAVE_ROOM"
       ) {
         setAllQuizCount(socketMessage.questionNum);
-        setNowQuizCount(socketMessage.questionNum);
         setHostId(socketMessage.host?.memberId);
 
         if (!socketMessage.isProgress) {
+          setNowQuizCount(socketMessage.questionNum);
           if (socketMessage.host?.memberId === memberId) {
             setNowContent("hostwaiting");
           } else {

@@ -1,4 +1,5 @@
-import { Audio } from "expo-av";
+// import { Audio } from "expo-av";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 
@@ -7,27 +8,14 @@ import Header from "./Header";
 import Background from "../../Background";
 import Footer from "../../Footer";
 
-import { MusicContext } from "@/config/Music";
+// import { MusicContext } from "@/config/Music";
 import { ThemeContext } from "@/config/Theme";
 import { NavigationProps } from "@/types/types";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function RoomList({ navigation }: NavigationProps) {
-  const { sound, setSound, isMusicOn } = useContext(MusicContext);
+  // const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const { theme } = useContext(ThemeContext);
   const [refreshKey, setRefreshKey] = useState(0);
-
-  async function loadSound() {
-    const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
-
-    if (sound && isMusicOn) {
-      await sound.stopAsync();
-      setSound(newSound);
-      await newSound.setIsLoopingAsync(true);
-      await newSound.setVolumeAsync(1);
-      await newSound.playAsync();
-    }
-  }
 
   const refresh = () => {
     setRefreshKey((prevKey) => prevKey + 1);
@@ -35,7 +23,6 @@ export default function RoomList({ navigation }: NavigationProps) {
 
   useFocusEffect(
     React.useCallback(() => {
-      loadSound();
       setTimeout(() => {
         refresh();
       }, 500);
