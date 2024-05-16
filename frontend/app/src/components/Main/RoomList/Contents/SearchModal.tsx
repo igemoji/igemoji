@@ -27,9 +27,8 @@ export default function SearchModal({ visible, close }: MainModalProps) {
       } else {
         setIsModalVisible(true);
       }
-    } catch (error) {
-      console.log(error);
-      Alert.alert("방을 찾을 수 없습니다.", "", [{ text: "확인" }]);
+    } catch (error: any) {
+      window.alert(error.response.data.message);
     }
     setRoomId("");
     close();
@@ -41,11 +40,7 @@ export default function SearchModal({ visible, close }: MainModalProps) {
       await enterRoomAxios({ roomId: Number(roomId), memberId, password: "" });
       navigation.navigate("Game");
     } catch (error: any) {
-      if (Platform.OS === "web") {
-        window.alert(error.response.data.message);
-      } else {
-        Alert.alert(error.response.data.message, "", [{ text: "확인" }]);
-      }
+      window.alert(error.response.data.message);
     }
   };
 
