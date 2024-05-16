@@ -1,34 +1,32 @@
-import { Audio } from "expo-av";
-import React, { useContext, useEffect, useState } from "react";
-import { Text, View, Dimensions, StyleSheet } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+// import { Audio } from "expo-av";
+import React, { useContext, useState } from "react";
+import { View, Dimensions, StyleSheet } from "react-native";
 
 import Body from "./Body";
 import Header from "./Header";
 import Background from "../../Background";
 import Footer from "../../Footer";
 
-import { MusicContext } from "@/config/Music";
-import { ThemeContext } from "@/config/Theme";
+// import { MusicContext } from "@/config/Music";
 import { NavigationProps } from "@/types/types";
-import { useFocusEffect } from "@react-navigation/native";
 const { width: SCREENWIDTH, height: SCREENHEIGHT } = Dimensions.get("window");
 
 export default function RoomList({ navigation }: NavigationProps) {
-  const { sound, setSound, isMusicOn } = useContext(MusicContext);
-  const { theme } = useContext(ThemeContext);
+  // const { sound, setSound, isMusicOn } = useContext(MusicContext);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  async function loadSound() {
-    const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
+  // async function loadSound() {
+  //   const { sound: newSound } = await Audio.Sound.createAsync(require("~/music/sunrise.mp3"));
 
-    if (sound && isMusicOn) {
-      await sound.stopAsync();
-      setSound(newSound);
-      await newSound.setIsLoopingAsync(true);
-      await newSound.setVolumeAsync(1);
-      await newSound.playAsync();
-    }
-  }
+  //   if (sound && isMusicOn) {
+  //     await sound.stopAsync();
+  //     setSound(newSound);
+  //     await newSound.setIsLoopingAsync(true);
+  //     await newSound.setVolumeAsync(1);
+  //     await newSound.playAsync();
+  //   }
+  // }
 
   const refresh = () => {
     setRefreshKey((prevKey) => prevKey + 1);
@@ -36,7 +34,7 @@ export default function RoomList({ navigation }: NavigationProps) {
 
   useFocusEffect(
     React.useCallback(() => {
-      loadSound();
+      // loadSound();
       setTimeout(() => {
         refresh();
       }, 500);
