@@ -138,8 +138,14 @@ public class GameSocketService {
 
         if(remainingTime <= 50) // 첫번째 힌트 명대사 send
             proceedingResponseDto.updateHint1(movie.getLine());
-        if(remainingTime <= 30) // 두번째 힌트 초성 send
-            proceedingResponseDto.updateHint2(movie.getChosung());
+        if(remainingTime <= 15 && movie.getName().length() > 1) { // 세번째 힌트 첫글자 오픈
+            String chosung = movie.getName().charAt(0) + movie.getChosung().substring(1);
+            proceedingResponseDto.updateHint2(chosung);
+        }
+        else if (remainingTime <= 30) // 두번째 힌트 초성 send
+            proceedingResponseDto.updateHint2(movie.getChosung());{
+
+        }
 
         sendMessage(proceedingResponseDto, roomId);
 
